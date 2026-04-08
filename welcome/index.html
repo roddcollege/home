@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodd College - Comprehensive Onboarding</title>
+    
+    <!-- Chosen Palette: Rodd Blue (#003399), Slate Grays, Emerald Success, Amber Warnings -->
+    <!-- Application Structure Plan: This SPA serves as the ultimate "Stealth Assessment" and "Commitment Calculator" onboarding journey. 
+         Flow: 
+         1. Welcome (Name entry).
+         2. Dynamic Speaking Test (5 progressive questions; captures audio/text silently in the background).
+         3. Commitment Profiler (Captures the 9 user inputs regarding goals, time, and preferences to build the mathematical roadmap).
+         4. Processing State (A smooth transition that simulates the API analysis of the combined voice and logistical data).
+         5. The Master Dashboard (Presents the diagnosed CEFR level, a generated learning timeline, and a visual breakdown of required hours using Chart.js).
+         This structure keeps the user engaged through interaction before revealing the heavy data, preventing "assessment fatigue." -->
+    <!-- Visualization & Content Choices: 
+         - Timeline / Roadmap -> Horizontal Stacked Bar Chart (Chart.js) -> Shows the distribution of hours (Assisted, Semi-guided, Interactive, Exposure) -> Justification: Directly maps the mathematical ratios from the "English Learning Process" matrix.
+         - Cognitive Gap Analysis -> Radar Chart (Chart.js) -> Compares current vs target cognitive skills -> Justification: Based on the "Cognitive Communication Framework" image, providing a visual "why" for the roadmap.
+         - ALL visuals use Canvas or Unicode. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .hidden-section { display: none !important; }
+
+        /* Mandatory Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 35vh;
+            min-height: 250px;
+            max-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        /* Animations */
+        .pulse-ring { animation: pulse 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slide-right { animation: slideRight 0.4s ease-out forwards; }
+        @keyframes slideRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        
+        /* Custom UI */
+        .rodd-blue { background-color: #003399; }
+        .rodd-text { color: #003399; }
+        
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #003399;
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <div class="max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+        
+        <!-- Header -->
+        <header class="rodd-blue p-6 text-center text-white relative z-10">
+            <h1 class="text-3xl font-black tracking-tight">Rodd College</h1>
+            <p class="text-blue-200 text-xs tracking-widest uppercase mt-1 font-semibold">Intelligent Onboarding & Mapping</p>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- STEP 1: WELCOME -->
+        <!-- ========================================== -->
+        <div id="step-welcome" class="p-8 md:p-14 text-center fade-in">
+            <div class="text-6xl mb-6">👋</div>
+            <h2 class="text-3xl font-bold mb-4 text-slate-800">Welcome to your Journey</h2>
+            <p class="text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
+                Before we map out your personalized curriculum, we need to establish your baseline. You will answer 5 quick speaking questions, followed by a brief logistical setup.
+            </p>
+            <div class="max-w-sm mx-auto mb-8 text-left">
+                <label class="block text-sm font-bold text-slate-700 mb-2">What is your name?</label>
+                <input type="text" id="student-name" placeholder="e.g., Sofía Núñez" class="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none text-lg transition">
+            </div>
+            <button onclick="startDiagnostic()" class="rodd-blue text-white font-bold py-4 px-10 rounded-xl hover:bg-blue-800 transition w-full max-w-sm shadow-lg shadow-blue-900/30">
+                Start Diagnostic Test ➔
+            </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- STEP 2: THE 5-QUESTION SPEAKING TEST -->
+        <!-- ========================================== -->
+        <div id="step-test" class="hidden-section p-8 md:p-12">
+            <!-- Progress Bar -->
+            <div class="mb-8">
+                <div class="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">
+                    <span>Question <span id="q-current">1</span> of 5</span>
+                    <span id="q-level" class="text-blue-600 bg-blue-50 px-2 py-1 rounded">A1/A2</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                    <div id="test-progress" class="rodd-blue h-2 rounded-full transition-all duration-500" style="width: 20%"></div>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="text-center mb-10 slide-right" id="question-container">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4" id="q-title">Tell me a little bit about yourself.</h2>
+                <p class="text-slate-500 text-sm md:text-base max-w-xl mx-auto" id="q-context">Provide a brief introduction and present general aspects about your life clearly.</p>
+            </div>
+
+            <!-- Recording Interface -->
+            <div class="flex flex-col items-center justify-center mb-8">
+                <button id="mic-btn" onclick="toggleRecording()" class="w-24 h-24 bg-blue-50 border border-blue-200 text-blue-600 rounded-full flex items-center justify-center text-4xl transition-all hover:bg-blue-100 hover:scale-105 shadow-sm">
+                    🎤
+                </button>
+                <p id="mic-status" class="mt-4 font-bold text-slate-500 uppercase tracking-widest text-xs">Click to Record</p>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-8">
+                <textarea id="live-transcript" class="w-full bg-transparent border-none outline-none resize-none h-24 text-slate-700 text-base placeholder-slate-400" placeholder="Live transcription will appear here..."></textarea>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <button onclick="simulateAnswer()" class="text-sm text-slate-400 hover:text-blue-600 underline font-medium">Skip & Simulate Answer</button>
+                <button id="next-q-btn" onclick="nextQuestion()" class="bg-slate-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-900 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next Question ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- STEP 3: COMMITMENT CALCULATOR (Logistics) -->
+        <!-- ========================================== -->
+        <div id="step-calculator" class="hidden-section p-8 md:p-12 fade-in">
+            <div class="text-center mb-10">
+                <div class="inline-block bg-blue-100 text-blue-800 p-3 rounded-full text-2xl mb-4">⏱️</div>
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Curriculum Architecture</h2>
+                <p class="text-slate-600 max-w-xl mx-auto">Your audio data is securely queued for analysis. Now, let's map out your logistical constraints so we can build your exact timeline.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Inputs Left -->
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">1. Target CEFR Goal</label>
+                        <select id="calc-target" class="w-full p-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-600">
+                            <option value="3">B1.2 (Intermediate)</option>
+                            <option value="4">B2.1 (Upper Intermediate)</option>
+                            <option value="5" selected>B2.2 (Advanced)</option>
+                            <option value="6">C1 (Expert)</option>
+                            <option value="7">C2 (Mastery)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">2. Primary Learning Reason</label>
+                        <select id="calc-reason" class="w-full p-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-600">
+                            <option>General Personal Growth</option>
+                            <option>Academic (IELTS/TOEFL)</option>
+                            <option>Professional (Job Interview/Promotion)</option>
+                            <option>Specific Bilingual Event Coaching</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">3. Preferred Class Format</label>
+                        <div class="flex gap-4">
+                            <label class="flex-1 bg-slate-50 border border-slate-200 p-3 rounded-lg flex items-center gap-2 cursor-pointer hover:bg-blue-50">
+                                <input type="radio" name="classFormat" value="45" checked class="accent-blue-600"> 45 Mins (1 Lesson)
+                            </label>
+                            <label class="flex-1 bg-slate-50 border border-slate-200 p-3 rounded-lg flex items-center gap-2 cursor-pointer hover:bg-blue-50">
+                                <input type="radio" name="classFormat" value="90" class="accent-blue-600"> 90 Mins (2 Lessons)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inputs Right (Sliders) -->
+                <div class="space-y-8 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm font-bold text-slate-700">4. Total Study Hours Available (Weekly)</label>
+                            <span id="val-total-hours" class="font-bold text-blue-600">10 hrs</span>
+                        </div>
+                        <input type="range" id="calc-total-hours" min="2" max="40" value="10" oninput="document.getElementById('val-total-hours').innerText = this.value + ' hrs'">
+                        <p class="text-xs text-slate-500 mt-1">Includes classes, homework, apps, and media exposure.</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Internal Time Distribution Preference</p>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-xs text-slate-600">Active Focus (Live Class + Practice)</span>
+                                <span class="text-xs font-bold">25%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full w-1/4"></div></div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-xs text-slate-600">Passive Exposure (Netflix, Podcasts)</span>
+                                <span class="text-xs font-bold">75%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-1.5"><div class="bg-amber-400 h-1.5 rounded-full w-3/4"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button onclick="processAllData()" class="rodd-blue text-white font-bold py-4 px-12 rounded-xl hover:bg-blue-800 transition shadow-lg shadow-blue-900/30 text-lg">
+                    Generate My Master Plan 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- STEP 4: PROCESSING STATE -->
+        <!-- ========================================== -->
+        <div id="step-processing" class="hidden-section p-16 text-center flex flex-col items-center justify-center min-h-[500px]">
+            <div class="relative w-24 h-24 mb-8">
+                <div class="absolute inset-0 border-4 border-blue-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-2xl">🧠</div>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2" id="processing-title">Analyzing Voice Transcripts...</h2>
+            <p class="text-slate-500 max-w-md mx-auto" id="processing-desc">Mapping your lexical patterns against CEFR cognitive matrices and calculating your temporal roadmap.</p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- STEP 5: THE DASHBOARD (Results) -->
+        <!-- ========================================== -->
+        <div id="step-dashboard" class="hidden-section fade-in pb-12">
+            
+            <!-- Dashboard Header -->
+            <div class="bg-slate-900 p-8 text-white flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl">👤</div>
+                    <div>
+                        <h2 class="text-2xl font-bold" id="dash-name">Student Name</h2>
+                        <p class="text-blue-300 text-sm">Personalized Rodd OS Roadmap</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 text-center">
+                    <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl min-w-[100px]">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">Starting Level</p>
+                        <p class="text-2xl font-black text-emerald-400" id="dash-start-level">B1.1</p>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 p-3 rounded-xl min-w-[100px]">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">Target Level</p>
+                        <p class="text-2xl font-black text-blue-400" id="dash-target-level">B2.2</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 space-y-10">
+                
+                <!-- The Timeline Result -->
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-2">Your Estimated Timeline</h3>
+                        <p class="text-blue-800 mb-4">Based on your commitment of <strong id="dash-hours-week">10 hours/week</strong>, traversing from <span id="text-start">B1.1</span> to <span id="text-target">B2.2</span> will require approximately:</p>
+                        <div class="text-5xl font-black text-blue-600 mb-2"><span id="dash-months">14.5</span> <span class="text-2xl text-blue-500">Months</span></div>
+                        <p class="text-sm text-blue-700 bg-white inline-block px-3 py-1 rounded border border-blue-100">Total Educational Hours: <strong id="dash-total-hours">600</strong></p>
+                    </div>
+                    <div class="w-full md:w-1/3 bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b pb-2">Program Recommendation</h4>
+                        <p class="text-sm font-bold text-slate-800" id="dash-reason">Professional Track</p>
+                        <p class="text-xs text-slate-500 mt-1">Focusing on 200+ bilingual job KPIs.</p>
+                        <div class="mt-4 pt-3 border-t">
+                            <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold" id="dash-format">45 Min Sessions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Chart 1: The Hours Distribution -->
+                    <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2"><span>pie</span> Time Allocation Strategy</h3>
+                        <p class="text-xs text-slate-500 mb-6">Following the Rodd English Learning Process matrix.</p>
+                        <div class="chart-container">
+                            <canvas id="roadmapChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Cognitive Gap Analysis -->
+                    <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2"><span>🎯</span> Cognitive Gap Analysis</h3>
+                        <p class="text-xs text-slate-500 mb-6">Targeted core skills mapped to your CEFR goal.</p>
+                        <div class="chart-container">
+                            <canvas id="cognitiveChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Call to Action -->
+                <div class="text-center bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Ready to initialize your OS?</h3>
+                    <button onclick="location.reload()" class="bg-slate-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-900 transition">
+                        Reset Demo
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // STATE & DATA
+        // ==========================================
+        const state = {
+            studentName: '',
+            currentQuestion: 0,
+            transcripts: [],
+            assessedLevelIndex: 2, // Mocking B1.1 as the baseline after test
+        };
+
+        const levels = [
+            { id: 0, name: 'A1', label: 'Starter' },
+            { id: 1, name: 'A2', label: 'Elementary' },
+            { id: 2, name: 'B1.1', label: 'Pre Intermediate' },
+            { id: 3, name: 'B1.2', label: 'Intermediate' },
+            { id: 4, name: 'B2.1', label: 'Upper Intermediate' },
+            { id: 5, name: 'B2.2', label: 'Advanced' },
+            { id: 6, name: 'C1', label: 'Expert' },
+            { id: 7, name: 'C2', label: 'Mastery' }
+        ];
+
+        const questions = [
+            { level: 'A1/A2', title: 'Tell me a little bit about yourself.', context: 'Provide a brief introduction and present general aspects about your life clearly.' },
+            { level: 'A2/A2+', title: 'Describe your personality in a social and professional environment.', context: 'Highlight and contrast your strengths and weaknesses.' },
+            { level: 'B1', title: 'How do you see yourself in 5 years?', context: 'Discuss future plans, ideal job, career path, and aspirations.' },
+            { level: 'B2', title: 'What would you do with 20 million dollars?', context: 'Speculate about a life-changing event; convey emotion and detailed plans.' },
+            { level: 'C1/C2', title: 'What would you do with a cloning machine?', context: 'Provide a structured, comprehensive answer about collaboration and identical memories.' }
+        ];
+
+        // Hours ratios from the "English Learning Process" image
+        const ratios = {
+            assisted: 0.064,
+            semiGuided: 0.032,
+            interactive: 0.160,
+            exposure: 0.744
+        };
+        const hoursPerLevel = 375; // 3000 total hours / 8 levels
+
+        // Web Speech API
+        let recognition;
+        let isRecording = false;
+
+        // ==========================================
+        // STEP 1 & 2 LOGIC (Test)
+        // ==========================================
+        function startDiagnostic() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) { alert("Please enter your name."); return; }
+            state.studentName = nameInput;
+            
+            document.getElementById('step-welcome').classList.add('hidden-section');
+            document.getElementById('step-test').classList.remove('hidden-section');
+            loadQuestion();
+            initSpeechAPI();
+        }
+
+        function loadQuestion() {
+            const q = questions[state.currentQuestion];
+            document.getElementById('q-current').innerText = state.currentQuestion + 1;
+            document.getElementById('q-level').innerText = q.level;
+            document.getElementById('q-title').innerText = q.title;
+            document.getElementById('q-context').innerText = q.context;
+            document.getElementById('live-transcript').value = "";
+            document.getElementById('test-progress').style.width = `${((state.currentQuestion + 1) / 5) * 100}%`;
+            
+            // Trigger animation
+            const container = document.getElementById('question-container');
+            container.classList.remove('slide-right');
+            void container.offsetWidth; // trigger reflow
+            container.classList.add('slide-right');
+        }
+
+        function initSpeechAPI() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.onresult = (event) => {
+                    let finalT = '', interimT = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) finalT += event.results[i][0].transcript;
+                        else interimT += event.results[i][0].transcript;
+                    }
+                    document.getElementById('live-transcript').value = state.transcripts[state.currentQuestion] ? state.transcripts[state.currentQuestion] + ' ' + finalT + interimT : finalT + interimT;
+                };
+            }
+        }
+
+        function toggleRecording() {
+            if (!recognition) { alert("Speech API not supported in this browser. Please use the Simulate button."); return; }
+            const btn = document.getElementById('mic-btn');
+            
+            if (!isRecording) {
+                recognition.start();
+                isRecording = true;
+                btn.classList.add('bg-red-50', 'text-red-600', 'pulse-ring', 'border-red-200');
+                btn.classList.remove('bg-blue-50', 'text-blue-600');
+                btn.innerText = '🛑';
+                document.getElementById('mic-status').innerText = "Listening...";
+            } else {
+                recognition.stop();
+                isRecording = false;
+                btn.classList.remove('bg-red-50', 'text-red-600', 'pulse-ring', 'border-red-200');
+                btn.classList.add('bg-blue-50', 'text-blue-600');
+                btn.innerText = '🎤';
+                document.getElementById('mic-status').innerText = "Recording Saved";
+                state.transcripts[state.currentQuestion] = document.getElementById('live-transcript').value;
+            }
+        }
+
+        function simulateAnswer() {
+            const mockAnswers = [
+                "Hi, my name is " + state.studentName + " and I live in Colombia. I work in an office.",
+                "I am very outgoing and I like to work with teams.",
+                "In five years I want to have a better job and travel.",
+                "If I had that money, I would invest in real estate and travel the world.",
+                "I think cloning is a complex ethical dilemma, but functionally, we could divide tasks."
+            ];
+            document.getElementById('live-transcript').value = mockAnswers[state.currentQuestion];
+            state.transcripts[state.currentQuestion] = mockAnswers[state.currentQuestion];
+        }
+
+        function nextQuestion() {
+            if (isRecording) toggleRecording(); // Stop if running
+            
+            // Save transcript
+            state.transcripts[state.currentQuestion] = document.getElementById('live-transcript').value;
+
+            if (state.currentQuestion < 4) {
+                state.currentQuestion++;
+                loadQuestion();
+            } else {
+                // Finished 5 questions
+                document.getElementById('step-test').classList.add('hidden-section');
+                document.getElementById('step-calculator').classList.remove('hidden-section');
+            }
+        }
+
+        // ==========================================
+        // STEP 3 & 4 LOGIC (Calculator & Processing)
+        // ==========================================
+        function processAllData() {
+            // Validate Logic
+            const targetIdx = parseInt(document.getElementById('calc-target').value);
+            if (targetIdx <= state.assessedLevelIndex) {
+                alert("Target level must be higher than your assessed baseline (B1.1).");
+                return;
+            }
+
+            // Hide Calculator, Show Processing
+            document.getElementById('step-calculator').classList.add('hidden-section');
+            document.getElementById('step-processing').classList.remove('hidden-section');
+
+            // Simulate API analysis sequence
+            setTimeout(() => {
+                document.getElementById('processing-title').innerText = "Generating Math Matrix...";
+                document.getElementById('processing-desc').innerText = "Allocating 3000-hour framework ratios to your specific timeline.";
+                
+                setTimeout(() => {
+                    calculateAndRenderDashboard();
+                }, 1500);
+            }, 2000);
+        }
+
+        function calculateAndRenderDashboard() {
+            // Get inputs
+            const targetIdx = parseInt(document.getElementById('calc-target').value);
+            const hoursPerWeek = parseFloat(document.getElementById('calc-total-hours').value);
+            const reason = document.getElementById('calc-reason').value;
+            const classFormat = document.querySelector('input[name="classFormat"]:checked').value;
+
+            // Math
+            const levelsToTraverse = targetIdx - state.assessedLevelIndex;
+            const totalHoursNeeded = levelsToTraverse * hoursPerLevel;
+            const weeksNeeded = totalHoursNeeded / hoursPerWeek;
+            const monthsNeeded = (weeksNeeded / 4.33).toFixed(1); // 4.33 weeks in a month avg
+
+            const breakdown = {
+                assisted: Math.round(totalHoursNeeded * ratios.assisted),
+                semiGuided: Math.round(totalHoursNeeded * ratios.semiGuided),
+                interactive: Math.round(totalHoursNeeded * ratios.interactive),
+                exposure: Math.round(totalHoursNeeded * ratios.exposure)
+            };
+
+            // Update UI DOM
+            document.getElementById('step-processing').classList.add('hidden-section');
+            document.getElementById('step-dashboard').classList.remove('hidden-section');
+
+            document.getElementById('dash-name').innerText = state.studentName;
+            document.getElementById('dash-start-level').innerText = levels[state.assessedLevelIndex].name;
+            document.getElementById('dash-target-level').innerText = levels[targetIdx].name;
+            
+            document.getElementById('text-start').innerText = levels[state.assessedLevelIndex].name;
+            document.getElementById('text-target').innerText = levels[targetIdx].name;
+            
+            document.getElementById('dash-hours-week').innerText = `${hoursPerWeek} hours/week`;
+            document.getElementById('dash-months').innerText = monthsNeeded;
+            document.getElementById('dash-total-hours').innerText = totalHoursNeeded;
+            
+            document.getElementById('dash-reason').innerText = reason;
+            document.getElementById('dash-format').innerText = `${classFormat} Min Sessions`;
+
+            // Render Charts
+            initCharts(breakdown);
+        }
+
+        // ==========================================
+        // STEP 5 LOGIC (Charts)
+        // ==========================================
+        function initCharts(breakdown) {
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            // 1. Roadmap Stacked Bar Chart
+            const ctxRoadmap = document.getElementById('roadmapChart').getContext('2d');
+            new Chart(ctxRoadmap, {
+                type: 'bar',
+                data: {
+                    labels: ['Required Hours Distribution'],
+                    datasets: [
+                        { label: 'Assisted Learning (Live)', data: [breakdown.assisted], backgroundColor: '#003399', borderRadius: 4 },
+                        { label: 'Semi-Guided Study', data: [breakdown.semiGuided], backgroundColor: '#dc2626', borderRadius: 4 },
+                        { label: 'Interactive Practice', data: [breakdown.interactive], backgroundColor: '#10b981', borderRadius: 4 },
+                        { label: 'Language Exposure', data: [breakdown.exposure], backgroundColor: '#f59e0b', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, display: false },
+                        y: { stacked: true, display: false }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20, font: {size: 11} } },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            callbacks: {
+                                label: function(context) { return ` ${context.dataset.label}: ${context.raw} hrs`; }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Cognitive Gap Radar Chart (Mocking data for B1 -> Target)
+            const ctxCog = document.getElementById('cognitiveChart').getContext('2d');
+            new Chart(ctxCog, {
+                type: 'radar',
+                data: {
+                    labels: ['Attention', 'Learning', 'Memory', 'Reasoning', 'Perception', 'Language Prod.'],
+                    datasets: [
+                        {
+                            label: 'Target Capability',
+                            data: [90, 85, 95, 90, 85, 90],
+                            backgroundColor: 'rgba(0, 51, 153, 0.1)',
+                            borderColor: 'rgba(0, 51, 153, 0.5)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Current Baseline (B1.1)',
+                            data: [60, 50, 70, 45, 55, 40],
+                            backgroundColor: 'rgba(16, 185, 129, 0.4)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 2,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0, max: 100,
+                            ticks: { display: false },
+                            angleLines: { color: 'rgba(0,0,0,0.05)' },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: {size: 11} } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
