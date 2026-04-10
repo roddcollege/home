@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoddLanguages Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for interactions -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnfonts.com" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        sidebarBg: '#FFFFFF',
+                        mainBg: '#F3F6FA',
+                        tooltipBg: '#1E293B', /* Dark navy blue for tooltips */
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Rodd College Custom Typography */
+        @font-face {
+            font-family: 'Berlin';
+            src: url('https://raw.githubusercontent.com/roddcollege/home/refs/heads/main/assets/fonts/BRLNSDB.TTF') format('truetype');
+            font-weight: 400;
+        }
+
+        /* Rodd College Starry Header Background */
+        .rodd-header-bg {
+            background-color: #0524a1;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 80px 150px, rgba(255,255,255,0.3), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 190px 40px, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.2), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 320px 80px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+                radial-gradient(circle at center, #1b5cd4 0%, #0829a6 60%, #03135c 100%);
+            background-repeat: repeat, repeat, repeat, repeat, repeat, no-repeat;
+            background-size: 150px 150px, 200px 200px, 250px 250px, 300px 300px, 350px 350px, 100% 100%;
+        }
+
+        /* Custom Scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-mainBg text-gray-700 font-sans h-screen flex flex-col overflow-hidden" x-data="{ sidebarExpanded: true, notifOpen: false, profileOpen: false }">
+
+    <!-- Top Navigation Bar (Updated with Rodd College Background) -->
+    <header class="h-[60px] rodd-header-bg flex items-center justify-between shadow-md z-30 relative flex-shrink-0">
+        
+        <!-- Logo Area (Matches Sidebar Width) -->
+        <div :class="sidebarExpanded ? 'w-[260px]' : 'w-[72px]'" class="flex items-center h-full transition-all duration-300 ease-in-out px-4 flex-shrink-0 border-r border-white/10">
+            <!-- New Rodd College Logo Container -->
+            <div class="flex items-center gap-2 transition-transform duration-300 hover:scale-[1.03] cursor-pointer w-full" :class="!sidebarExpanded ? 'justify-center' : ''">
+                <!-- 3D Wireframe Canvas -->
+                <canvas id="topologyCanvas" width="360" height="360" class="block w-[40px] h-[40px] rounded-full shrink-0"></canvas>
+                
+                <!-- Brand Text (Ribbon SVG + Text) hidden when sidebar is collapsed -->
+                <div x-show="sidebarExpanded" x-transition.opacity class="flex items-center leading-none duration-200 truncate">
+                    <svg class="h-[22px] w-auto block flex-shrink-0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 102685 39353" xmlns:xlink="http://www.w3.org/1999/xlink">
+                     <defs>
+                      <style type="text/css">
+                       <![CDATA[
+                        .fil0 {fill:#ffffff}
+                        .fil1 {fill:#003399}
+                       ]]>
+                      </style>
+                     </defs>
+                     <g id="Layer_x0020_1">
+                      <metadata id="RoddLogoSVG"/>
+                      <polygon class="fil0" points="46205,37689 45856,37862 45502,38025 45150,38177 44793,38320 44429,38455 44062,38581 43695,38696 43321,38803 42944,38900 42565,38988 42185,39065 41806,39133 41420,39192 41033,39242 40648,39281 40258,39313 39866,39335 39475,39348 39083,39352 38692,39348 38300,39335 37909,39313 37518,39281 37134,39242 36746,39192 36360,39133 35980,39065 35601,38988 35221,38900 34845,38804 34472,38697 34103,38582 33737,38457 33373,38322 33014,38178 32660,38026 32309,37864 31960,37693 31619,37513 31280,37324 30945,37126 30617,36920 30293,36705 29976,36484 29836,36381 29692,36552 29420,36845 29133,37126 28835,37391 28531,37637 28218,37868 27887,38090 27542,38298 27190,38487 26829,38659 26452,38816 26068,38953 25681,39069 25287,39166 24887,39243 24486,39300 24087,39336 23690,39352 23292,39350 22898,39330 22513,39292 22129,39239 21736,39166 21346,39074 20959,38963 20574,38832 20193,38679 19822,38508 19458,38317 19105,38107 18761,37877 18430,37630 18115,37368 17816,37093 17534,36806 17268,36507 17048,36236 15736,34540 15674,34679 15487,35045 15283,35398 15066,35733 14833,36059 14584,36373 14323,36671 14053,36952 13773,37221 13474,37482 13161,37732 12835,37965 12500,38182 12146,38386 11781,38573 11412,38736 11034,38884 10641,39012 10247,39120 9854,39205 9461,39271 9063,39317 8664,39345 8272,39353 7881,39345 7483,39317 7086,39271 6693,39206 6302,39122 5911,39016 5522,38891 5144,38746 4777,38585 4415,38404 4065,38206 3730,37995 3404,37768 3091,37527 2792,37275 2504,37009 2226,36730 1958,36435 1704,36127 1459,35800 1231,35459 1020,35108 826,34744 650,34365 495,33980 361,33587 248,33189 156,32784 87,32380 38,31980 9,31576 0,31224 0,15806 4,15437 18,15043 40,14656 71,14269 111,13880 161,13494 219,13109 288,12725 366,12345 453,11967 549,11593 655,11222 771,10850 897,10483 1030,10123 1174,9761 1328,9405 1489,9057 1660,8709 1841,8365 2030,8026 2227,7694 2432,7367 2647,7042 2871,6722 3101,6409 3338,6103 3584,5799 3838,5501 4097,5211 4364,4925 4641,4642 4924,4365 5211,4098 5500,3840 5797,3586 6102,3339 6408,3102 6721,2872 7041,2648 7366,2433 7693,2228 8025,2031 8362,1842 8707,1661 9056,1489 9404,1329 9760,1175 10123,1030 10483,897 10850,772 11221,656 11592,551 11966,454 12344,367 12724,289 13108,220 13493,162 13879,112 14268,72 14655,41 15042,19 15436,5 15829,1 16224,5 16617,19 17005,41 17392,72 17781,112 18167,162 18552,220 18935,289 19315,366 19694,453 20070,550 20440,655 20810,771 21178,896 21539,1030 21900,1173 22257,1327 22606,1487 22956,1659 23299,1839 23637,2027 23971,2224 24300,2429 24625,2643 24945,2866 25258,3095 25566,3332 25870,3578 26169,3831 26460,4090 26748,4357 27031,4632 27307,4912 27576,5199 27840,5492 28095,5789 28341,6090 28581,6398 28814,6713 29036,7029 29252,7352 29461,7682 29660,8016 29849,8354 30032,8698 30204,9045 30368,9397 30522,9754 30666,10111 30672,10127 30955,9950 31288,9754 31628,9565 31972,9386 32317,9217 32667,9056 33024,8903 33386,8760 33747,8627 34112,8504 34482,8389 34853,8284 35225,8189 35602,8102 35983,8025 36368,7957 36750,7899 37135,7849 37522,7810 37910,7779 38297,7757 38689,7743 39083,7739 39477,7743 39869,7757 40257,7779 40644,7810 41032,7849 41416,7899 41799,7957 42182,8025 42564,8102 42940,8189 43313,8285 43684,8390 44053,8504 44419,8629 44780,8762 45140,8905 45497,9058 45848,9220 46193,9389 46534,9568 46874,9757 47205,9953 47533,10158 47856,10371 48175,10593 48487,10823 48793,11059 49095,11304 49393,11558 49684,11817 49968,12083 50248,12357 50523,12638 50790,12924 50945,13097 51110,12914 51378,12629 51655,12347 51939,12072 52224,11807 52515,11549 52814,11296 53117,11052 53423,10816 53736,10587 54057,10365 54381,10152 54706,9950 55039,9754 55379,9565 55722,9386 56068,9217 56417,9056 56774,8903 57136,8760 57497,8627 57862,8504 58232,8389 58603,8284 58976,8189 59353,8102 59734,8025 60118,7957 60500,7899 60885,7849 61273,7810 61660,7779 62048,7757 62265,7749 62289,7390 62336,6995 62402,6597 62489,6205 62594,5816 62721,5429 62869,5044 63037,4670 63221,4309 63423,3959 63644,3617 63876,3295 64121,2986 64381,2688 64654,2401 64940,2129 65238,1869 65547,1623 65870,1390 66212,1170 66562,968 66924,783 67298,616 67682,468 68069,341 68457,236 68849,150 69248,83 69644,36 70041,9 70436,0 70831,9 71227,36 71622,83 72019,148 72411,234 72796,337 73182,462 73562,606 73934,770 74293,950 74642,1147 74981,1360 75304,1586 75617,1826 75917,2079 76204,2344 76482,2624 76750,2918 77006,3229 77248,3553 77477,3893 77689,4247 77884,4614 78058,4989 78212,5371 78347,5764 78461,6167 78552,6570 78622,6974 78671,7379 78700,7782 78708,8133 78708,9935 79015,9754 79355,9565 79699,9386 80045,9216 80394,9056 80751,8903 81114,8760 81474,8627 81839,8504 82209,8389 82580,8284 82953,8189 83330,8102 83711,8025 84095,7957 84477,7899 84862,7849 85249,7810 85637,7779 86024,7757 86241,7749 86266,7390 86313,6995 86379,6597 86465,6205 86571,5816 86698,5429 86846,5044 87013,4670 87198,4309 87400,3959 87620,3617 87853,3294 88098,2985 88358,2687 88631,2401 88916,2130 89213,1870 89524,1623 89847,1390 90189,1170 90539,968 90901,783 91275,616 91659,468 92046,341 92433,236 92826,150 93224,83 93620,36 94018,9 94412,0 94808,9 95204,36 95599,83 95995,148 96387,234 96773,337 97159,462 97539,606 97910,770 98270,950 98619,1147 98957,1360 99281,1586 99594,1826 99894,2079 100181,2344 100459,2624 100727,2918 100982,3228 101225,3552 101454,3893 101666,4247 101861,4614 102035,4988 102191,5375 102325,5769 102438,6167 102529,6570 102599,6974 102648,7379 102677,7782 102685,8133 102685,23545 102681,23914 102668,24306 102646,24698 102614,25088 102574,25473 102525,25860 102466,26246 102398,26625 102321,27006 102233,27385 102136,27762 102030,28135 101914,28503 101789,28870 101654,29235 101511,29592 101359,29946 101196,30299 101025,30646 100846,30986 100657,31326 100458,31661 100251,31992 100037,32314 99817,32630 99585,32944 99346,33254 99101,33554 98848,33852 98585,34145 98317,34432 98044,34711 97765,34985 97478,35252 97186,35515 96887,35769 96586,36014 96277,36253 95962,36485 95646,36705 95324,36919 94994,37126 94658,37325 94319,37514 93979,37692 93630,37864 93277,38027 92924,38178 92567,38322 92203,38457 91836,38582 91467,38697 91094,38804 90717,38900 90338,38988 89957,39065 89579,39133 89193,39192 88805,39242 88421,39281 88031,39313 87638,39335 87247,39348 86855,39352 86464,39348 86073,39335 85681,39313 85290,39281 84906,39242 84518,39192 84133,39133 83753,39065 83372,38988 82993,38901 82617,38804 82243,38698 81874,38583 81507,38458 81144,38323 80785,38180 80431,38028 80078,37866 79730,37695 79389,37517 79050,37328 78714,37130 78385,36925 78060,36710 77742,36490 77427,36259 77118,36021 76816,35777 76517,35523 76223,35262 75936,34996 75654,34721 75378,34441 75109,34155 74854,33872 74608,34146 74341,34432 74067,34711 73788,34985 73502,35252 73209,35515 72910,35769 72609,36014 72300,36253 71985,36485 71669,36705 71347,36919 71017,37126 70681,37325 70342,37514 70002,37692 69654,37864 69300,38027 68947,38178 68591,38322 68226,38457 67859,38582 67491,38697 67117,38804 66741,38900 66361,38988 65981,39065 65602,39133 65216,39192 64829,39242 64444,39281 64054,39313 63661,39335 63270,39348 62878,39352 62487,39348 62096,39335 61704,39313 61314,39281 60929,39242 60542,39192 60156,39133 59776,39065 59395,38988 59016,38901 58641,38804 58266,38698 57897,38583 57531,38458 57167,38323 56809,38180 56454,38028 56102,37866 55753,37695 55412,37517 55073,37328 54738,37130 54408,36925 54083,36710 53766,36490 53450,36259 53142,36021 52839,35777 52540,35523 52246,35262 51960,34996 51677,34721 51402,34441 51132,34155 50955,33958 50798,34134 50531,34422 50259,34701 49982,34975 49695,35244 49404,35507 49107,35761 48807,36006 48498,36246 48184,36479 47869,36699 47546,36915 47217,37122 46882,37321 46543,37510 "/>
+                      <polygon class="fil1" points="100517,23534 100514,23867 100502,24209 100483,24550 100456,24889 100421,25224 100378,25559 100327,25891 100268,26219 100202,26546 100127,26871 100044,27194 99953,27514 99854,27830 99747,28144 99632,28454 99509,28761 99379,29064 99239,29365 99093,29663 98939,29955 98778,30246 98607,30533 98430,30816 98245,31094 98055,31367 97855,31639 97648,31906 97435,32168 97215,32427 96986,32682 96751,32933 96511,33179 96266,33419 96015,33653 95760,33882 95500,34103 95239,34316 94971,34522 94700,34722 94426,34913 94149,35097 93865,35275 93578,35445 93287,35607 92995,35761 92697,35908 92396,36047 92093,36176 91787,36299 91476,36414 91162,36521 90846,36620 90527,36711 90204,36794 89878,36870 89551,36936 89224,36995 88891,37046 88556,37088 88221,37123 87883,37151 87541,37170 87199,37181 86855,37185 86512,37181 86170,37170 85829,37151 85489,37123 85155,37088 84820,37046 84487,36995 84159,36936 83831,36870 83506,36795 83183,36712 82863,36621 82547,36522 82233,36415 81922,36300 81614,36177 81311,36047 81009,35908 80711,35762 80418,35609 80127,35447 79839,35277 79556,35101 79276,34916 79001,34725 78729,34526 78461,34319 78198,34106 77938,33886 77681,33658 77430,33424 77182,33184 76940,32938 76704,32687 76475,32432 76253,32174 76038,31911 75830,31645 75629,31373 75436,31099 75251,30821 75072,30538 74902,30252 74850,30159 74801,30246 74631,30533 74453,30816 74269,31094 74078,31367 73878,31639 73671,31906 73458,32168 73238,32427 73009,32682 72775,32933 72534,33179 72289,33419 72038,33653 71783,33882 71524,34103 71262,34316 70995,34522 70723,34722 70449,34913 70172,35097 69889,35275 69601,35445 69311,35607 69018,35761 68721,35908 68419,36047 68117,36176 67811,36299 67499,36414 67186,36521 66870,36620 66550,36711 66227,36794 65902,36870 65575,36936 65247,36995 64914,37046 64579,37088 64244,37123 63906,37151 63565,37170 63222,37181 62878,37185 62535,37181 62193,37170 61852,37151 61513,37123 61178,37088 60843,37046 60511,36995 60182,36936 59855,36870 59529,36795 59207,36712 58886,36621 58570,36522 58256,36415 57945,36300 57638,36177 57334,36047 57032,35908 56734,35762 56441,35609 56150,35447 55862,35277 55579,35101 55299,34916 55024,34725 54752,34526 54485,34319 54221,34106 53961,33886 53704,33658 53453,33424 53205,33184 52963,32938 52727,32687 52498,32432 52276,32174 52061,31911 51854,31645 51653,31373 51460,31099 51274,30821 51096,30538 50946,30286 50804,30527 50627,30810 50444,31088 50255,31362 50056,31633 49851,31901 49638,32163 49420,32421 49194,32676 48960,32928 48721,33173 48477,33414 48227,33649 47973,33878 47716,34098 47455,34312 47188,34519 46918,34719 46645,34910 46368,35095 46085,35273 45799,35444 45509,35605 45218,35759 44920,35906 44619,36045 44317,36176 44011,36298 43701,36414 43387,36521 43072,36620 42753,36711 42430,36794 42105,36869 41778,36936 41450,36995 41118,37046 40783,37088 40448,37123 40110,37151 39769,37170 39427,37181 39083,37185 38740,37181 38397,37170 38056,37151 37717,37123 37383,37088 37048,37046 36715,36995 36387,36936 36060,36869 35735,36794 35412,36711 35093,36620 34777,36521 34463,36415 34152,36299 33845,36176 33542,36046 33242,35908 32944,35761 32651,35607 32360,35445 32074,35275 31792,35098 31513,34913 31239,34722 30967,34522 30700,34316 30438,34102 30179,33882 29924,33654 29674,33420 29427,33179 29252,33000 29230,33075 29132,33353 29020,33627 28894,33896 28754,34155 28602,34409 28435,34655 28256,34892 28066,35117 27866,35334 27655,35540 27433,35737 27205,35922 26970,36095 26724,36260 26470,36414 26211,36553 25945,36679 25671,36793 25391,36893 25110,36978 24823,37048 24531,37104 24238,37146 23945,37172 23651,37185 23355,37183 23059,37167 22767,37139 22476,37099 22183,37044 21894,36976 21609,36894 21327,36798 21050,36687 20780,36563 20516,36424 20261,36273 20012,36106 19772,35928 19543,35737 19325,35535 19117,35324 18919,35102 18747,34891 14537,29446 14286,29446 14286,31193 14281,31465 14260,31760 14226,32054 14177,32344 14115,32631 14037,32918 13944,33202 13837,33476 13718,33744 13582,34009 13434,34266 13274,34512 13103,34753 12918,34984 12724,35207 12520,35419 12309,35622 12086,35816 11854,36001 11614,36173 11368,36332 11111,36481 10846,36616 10578,36735 10303,36842 10019,36935 9733,37013 9445,37076 9156,37124 8862,37158 8566,37179 8272,37185 7979,37179 7683,37158 7389,37124 7099,37076 6812,37014 6527,36937 6243,36846 5967,36740 5698,36622 5433,36490 5176,36344 4928,36188 4686,36019 4452,35839 4227,35649 4008,35447 3798,35236 3597,35016 3408,34786 3228,34546 3061,34297 2907,34041 2767,33777 2640,33503 2528,33225 2431,32942 2349,32653 2282,32359 2232,32065 2196,31770 2174,31472 2168,31197 2168,15818 2171,15486 2183,15143 2203,14804 2229,14466 2264,14130 2307,13795 2358,13464 2417,13133 2484,12806 2559,12482 2642,12160 2732,11841 2831,11524 2939,11210 3053,10901 3176,10593 3308,10288 3446,9989 3592,9692 3747,9397 3909,9107 4078,8822 4255,8540 4439,8261 4632,7986 4831,7715 5037,7449 5250,7186 5471,6927 5698,6673 5932,6422 6174,6175 6422,5933 6672,5699 6926,5473 7184,5252 7448,5038 7714,4832 7984,4633 8260,4440 8539,4256 8821,4079 9106,3910 9396,3748 9690,3593 9988,3446 10287,3309 10592,3177 10901,3054 11210,2939 11523,2832 11840,2733 12159,2643 12481,2560 12805,2485 13132,2418 13463,2359 13794,2308 14129,2265 14465,2230 14803,2204 15142,2184 15485,2172 15829,2168 16175,2172 16517,2184 16857,2204 17194,2230 17531,2265 17865,2308 18198,2359 18528,2418 18855,2485 19180,2559 19503,2643 19821,2733 20139,2832 20453,2939 20762,3053 21071,3176 21376,3307 21676,3445 21975,3592 22269,3746 22559,3908 22846,4077 23130,4254 23409,4438 23685,4630 23957,4829 24224,5034 24488,5247 24748,5468 25003,5695 25255,5929 25503,6170 25746,6416 25982,6667 26211,6922 26433,7181 26647,7443 26855,7709 27056,7981 27248,8254 27434,8533 27613,8816 27784,9103 27946,9392 28102,9686 28250,9984 28390,10284 28521,10589 28645,10895 28761,11206 28869,11521 28968,11837 29060,12156 29144,12480 29219,12805 29286,13130 29345,13461 29396,13793 29411,13907 29432,13885 29680,13645 29930,13412 30184,13187 30443,12968 30707,12755 30973,12551 31243,12353 31519,12162 31798,11979 32079,11804 32365,11635 32656,11474 32950,11320 33246,11175 33545,11038 33850,10908 34159,10785 34468,10672 34781,10565 35098,10467 35416,10377 35737,10295 36061,10221 36388,10154 36719,10096 37050,10046 37384,10003 37719,9968 38057,9941 38396,9922 38738,9910 39083,9907 39428,9910 39770,9922 40109,9941 40446,9968 40783,10003 41116,10046 41447,10096 41777,10154 42104,10221 42428,10295 42749,10378 43067,10468 43383,10566 43696,10672 44005,10786 44312,10908 44616,11039 44916,11177 45212,11322 45504,11475 45795,11637 46080,11805 46361,11981 46639,12164 46913,12356 47183,12554 47448,12759 47710,12971 47968,13191 48221,13417 48471,13650 48716,13890 48956,14136 49190,14385 49416,14639 49634,14896 49848,15158 50053,15425 50251,15695 50442,15968 50626,16246 50802,16528 50941,16763 51083,16522 51261,16241 51446,15962 51638,15688 51838,15418 52044,15153 52258,14891 52479,14633 52706,14381 52940,14131 53183,13885 53431,13645 53681,13412 53935,13187 54194,12967 54457,12755 54723,12551 54994,12353 55270,12162 55549,11979 55829,11804 56115,11635 56406,11474 56700,11320 56996,11175 57296,11038 57600,10908 57909,10785 58219,10672 58532,10565 58848,10467 59167,10377 59487,10295 59811,10221 60139,10154 60470,10096 60800,10046 61134,10003 61470,9968 61808,9941 62146,9922 62488,9910 62821,9907 64422,9907 64422,8158 64428,7887 64448,7592 64483,7300 64531,7008 64594,6721 64671,6438 64763,6156 64871,5878 64992,5607 65126,5344 65274,5089 65435,4840 65606,4601 65788,4372 65982,4149 66187,3934 66402,3730 66624,3536 66854,3353 67093,3181 67342,3021 67597,2873 67861,2739 68132,2617 68410,2510 68691,2418 68974,2342 69261,2278 69553,2230 69845,2195 70140,2175 70436,2168 70732,2175 71026,2195 71319,2229 71611,2278 71898,2340 72181,2416 72463,2507 72740,2613 73011,2732 73275,2864 73532,3009 73782,3166 74023,3335 74257,3514 74482,3705 74700,3906 74911,4117 75111,4338 75301,4569 75480,4808 75647,5056 75801,5313 75943,5579 76068,5850 76180,6128 76277,6412 76360,6702 76426,6994 76477,7290 76513,7586 76534,7884 76541,8158 76541,14539 76683,14381 76917,14131 77159,13885 77407,13645 77657,13412 77912,13187 78171,12967 78434,12755 78700,12551 78970,12353 79246,12162 79525,11979 79806,11804 80092,11635 80383,11474 80677,11320 80973,11175 81273,11038 81577,10907 81886,10785 82196,10672 82509,10565 82825,10467 83144,10377 83464,10295 83788,10221 84116,10154 84446,10096 84777,10046 85110,10003 85447,9968 85784,9941 86123,9922 86465,9910 86798,9907 88398,9907 88398,8158 88405,7887 88425,7592 88459,7300 88508,7008 88571,6721 88648,6438 88740,6156 88847,5878 88969,5607 89103,5344 89251,5089 89411,4840 89583,4601 89765,4371 89960,4149 90164,3934 90378,3730 90600,3536 90831,3353 91069,3181 91319,3021 91574,2873 91837,2739 92108,2617 92386,2510 92667,2418 92950,2342 93237,2278 93530,2230 93822,2195 94117,2175 94412,2168 94709,2175 95003,2195 95296,2229 95587,2278 95875,2340 96158,2416 96440,2507 96717,2613 96988,2732 97252,2864 97509,3009 97758,3166 98000,3335 98234,3514 98459,3705 98677,3906 98887,4117 99088,4338 99278,4568 99456,4807 99624,5056 99778,5313 99919,5579 100045,5850 100158,6130 100254,6414 100336,6702 100402,6994 100454,7290 100489,7586 100511,7884 100517,8158 "/>
+                      <path class="fil0" d="M98349 23523c0,3168 -1124,5875 -3371,8123 -2247,2248 -4955,3371 -8123,3371 -3168,0 -5883,-1124 -8146,-3371 -2263,-2247 -3394,-4955 -3394,-8123 0,-3168 1124,-5868 3371,-8100 2248,-2232 4955,-3349 8123,-3349l3756 0 0 -3891c0,-1056 377,-1961 1131,-2715 754,-754 1659,-1131 2715,-1131 1056,0 1976,377 2761,1131 784,754 1176,1659 1176,2715l0 15340z"/>
+                      <path class="fil0" d="M74373 23523c0,3168 -1124,5875 -3372,8123 -2247,2248 -4955,3371 -8123,3371 -3168,0 -5883,-1124 -8146,-3371 -2263,-2247 -3394,-4955 -3394,-8123 0,-3168 1124,-5868 3371,-8100 2248,-2232 4955,-3349 8123,-3349l3756 0 0 -3891c0,-1056 377,-1961 1131,-2715 754,-754 1659,-1131 2715,-1131 1056,0 1976,377 2761,1131 784,754 1177,1659 1177,2715l0 15340z"/>
+                      <path class="fil0" d="M50532 23523c0,3168 -1116,5875 -3349,8123 -2232,2248 -4932,3371 -8100,3371 -3168,0 -5875,-1124 -8123,-3371 -2248,-2247 -3371,-4955 -3371,-8123 0,-3168 1124,-5868 3371,-8100 2247,-2232 4955,-3349 8123,-3349 3168,0 5868,1116 8100,3349 2232,2233 3349,4932 3349,8100z"/>
+                      <path class="fil1" d="M90611 19767l-3756 0c-1056,0 -1961,369 -2715,1109 -754,739 -1131,1621 -1131,2647 0,1026 377,1916 1131,2670 754,754 1644,1131 2670,1131 1026,0 1908,-369 2647,-1109 739,-739 1109,-1637 1109,-2693l45 -3756z"/>
+                      <path class="fil1" d="M66635 19767l-3756 0c-1056,0 -1961,369 -2715,1109 -754,739 -1131,1621 -1131,2647 0,1026 377,1916 1131,2670 754,754 1644,1131 2670,1131 1026,0 1908,-369 2647,-1109 739,-739 1109,-1637 1109,-2693l45 -3756z"/>
+                      <path class="fil1" d="M42839 23523c0,-1056 -362,-1946 -1086,-2670 -724,-724 -1614,-1086 -2670,-1086 -1056,0 -1954,369 -2693,1109 -739,739 -1109,1621 -1109,2647 0,1026 377,1916 1131,2670 754,754 1644,1131 2670,1131 1026,0 1908,-369 2647,-1109 739,-739 1109,-1637 1109,-2693z"/>
+                      <path class="fil0" d="M23295 24578l3273 4232c646,835 901,1781 766,2840 -134,1058 -620,1910 -1455,2556 -835,646 -1788,906 -2858,780 -1071,-125 -1928,-605 -2575,-1441l-4679 -6050c-56,-72 -110,-144 -164,-217l-3485 0 0 3892c0,1056 -377,1961 -1131,2715 -754,754 -1659,1131 -2715,1131 -1056,0 -1976,-377 -2760,-1131 -785,-754 -1177,-1659 -1177,-2715l0 -15340c0,-3168 1124,-5875 3371,-8123 2247,-2248 4955,-3371 8123,-3371 3168,0 5883,1124 8146,3371 2263,2248 3394,4955 3394,8123 0,3168 -1124,5868 -3371,8100 -230,228 -464,443 -703,648z"/>
+                      <path class="fil1" d="M12073 19586l3756 0c1056,0 1961,-369 2715,-1109 754,-739 1131,-1621 1131,-2647 0,-1026 -377,-1916 -1131,-2670 -754,-754 -1644,-1131 -2670,-1131 -1026,0 -1908,369 -2647,1109 -739,739 -1109,1637 -1109,2693l-45 3756z"/>
+                     </g>
+                    </svg>
+                    <span style="font-family: 'Berlin', sans-serif; font-size: 26px; font-weight: 700; color: #ffffff; padding-left: 5px;">College</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Right Menu -->
+        <div class="flex-1 flex items-center justify-between px-6">
+            
+            <!-- Search Bar -->
+            <div class="relative w-full max-w-md hidden md:block group">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-white/70 w-4 h-4 group-focus-within:text-white transition-colors"></i>
+                <input type="text" placeholder="What would you like to learn today?" 
+                       class="w-full bg-white/10 text-white placeholder-white/60 rounded border border-white/20 py-1.5 pl-10 pr-4 outline-none focus:bg-white/20 focus:border-white/40 transition-all text-sm font-light">
+            </div>
+
+            <!-- Right Icons Cluster -->
+            <div class="flex items-center space-x-6 ml-auto">
+                <!-- UK Flag -->
+                <button class="hover:opacity-80 transition-opacity">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English" class="w-6 h-auto rounded-[2px] shadow-sm">
+                </button>
+                
+                <!-- Fullscreen -->
+                <button class="text-white hover:text-blue-200 transition-colors hidden sm:block">
+                    <i data-lucide="maximize" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Notifications Dropdown -->
+                <div class="relative" @click.away="notifOpen = false">
+                    <button @click="notifOpen = !notifOpen" class="text-white hover:text-blue-200 transition-colors relative">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute -top-1.5 -right-2 bg-emerald-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm">5</span>
+                    </button>
+                    
+                    <!-- Notifications Menu -->
+                    <div x-show="notifOpen" x-transition.opacity.duration.200ms x-cloak class="absolute right-0 mt-4 w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden origin-top-right">
+                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                            <h4 class="font-bold text-gray-700 text-sm">Notifications</h4>
+                            <span class="text-xs text-blue-600 cursor-pointer hover:underline">Mark all read</span>
+                        </div>
+                        <div class="max-h-[300px] overflow-y-auto">
+                            <!-- 5 Notification Lines -->
+                            <a href="#" class="flex items-start px-4 py-3 hover:bg-gray-50 border-b border-gray-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mr-3 mt-1"><i data-lucide="award" class="w-4 h-4"></i></div>
+                                <div><p class="text-sm text-gray-700">You earned a new badge in <span class="font-bold text-gray-900">Spanish 101</span>.</p><span class="text-xs text-gray-400">10 mins ago</span></div>
+                            </a>
+                            <a href="#" class="flex items-start px-4 py-3 hover:bg-gray-50 border-b border-gray-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 mr-3 mt-1"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
+                                <div><p class="text-sm text-gray-700">Homework <span class="font-bold text-gray-900">Verb Conjugations</span> graded.</p><span class="text-xs text-gray-400">1 hour ago</span></div>
+                            </a>
+                            <a href="#" class="flex items-start px-4 py-3 hover:bg-gray-50 border-b border-gray-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0 mr-3 mt-1"><i data-lucide="message-square" class="w-4 h-4"></i></div>
+                                <div><p class="text-sm text-gray-700">Instructor <span class="font-bold text-gray-900">Maria</span> left a comment.</p><span class="text-xs text-gray-400">3 hours ago</span></div>
+                            </a>
+                            <a href="#" class="flex items-start px-4 py-3 hover:bg-gray-50 border-b border-gray-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center flex-shrink-0 mr-3 mt-1"><i data-lucide="alert-circle" class="w-4 h-4"></i></div>
+                                <div><p class="text-sm text-gray-700">Reminder: Live class starts in <span class="font-bold text-gray-900">30 minutes</span>.</p><span class="text-xs text-gray-400">Yesterday</span></div>
+                            </a>
+                            <a href="#" class="flex items-start px-4 py-3 hover:bg-gray-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center flex-shrink-0 mr-3 mt-1"><i data-lucide="user-plus" class="w-4 h-4"></i></div>
+                                <div><p class="text-sm text-gray-700">New study group invitation from <span class="font-bold text-gray-900">Alex</span>.</p><span class="text-xs text-gray-400">Yesterday</span></div>
+                            </a>
+                        </div>
+                        <a href="#" class="block text-center px-4 py-2 bg-gray-50 text-blue-600 text-xs font-bold hover:bg-gray-100 transition-colors border-t border-gray-100">View All</a>
+                    </div>
+                </div>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative flex items-center" @click.away="profileOpen = false">
+                    <button @click="profileOpen = !profileOpen" class="relative hover:opacity-80 transition-opacity">
+                        <!-- Simulated Avatar -->
+                        <img src="https://i.pravatar.cc/150?img=33" alt="Profile" class="w-8 h-8 rounded-full border border-white/30 object-cover">
+                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-brandNavRight rounded-full"></span>
+                    </button>
+                    
+                    <!-- Profile Menu -->
+                    <div x-show="profileOpen" x-transition.opacity.duration.200ms x-cloak class="absolute right-0 top-10 w-48 bg-white rounded-lg shadow-xl border border-gray-100 z-50 py-1 origin-top-right">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <p class="text-sm font-bold text-gray-800">John Doe</p>
+                            <p class="text-xs text-gray-500">Student Account</p>
+                        </div>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><i data-lucide="user" class="w-4 h-4 mr-3"></i> My Profile</a>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><i data-lucide="settings" class="w-4 h-4 mr-3"></i> Settings</a>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"><i data-lucide="credit-card" class="w-4 h-4 mr-3"></i> Billing</a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"><i data-lucide="log-out" class="w-4 h-4 mr-3"></i> Logout</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Toggle -->
+                <button @click="sidebarExpanded = !sidebarExpanded" class="text-white hover:text-blue-200 transition-colors ml-2">
+                    <i data-lucide="align-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout Container -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar -->
+        <aside :class="sidebarExpanded ? 'w-[260px]' : 'w-[72px]'" class="bg-sidebarBg h-full shadow-[2px_0_15px_rgba(0,0,0,0.03)] flex flex-col transition-all duration-300 ease-in-out overflow-y-auto overflow-x-hidden z-20 flex-shrink-0 relative">
+            
+            <ul class="py-4 space-y-1">
+                
+                <!-- Dashboard -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Dashboard</span>
+                        <span x-show="sidebarExpanded" class="ml-auto bg-orange-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+                        <i x-show="sidebarExpanded" data-lucide="chevron-right" class="w-4 h-4 ml-2 text-gray-400"></i>
+                    </a>
+                    <!-- Hover Tooltip -->
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">
+                        Dashboard
+                    </div>
+                </li>
+
+                <!-- E-Learning Dropdown Menu -->
+                <li class="relative group" x-data="{ elearningOpen: true }">
+                    <!-- Dropdown Header -->
+                    <button @click="elearningOpen = !elearningOpen; if(!sidebarExpanded) sidebarExpanded = true;" class="w-full flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="monitor-play" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">E-Learning</span>
+                        <i x-show="sidebarExpanded" data-lucide="chevron-down" class="w-4 h-4 ml-auto text-gray-400 transition-transform duration-200" :class="elearningOpen ? 'rotate-180' : ''"></i>
+                    </button>
+                    <!-- Hover Tooltip -->
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-[24px] -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">
+                        E-Learning
+                    </div>
+                    
+                    <!-- Sub-items -->
+                    <ul x-show="elearningOpen && sidebarExpanded" x-transition.opacity class="bg-white pb-2">
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Learn English <i data-lucide="chevron-down" class="w-3 h-3 ml-auto text-gray-300"></i></a></li>
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Take Pretest</a></li>
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Start Course</a></li>
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Set your daily plan</a></li>
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Pick your lessons</a></li>
+                        <li><a href="#" class="flex items-center pl-[52px] pr-6 py-2.5 text-[13px] text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors"><span class="w-1.5 h-1.5 rounded-full border border-gray-400 mr-3"></span> Explore Activities <i data-lucide="chevron-right" class="w-3 h-3 ml-auto text-gray-300"></i></a></li>
+                    </ul>
+                </li>
+
+                <!-- Section Divider -->
+                <li x-show="sidebarExpanded" class="px-6 pt-4 pb-2 text-[10px] font-extrabold text-gray-400 tracking-wider uppercase">Applications</li>
+                <li x-show="!sidebarExpanded" class="px-4 py-3"><div class="w-8 h-[1px] bg-gray-200 mx-auto"></div></li>
+
+                <!-- Mail -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="mail" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Mail</span>
+                        <span x-show="sidebarExpanded" class="ml-auto bg-pink-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">5</span>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Mail</div>
+                </li>
+
+                <!-- Chat -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="message-square" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Chat</span>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Chat</div>
+                </li>
+
+                <!-- Homeworks -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Homeworks</span>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Homeworks</div>
+                </li>
+
+                <!-- Contacts -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="book-user" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Contacts</span>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Contacts</div>
+                </li>
+
+                <!-- Calendar -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="calendar" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Calendar</span>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Calendar</div>
+                </li>
+
+                <!-- Buy Flashcards -->
+                <li class="relative group">
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-blue-600 border-l-[3px] border-transparent hover:border-blue-600 transition-colors">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="sidebarExpanded" class="ml-4 text-[13px] font-bold tracking-wide">Buy Flashcards</span>
+                        <i x-show="sidebarExpanded" data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i>
+                    </a>
+                    <div x-show="!sidebarExpanded" class="absolute left-[70px] top-1/2 -translate-y-1/2 bg-tooltipBg text-white text-[13px] font-bold px-3 py-1.5 rounded shadow-lg hidden group-hover:block whitespace-nowrap z-50 pointer-events-none">Buy Flashcards</div>
+                </li>
+
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            
+            <!-- Top 4 Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                
+                <!-- Vocabulary Card -->
+                <div class="bg-gradient-to-br from-[#1BC9ED] to-[#0494C7] rounded-[4px] shadow-[0_10px_20px_rgba(4,148,199,0.2)] p-6 flex flex-col items-center justify-center text-white h-48 relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all">
+                    <!-- Base shadow shape behind icon -->
+                    <div class="w-[85px] h-[85px] rounded-full bg-black/10 absolute top-6 flex items-center justify-center shadow-inner blur-[1px]"></div>
+                    <!-- Smartwatch SVG -->
+                    <div class="w-[85px] h-[85px] rounded-full bg-[#f0f0f0] flex items-center justify-center mb-4 relative z-10 shadow-md">
+                        <svg viewBox="0 0 100 100" class="w-[60%] h-[60%] drop-shadow-sm">
+                            <!-- Watch bands -->
+                            <rect x="35" y="10" width="30" height="20" rx="3" fill="#EAB308"/>
+                            <rect x="35" y="70" width="30" height="20" rx="3" fill="#EAB308"/>
+                            <!-- Watch Body -->
+                            <rect x="25" y="25" width="50" height="50" rx="10" fill="#334155"/>
+                            <rect x="30" y="30" width="40" height="40" rx="6" fill="#1E293B"/>
+                            <!-- App dots -->
+                            <circle cx="40" cy="40" r="4" fill="#38BDF8"/>
+                            <circle cx="50" cy="40" r="4" fill="#A78BFA"/>
+                            <circle cx="60" cy="40" r="4" fill="#34D399"/>
+                            <circle cx="40" cy="50" r="4" fill="#F87171"/>
+                            <circle cx="50" cy="50" r="4" fill="#FCD34D"/>
+                            <circle cx="60" cy="50" r="4" fill="#38BDF8"/>
+                            <circle cx="45" cy="60" r="4" fill="#34D399"/>
+                            <circle cx="55" cy="60" r="4" fill="#A78BFA"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[22px] font-semibold tracking-wide z-10">Vocabulary</h3>
+                    <p class="text-[13px] text-white mt-1 z-10">Learn new words</p>
+                </div>
+
+                <!-- Quizzes Card -->
+                <div class="bg-gradient-to-br from-[#FA7490] to-[#F14660] rounded-[4px] shadow-[0_10px_20px_rgba(241,70,96,0.2)] p-6 flex flex-col items-center justify-center text-white h-48 relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all">
+                    <div class="w-[85px] h-[85px] rounded-full bg-black/10 absolute top-6 flex items-center justify-center shadow-inner blur-[1px]"></div>
+                    <!-- Printer SVG -->
+                    <div class="w-[85px] h-[85px] rounded-full bg-[#f0f0f0] flex items-center justify-center mb-4 relative z-10 shadow-md">
+                        <svg viewBox="0 0 100 100" class="w-[60%] h-[60%] drop-shadow-sm">
+                            <!-- Paper top -->
+                            <rect x="35" y="20" width="30" height="20" fill="#ffffff"/>
+                            <line x1="40" y1="25" x2="60" y2="25" stroke="#cbd5e1" stroke-width="2"/>
+                            <line x1="40" y1="30" x2="60" y2="30" stroke="#cbd5e1" stroke-width="2"/>
+                            <!-- Printer Body -->
+                            <path d="M 20 40 L 80 40 C 85 40 85 45 85 50 L 85 65 C 85 70 80 70 80 70 L 20 70 C 15 70 15 65 15 65 L 15 50 C 15 45 20 40 20 40 Z" fill="#94a3b8"/>
+                            <path d="M 15 50 L 85 50 L 85 65 C 85 70 80 70 80 70 L 20 70 C 15 70 15 65 15 65 Z" fill="#64748b"/>
+                            <!-- Paper output -->
+                            <rect x="30" y="65" width="40" height="15" fill="#ffffff"/>
+                            <!-- Output tray -->
+                            <rect x="25" y="70" width="50" height="5" fill="#334155"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[22px] font-semibold tracking-wide z-10">Quizzes</h3>
+                    <p class="text-[13px] text-white mt-1 z-10">Test your knowledge</p>
+                </div>
+
+                <!-- Lessons Card -->
+                <div class="bg-gradient-to-br from-[#FFB82E] to-[#F88200] rounded-[4px] shadow-[0_10px_20px_rgba(248,130,0,0.2)] p-6 flex flex-col items-center justify-center text-white h-48 relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all">
+                    <div class="w-[85px] h-[85px] rounded-full bg-black/10 absolute top-6 flex items-center justify-center shadow-inner blur-[1px]"></div>
+                    <!-- Laptop SVG -->
+                    <div class="w-[85px] h-[85px] rounded-full bg-[#f0f0f0] flex items-center justify-center mb-4 relative z-10 shadow-md">
+                        <svg viewBox="0 0 100 100" class="w-[60%] h-[60%] drop-shadow-sm">
+                            <!-- Desk -->
+                            <path d="M 10 80 Q 50 100 90 80 L 100 100 L 0 100 Z" fill="#8B4513" opacity="0.8"/>
+                            <!-- Screen -->
+                            <rect x="25" y="30" width="50" height="35" rx="3" fill="#334155"/>
+                            <rect x="28" y="33" width="44" height="29" fill="#1E293B"/>
+                            <!-- Base -->
+                            <path d="M 20 65 L 80 65 L 85 70 L 15 70 Z" fill="#94a3b8"/>
+                            <path d="M 15 70 L 85 70 L 85 73 L 15 73 Z" fill="#64748b"/>
+                            <!-- Screen highlights -->
+                            <circle cx="50" cy="47" r="4" fill="#38BDF8" opacity="0.8"/>
+                            <circle cx="40" cy="47" r="2" fill="#fff" opacity="0.5"/>
+                            <circle cx="60" cy="47" r="2" fill="#fff" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[22px] font-semibold tracking-wide z-10">Lessons</h3>
+                    <p class="text-[13px] text-white mt-1 z-10">Learn something new</p>
+                </div>
+
+                <!-- Games Card -->
+                <div class="bg-gradient-to-br from-[#4CE494] to-[#08BA5E] rounded-[4px] shadow-[0_10px_20px_rgba(8,186,94,0.2)] p-6 flex flex-col items-center justify-center text-white h-48 relative overflow-hidden group cursor-pointer hover:shadow-lg transition-all">
+                    <div class="w-[85px] h-[85px] rounded-full bg-black/10 absolute top-6 flex items-center justify-center shadow-inner blur-[1px]"></div>
+                    <!-- Bowling SVG -->
+                    <div class="w-[85px] h-[85px] rounded-full bg-[#f0f0f0] flex items-center justify-center mb-4 relative z-10 shadow-md">
+                        <svg viewBox="0 0 100 100" class="w-[60%] h-[60%] drop-shadow-sm">
+                            <!-- Bowling Pin -->
+                            <path d="M 45 20 C 45 10 55 10 55 20 C 55 30 50 35 50 45 C 50 50 60 60 60 70 C 60 85 40 85 40 70 C 40 60 50 50 50 45 C 50 35 45 30 45 20 Z" fill="#ffffff"/>
+                            <!-- Red stripes -->
+                            <path d="M 46 25 Q 50 27 54 25 L 54 28 Q 50 30 46 28 Z" fill="#ef4444"/>
+                            <path d="M 47 32 Q 50 34 53 32 L 53 35 Q 50 37 47 35 Z" fill="#ef4444"/>
+                            <!-- Bowling Ball -->
+                            <circle cx="70" cy="65" r="18" fill="#334155"/>
+                            <circle cx="65" cy="60" r="2" fill="#0f172a"/>
+                            <circle cx="72" cy="58" r="2" fill="#0f172a"/>
+                            <circle cx="70" cy="66" r="2" fill="#0f172a"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[22px] font-semibold tracking-wide z-10">Games</h3>
+                    <p class="text-[13px] text-white mt-1 z-10">Practice makes perfect</p>
+                </div>
+            </div>
+
+            <!-- Bottom 3 Chart Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Chart 1: Words Learned -->
+                <div class="bg-white rounded-[4px] shadow-sm border border-gray-100 overflow-hidden relative h-[220px] flex flex-col hover:shadow-md transition-shadow">
+                    <div class="p-5 pb-0 relative z-10">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-[13px] text-gray-500 font-semibold">Words Learned this month</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">360 avg</p>
+                            </div>
+                            <div class="bg-gradient-to-r from-[#1BC9ED] to-[#0494C7] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] shadow-sm">
+                                &uarr; 42.6%
+                            </div>
+                        </div>
+                        <div class="text-[28px] text-gray-800 mt-3 font-light">3,450</div>
+                    </div>
+                    <!-- Area Chart SVG -->
+                    <div class="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none">
+                        <svg viewBox="0 0 400 150" class="w-full h-full object-fill" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#1BC9ED" stop-opacity="1"/>
+                                    <stop offset="100%" stop-color="#0494C7" stop-opacity="1"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Smooth Wave Path -->
+                            <path d="M 0 150 L 0 130 C 80 130 160 110 220 60 C 270 20 330 10 400 5 L 400 150 Z" fill="url(#gradBlue)" />
+                            <!-- Data Points -->
+                            <circle cx="100" cy="120" r="3.5" fill="#fff" stroke="#1BC9ED" stroke-width="2"/>
+                            <circle cx="200" cy="83" r="3.5" fill="#fff" stroke="#1BC9ED" stroke-width="2"/>
+                            <circle cx="300" cy="27" r="3.5" fill="#fff" stroke="#1BC9ED" stroke-width="2"/>
+                            <circle cx="380" cy="8" r="3.5" fill="#fff" stroke="#1BC9ED" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Quizzes Taken -->
+                <div class="bg-white rounded-[4px] shadow-sm border border-gray-100 overflow-hidden relative h-[220px] flex flex-col hover:shadow-md transition-shadow">
+                    <div class="p-5 pb-0 relative z-10">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-[13px] text-gray-500 font-semibold">Quizzes Taken this month</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">83.1% passed</p>
+                            </div>
+                            <div class="bg-gradient-to-r from-[#FA7490] to-[#F14660] text-white text-[10px] font-bold px-2 py-0.5 rounded-[2px] shadow-sm">
+                                4.5
+                            </div>
+                        </div>
+                        <div class="text-[28px] text-gray-800 mt-3 font-light">92</div>
+                    </div>
+                    <!-- Area Chart SVG -->
+                    <div class="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none">
+                        <svg viewBox="0 0 400 150" class="w-full h-full object-fill" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="gradPink" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#FA7490" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#802F8C" stop-opacity="1"/> <!-- Deep purple bottom as in design -->
+                                </linearGradient>
+                            </defs>
+                            <!-- Smooth Wave Path -->
+                            <path d="M 0 150 L 0 145 C 50 145 100 150 180 130 C 260 110 300 40 400 30 L 400 150 Z" fill="url(#gradPink)" />
+                            <!-- Data Points -->
+                            <circle cx="90" cy="145" r="3.5" fill="#fff" stroke="#FA7490" stroke-width="2"/>
+                            <circle cx="200" cy="120" r="3.5" fill="#fff" stroke="#FA7490" stroke-width="2"/>
+                            <circle cx="280" cy="65" r="3.5" fill="#fff" stroke="#D94C8B" stroke-width="2"/>
+                            <circle cx="370" cy="35" r="3.5" fill="#fff" stroke="#A93E8C" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Lessons Completed -->
+                <div class="bg-white rounded-[4px] shadow-sm border border-gray-100 overflow-hidden relative h-[220px] flex flex-col hover:shadow-md transition-shadow">
+                    <div class="p-5 pb-0 relative z-10">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-[13px] text-gray-500 font-semibold">Lessons Completed this month</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">512 avg</p>
+                            </div>
+                            <div class="bg-gradient-to-r from-[#FFB82E] to-[#F88200] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] shadow-sm">
+                                &uarr; 900 Hrs
+                            </div>
+                        </div>
+                        <div class="text-[28px] text-gray-800 mt-3 font-light">815</div>
+                    </div>
+                    <!-- Area Chart SVG -->
+                    <div class="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none">
+                        <svg viewBox="0 0 400 150" class="w-full h-full object-fill" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="gradOrange" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#FFB82E" stop-opacity="1"/>
+                                    <stop offset="100%" stop-color="#F88200" stop-opacity="1"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Smooth Wave Path -->
+                            <path d="M 0 150 L 0 110 C 60 140 120 150 220 130 C 300 110 330 40 400 30 L 400 150 Z" fill="url(#gradOrange)" />
+                            <!-- Data Points -->
+                            <circle cx="80" cy="133" r="3.5" fill="#fff" stroke="#FFB82E" stroke-width="2"/>
+                            <circle cx="200" cy="133" r="3.5" fill="#fff" stroke="#FFB82E" stroke-width="2"/>
+                            <circle cx="300" cy="85" r="3.5" fill="#fff" stroke="#F88200" stroke-width="2"/>
+                            <circle cx="380" cy="35" r="3.5" fill="#fff" stroke="#F88200" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Rodd College 3D Logo Logic -->
+    <script>
+        // --- 3D WIREFRAME PLANET LOGIC ---
+        const canvas = document.getElementById('topologyCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const numNodes = 450;
+        const radius = 150; 
+        const nodes = [];
+        const edges = [];
+
+        // 1. Explicitly create the text nodes so they are perfectly aligned
+        // The lonOffset dictates where they appear on the globe (staggered by continents).
+        const textData = [
+            { text: "RESEARCH", y: -90, lonOffset: Math.PI / 2 },       // Top, appears first
+            { text: "ORGANIZATION", y: -35, lonOffset: 0 },             // Upper middle, appears second
+            { text: "DESIGN", y: 25, lonOffset: -Math.PI / 2 },         // Lower middle, appears third
+            { text: "DEVELOPMENT", y: 85, lonOffset: -Math.PI }         // Bottom, appears last
+        ];
+        
+        const letterSpacing = 0.12; 
+        const textNodes = [];
+
+        textData.forEach(wordObj => {
+            // Calculate the radius of the sphere at this specific Y height (latitude)
+            const r_lat = Math.sqrt(radius * radius - wordObj.y * wordObj.y);
+            const L = wordObj.text.length;
+            
+            for (let i = 0; i < L; i++) {
+                // FIX: Subtracting the spacing ensures 'R' is to the left of 'H' when facing the screen.
+                // This prevents the word from reading backwards!
+                const lon = wordObj.lonOffset - (i - (L - 1) / 2) * letterSpacing;
+                
+                const x = r_lat * Math.sin(lon);
+                const z = r_lat * Math.cos(lon);
+                textNodes.push({ x: x, y: wordObj.y, z: z, char: wordObj.text[i] });
+            }
+        });
+
+        // 2. Generate Fibonacci sphere nodes
+        const rawFiboNodes = [];
+        for (let i = 0; i < numNodes; i++) {
+            const phi = Math.acos(-1 + (2 * i) / numNodes);
+            const theta = Math.sqrt(numNodes * Math.PI) * phi;
+            
+            const x = radius * Math.cos(theta) * Math.sin(phi);
+            const y = radius * Math.cos(phi); 
+            const z = radius * Math.sin(theta) * Math.sin(phi);
+            
+            rawFiboNodes.push({ x: x, y: y, z: z, char: null });
+        }
+
+        // Combine them, creating a small "clearing" around the text so it's highly readable
+        nodes.push(...textNodes);
+        for (let fNode of rawFiboNodes) {
+            let tooClose = false;
+            for (let tNode of textNodes) {
+                const dx = fNode.x - tNode.x;
+                const dy = fNode.y - tNode.y;
+                const dz = fNode.z - tNode.z;
+                if (dx*dx + dy*dy + dz*dz < 130) { // Clears out dots immediately touching the text
+                    tooClose = true;
+                    break;
+                }
+            }
+            if (!tooClose) {
+                nodes.push(fNode);
+            }
+        }
+
+        // 3. Pre-calculate wireframe connections (edges)
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const dz = nodes[i].z - nodes[j].z;
+                const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                if (dist < 32) { 
+                    edges.push([nodes[i], nodes[j]]);
+                }
+            }
+        }
+
+        let rotationY = 0;
+        // Ticker direction: Negative spin allows the left-most letter (like "R") 
+        // to emerge first over the horizon so you can read it naturally.
+        const rotationSpeedY = -0.0035; 
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            rotationY += rotationSpeedY;
+            const projectedNodes = new Map();
+
+            // Rotate and project nodes to 2D space
+            for (let i = 0; i < nodes.length; i++) {
+                let node = nodes[i];
+                
+                let x1 = node.x * Math.cos(rotationY) - node.z * Math.sin(rotationY);
+                let y1 = node.y; 
+                let z1 = node.z * Math.cos(rotationY) + node.x * Math.sin(rotationY);
+                
+                const focalLength = 350;
+                const scale = focalLength / (focalLength + z1);
+                const px = (canvas.width / 2) + (x1 * scale);
+                const py = (canvas.height / 2) + (y1 * scale);
+                
+                projectedNodes.set(node, { px, py, z: z1, original: node });
+            }
+
+            // Prepare render list to sort by depth (Painter's Algorithm)
+            const renderList = [];
+            
+            for (let i = 0; i < edges.length; i++) {
+                const p1 = projectedNodes.get(edges[i][0]);
+                const p2 = projectedNodes.get(edges[i][1]);
+                const zAvg = (p1.z + p2.z) / 2;
+                renderList.push({ type: 'edge', p1, p2, z: zAvg });
+            }
+            
+            for (let [node, proj] of projectedNodes) {
+                renderList.push({ type: 'node', p: proj, z: proj.z, node: node });
+            }
+
+            // Sort: items furthest away get drawn first
+            renderList.sort((a, b) => b.z - a.z);
+
+            for (const item of renderList) {
+                const normalizedZ = (item.z + radius) / (radius * 2);
+                const frontFactor = Math.max(0, 1 - normalizedZ); 
+
+                if (item.type === 'edge') {
+                    const alpha = 0.03 + (0.2 * frontFactor); 
+                    ctx.strokeStyle = `rgba(141, 178, 229, ${alpha})`;
+                    ctx.lineWidth = 1.0;
+                    ctx.beginPath();
+                    ctx.moveTo(item.p1.px, item.p1.py);
+                    ctx.lineTo(item.p2.px, item.p2.py);
+                    ctx.stroke();
+                } else {
+                    let px = item.p.px;
+                    let py = item.p.py;
+
+                    if (item.node.char) {
+                        if (frontFactor > 0.45) {
+                            // Smaller, highly sophisticated typography matching the line colors
+                            const fontSize = 7 + (4 * frontFactor); 
+                            ctx.fillStyle = `rgba(141, 178, 229, ${0.3 + 0.7 * frontFactor})`; 
+                            ctx.font = `600 ${fontSize}px 'Nunito'`;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(item.node.char, px, py);
+                        }
+                    } else {
+                        const alpha = 0.1 + (0.6 * frontFactor);
+                        const dotSize = 0.8 + (1.5 * frontFactor);
+                        ctx.fillStyle = `rgba(141, 178, 229, ${alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(px, py, dotSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+</html>
