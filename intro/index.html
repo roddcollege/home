@@ -170,7 +170,7 @@
 
 
         <!-- SKIP LINK to trigger CodyHouse AJAX transition -->
-        <a href="https://rodd.co/welcome/index.html" id="skip-intro" class="skip-btn" onclick="goToWelcome(event)">Skip Intro &rarr;</a>
+        <a href="https://rodd.co/welcome/" id="skip-intro" class="skip-btn" onclick="goToWelcome(event)">Skip Intro &rarr;</a>
     </main>
 
 <script>
@@ -179,7 +179,7 @@
     
     async function goToWelcome(e) {
         if (e) e.preventDefault();
-        const targetUrl = e ? e.currentTarget.href : 'https://rodd.co/welcome/index.html';
+        const targetUrl = e ? e.currentTarget.href : 'https://rodd.co/welcome/';
         
         if (window.isTransitioning) return;
         window.isTransitioning = true;
