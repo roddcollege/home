@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<main id="cd-main" class="bg-mainBg">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,8 +8,7 @@
 </head>
 <body style="margin: 0; padding: 0; background: #0524a1; overflow: hidden;">
 
-
-    
+  <main id="cd-main" class="bg-mainBg">
     <style>
       /* --- GLOBAL STYLES & PHYSICS --- */
       :root {
@@ -83,7 +81,7 @@
       .page.hidden-bottom { transform: translateY(100%); z-index: 10; }
 
       /* --- PAGE 0: GRID VIEW --- */
-      #page-0 { background: transparent; } /* Let's the blue space show through! */
+      #page-0 { background: transparent; }
       .quadrant {
         position: absolute; width: 50%; height: 50%; overflow: hidden;
         transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -157,6 +155,7 @@
       .static-content h1 { font-size: clamp(32px, 5vw, 55px); margin: 0 0 20px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
       .static-content p { font-size: clamp(16px, 2vw, 22px); line-height: 1.6; max-width: 800px; opacity: 0.9; margin: 0; }
 
+      /* --- SIDE DOTS NAV --- */
       .global-nav-tracker {
         position: fixed; top: 50%; left: 30px; transform: translateY(-50%); z-index: 105;
         display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -175,6 +174,7 @@
       }
       .g-nav-dot:hover::after { opacity: 1; left: 30px; }
 
+      /* --- GOOEY BOTTOM NAV --- */
       .bottom-nav-container {
         position: fixed; bottom: -120px; left: 0; width: 100%; z-index: 1000;
         transition: bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform: translateZ(0); 
@@ -219,10 +219,9 @@
         .split-container, .slider-container { display: block; position: relative; }
         .split-left { width: 100%; height: 100%; background: transparent; z-index: 2; }
         .split-right { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .split-icon { font-size: 150px; opacity: 0.08; margin-top: 88%; }
+        .split-icon { font-size: 150px; opacity: 0.08; margin-top: 90%; }
         
-        /* FIX: Top padding increased to 130px to clear the top menu button! */
-        .content-block { padding: 130px 25px 140px 25px; align-items: flex-start; text-align: left; }
+        .content-block { padding: 130px 25px 140px 25px; justify-content: flex-start; align-items: flex-start; text-align: left; }
         .static-content { padding: 130px 25px 120px 25px; justify-content: flex-start; }
         
         .slider-nav { right: auto; left: 50%; transform: translateX(-50%); bottom: 120px; }
@@ -231,7 +230,7 @@
 
       @media (max-width: 480px) {
         .circular-menu { top: 15px; right: 15px; }
-        .circular-menu .floating-btn { width: 40px; height: 40px; line-height: 40px; font-size: 16px; }
+        .circular-menu .floating-btn { line-height: 45px; }
         
         .bottom-nav { height: 75px; }
         .bottom-nav-container { bottom: -100px; }
@@ -496,6 +495,48 @@
           }
         }
 
+        // --- NEW: LIGHTWEIGHT MOBILE SWIPE DETECTION ---
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        window.addEventListener('touchstart', (e) => {
+          if (isInteractiveTarget(e.target) || isAnimating) return;
+          touchStartX = e.changedTouches[0].screenX;
+          touchStartY = e.changedTouches[0].screenY;
+        }, {passive: false});
+
+        window.addEventListener('touchend', (e) => {
+          if (isInteractiveTarget(e.target) || isAnimating) return;
+          let touchEndX = e.changedTouches[0].screenX;
+          let touchEndY = e.changedTouches[0].screenY;
+          
+          let dx = touchEndX - touchStartX;
+          let dy = touchEndY - touchStartY;
+          
+          // Must swipe at least 40px to trigger action
+          if (Math.max(Math.abs(dx), Math.abs(dy)) > 40) {
+            if (Math.abs(dx) > Math.abs(dy)) {
+              // Horizontal Swipe
+              if (currentSection !== 0) {
+                if (dx < 0) { // Swipe Left -> Next
+                  if (currentSection === 1) changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+                  else if (currentSection === 2) changeTab(currentTab >= totalTabs ? 1 : currentTab + 1);
+                } else { // Swipe Right -> Prev
+                  if (currentSection === 1) changeSlide(currentSlide <= 1 ? totalSlides : currentSlide - 1);
+                  else if (currentSection === 2) changeTab(currentTab <= 1 ? totalTabs : currentTab - 1);
+                }
+              }
+            } else {
+              // Vertical Swipe
+              if (dy < 0) { // Swipe Up (user pushes screen up to see what's below) -> Next Section
+                navScroll(1);
+              } else { // Swipe Down (user pulls screen down to see what's above) -> Prev Section
+                navScroll(-1);
+              }
+            }
+          }
+        });
+
         window.addEventListener('wheel', (e) => {
           if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
           if (!isAnimating) {
@@ -542,6 +583,6 @@
       document.addEventListener("DOMContentLoaded", initCommandCenter);
       document.addEventListener('pageTransitionComplete', initCommandCenter);
     </script>
-</body>
   </main>
+</body>
 </html>
