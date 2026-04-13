@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rodd College - Cognitive Communication</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="margin: 0; padding: 0; background: #0524a1; overflow: hidden;">
+
+  <main id="cd-main" class="bg-mainBg">
+    <style>
+      /* --- GLOBAL STYLES & PHYSICS --- */
+      :root {
+        --c1: linear-gradient(135deg, #f59e0b, #d97706); /* Listening (Yellow/Orange) */
+        --c2: linear-gradient(135deg, #0ea5e9, #0284c7); /* Reading (Blue) */
+        --c3: linear-gradient(135deg, #10b981, #059669); /* Speaking (Green) */
+        --c4: linear-gradient(135deg, #e11d48, #be123c); /* Writing (Red) */
+        --nav-bg: #111; 
+      }
+      
+      html, body { 
+        margin: 0; padding: 0; background: #0524a1; overflow: hidden;
+        height: 100vh; height: 100dvh; height: -webkit-fill-available;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        color: white; 
+        overscroll-behavior: none; touch-action: none; 
+        user-select: none; -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent; 
+      }
+      * { box-sizing: border-box; }
+
+      /* --- THE SEAMLESS BLUE SPACE BACKGROUND --- */
+      .bg-mainBg {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        background-color: #0524a1;
+        background-image: 
+          radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+          radial-gradient(1.5px 1.5px at 80px 150px, rgba(255,255,255,0.3), rgba(0,0,0,0)),
+          radial-gradient(2px 2px at 190px 40px, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+          radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.2), rgba(0,0,0,0)),
+          radial-gradient(2px 2px at 320px 80px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+          radial-gradient(circle at center, #1b5cd4 0%, #0829a6 60%, #03135c 100%);
+        background-repeat: repeat, repeat, repeat, repeat, repeat, no-repeat;
+        background-size: 150px 150px, 200px 200px, 250px 250px, 300px 300px, 350px 350px, 100% 100%;
+      }
+      
+      a, .close-btn, .slider-dot, .bottom-nav-item, .circular-menu, .quadrant { cursor: pointer; }
+
+      /* --- TOP RIGHT CIRCULAR MENU --- */
+      .circular-menu { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+      .circular-menu .floating-btn {
+        display: block; width: 50px; height: 50px; border-radius: 50%;
+        background-color: #111; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        color: #fff; text-align: center; line-height: 50px;
+        outline: 0; font-size: 20px; transition: all 0.3s ease;
+      }
+      .circular-menu.active .floating-btn { box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5); transform: scale(0.95); }
+      .circular-menu .items-wrapper { padding: 0; margin: 0; }
+      .circular-menu .menu-item {
+        position: absolute; top: 5px; right: 5px; z-index: -1; display: block;
+        text-decoration: none; color: #fff; font-size: 18px; width: 40px; height: 40px;
+        border-radius: 50%; text-align: center; line-height: 40px; background-color: rgba(0,0,0,0.7);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, color 0.2s;
+      }
+      .circular-menu .menu-item:hover { background-color: #fff; color: #000; }
+      .circular-menu.active .menu-item:nth-child(1) { transform: translate3d(-6em, 0, 0); }
+      .circular-menu.active .menu-item:nth-child(2) { transform: translate3d(-5.2em, 3em, 0); }
+      .circular-menu.active .menu-item:nth-child(3) { transform: translate3d(-3em, 5.2em, 0); }
+      .circular-menu.active .menu-item:nth-child(4) { transform: translate3d(0, 6em, 0); }
+
+      /* --- FULLPAGE SLIDING ENGINE --- */
+      .page {
+        position: absolute; top: 0; left: 0; width: 100vw; height: 100%;
+        overflow: hidden; z-index: 1;
+        transform: translateY(100%);
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform; 
+      }
+      .page.active { transform: translateY(0); z-index: 20; }
+      .page.hidden-top { transform: translateY(-100%); z-index: 10; }
+      .page.hidden-bottom { transform: translateY(100%); z-index: 10; }
+
+      /* --- PAGE 0: GRID VIEW --- */
+      #page-0 { background: transparent; }
+      .quadrant {
+        position: absolute; width: 50%; height: 50%; overflow: hidden;
+        transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .q1 { top: 0; left: 0; background: var(--c1); transform-origin: top left; }
+      .q2 { top: 0; left: 50%; background: var(--c2); transform-origin: top right; }
+      .q3 { top: 50%; left: 0; background: var(--c3); transform-origin: bottom left; }
+      .q4 { top: 50%; left: 50%; background: var(--c4); transform-origin: bottom right; }
+
+      @media (hover: hover) {
+        #page-0:hover .quadrant:not(:hover) { filter: brightness(0.4) grayscale(50%); transform: scale(0.98); z-index: 1; }
+        .quadrant:hover { transform: scale(1.05); z-index: 30; box-shadow: 0 0 50px rgba(0,0,0,0.8); border-radius: 8px; }
+        .quadrant:hover .main-icon { transform: translate(-50%, calc(-50% - 15px)) scale(1.1); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
+        .quadrant:hover h2 { transform: translate(-50%, calc(-50% - 15px)) scale(1.05); text-shadow: 0 10px 20px rgba(0,0,0,0.6); }
+        .quadrant:hover .hint-text { opacity: 1; transform: translate(-50%, 0); }
+      }
+
+      .main-icon {
+        position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+        font-size: clamp(30px, 4.5vw, 80px); color: rgba(255, 255, 255, 0.9); z-index: 2;
+        transition: transform 0.4s ease, filter 0.4s ease; text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      }
+      .quadrant h2 { 
+        font-size: clamp(12px, 2.5vw, 30px); margin: 0; text-transform: uppercase; letter-spacing: 2px; 
+        text-shadow: 0 4px 10px rgba(0,0,0,0.4); z-index: 2;
+        position: absolute; top: 62%; left: 50%; transform: translate(-50%, -50%);
+        width: 90%; text-align: center; transition: transform 0.4s ease, text-shadow 0.4s ease;
+      }
+      .hint-text {
+        position: absolute; bottom: 10%; left: 50%; transform: translate(-50%, 20px);
+        opacity: 0; font-size: clamp(9px, 1.2vw, 16px); letter-spacing: 4px; text-transform: uppercase; font-weight: bold; 
+        color: rgba(255,255,255,0.8); transition: all 0.4s ease; z-index: 2; text-align: center; width: 100%;
+      }
+
+      #page-1 { background: var(--c1); }
+      #page-2 { background: var(--c2); }
+      #page-3 { background: var(--c3); }
+      #page-4 { background: var(--c4); }
+
+      .close-btn { 
+        position: absolute; top: 30px; left: 80px; font-size: 20px; 
+        z-index: 101; opacity: 0.7; transition: opacity 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
+      }
+      .close-btn:hover { opacity: 1; background: rgba(0,0,0,0.6); }
+
+      /* --- UNIFIED SLIDER STYLES --- */
+      .content-block { padding: 80px 80px 140px 160px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; height: 100%; }
+      .content-block h3 { font-size: clamp(14px, 2vw, 20px); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 10px 0; }
+      .content-block h1 { font-size: clamp(32px, 5vw, 55px); margin: 0 0 20px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+      .content-block p { font-size: clamp(16px, 2vw, 20px); line-height: 1.6; opacity: 0.9; max-width: 600px; margin: 0; }
+      .content-block p strong { color: rgba(255,255,255,1); letter-spacing: 1px; text-transform: uppercase; font-size: 0.85em; }
+
+      .split-container { display: flex; width: 100%; height: 100%; }
+      .split-left { width: 50%; height: 100%; background: rgba(0,0,0,0.25); position: relative; overflow: hidden; }
+      .split-right { width: 50%; height: 100%; background: transparent; display: flex; align-items: center; justify-content: center; position: relative; }
+      .split-icon { font-size: clamp(80px, 10vw, 150px); opacity: 0.8; text-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s; }
+      
+      .slider-container { width: 100%; height: 100%; position: relative; }
+      .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; opacity: 0; transition: opacity 0.6s; pointer-events: none; }
+      .slide.active { opacity: 1; pointer-events: auto; }
+      .slider-nav { position: absolute; bottom: 120px; right: 50px; display: flex; gap: 15px; z-index: 10; }
+      .slider-dot { width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
+      .slider-dot.active, .slider-dot:hover { background: white; transform: scale(1.4); }
+
+      /* --- PAGE SPECIFIC HIGHLIGHT COLORS --- */
+      #page-1 .content-block h3 { color: #fef3c7; } /* Listening */
+      #page-2 .content-block h3 { color: #e0f2fe; } /* Reading */
+      #page-3 .content-block h3 { color: #d1fae5; } /* Speaking */
+      #page-4 .content-block h3 { color: #ffe4e6; } /* Writing */
+
+      /* --- SIDE DOTS NAV --- */
+      .global-nav-tracker {
+        position: fixed; top: 50%; left: 30px; transform: translateY(-50%); z-index: 105;
+        display: flex; flex-direction: column; align-items: center; gap: 15px;
+        opacity: 0; pointer-events: none; transition: opacity 0.5s;
+      }
+      body.in-section .global-nav-tracker { opacity: 1; pointer-events: auto; }
+      .g-nav-arrow { font-size: 20px; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; padding: 10px; }
+      .g-nav-arrow:hover { color: white; transform: scale(1.2); }
+      .g-nav-dot { width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; transition: 0.3s; position: relative; }
+      .g-nav-dot:hover { background: rgba(255,255,255,0.7); }
+      .g-nav-dot.active { background: white; transform: scale(1.5); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+      .g-nav-dot::after {
+        content: attr(data-label); position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
+        background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 4px; font-size: 12px;
+        white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; letter-spacing: 1px;
+      }
+      .g-nav-dot:hover::after { opacity: 1; left: 30px; }
+
+      /* --- GOOEY BOTTOM NAV --- */
+      .bottom-nav-container {
+        position: fixed; bottom: -120px; left: 0; width: 100%; z-index: 1000;
+        transition: bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform: translateZ(0); 
+      }
+      body.in-section .bottom-nav-container { bottom: 0; }
+      .bottom-nav {
+        background: var(--nav-bg); height: 90px; width: 100%;
+        filter: url("#fancy-goo"); display: flex; align-items: center; transition: background 0.6s ease;
+      }
+      .bottom-nav ul { display: flex; width: 100%; height: 100%; max-width: 800px; margin: 0 auto; list-style: none; padding: 0; }
+      .bottom-nav ul li { flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; }
+      .bottom-nav-item { position: relative; z-index: 10; text-align: center; width: 100%; transition: all 0.4s; }
+      .bottom-nav ul li i { font-size: 26px; color: rgba(255,255,255,0.4); display: block; margin-bottom: 5px; transition: all 0.4s; }
+      .bottom-nav ul li span { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); display: block; opacity: 0; transform: translateY(10px); transition: all 0.4s; }
+      
+      .bottom-nav ul li:after {
+        content: ''; position: absolute; width: 65%; height: 50%; background: var(--nav-bg);
+        border-radius: 100%; top: 0; left: 0; right: 0; margin: 0 auto; z-index: 0;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
+      }
+      .bottom-nav ul li:hover:after { transform: translate3d(0, -15%, 0); }
+      .bottom-nav ul li.active:after { transform: translate3d(0, -38%, 0); }
+      .bottom-nav ul li.active .bottom-nav-item { transform: translate3d(0, -20px, 0); }
+      .bottom-nav ul li.active i { color: #fff; transform: scale(1.1); }
+      .bottom-nav ul li.active span { color: #fff; opacity: 1; transform: translateY(2px); }
+      .bottom-nav ul li:hover i { color: rgba(255,255,255,0.8); }
+
+      /* --- MOBILE RESPONSIVE MEDIA QUERIES --- */
+      @media (max-width: 992px) {
+        .content-block { padding: 80px 40px 140px 100px; }
+        .close-btn { left: 40px; }
+      }
+
+      @media (max-width: 768px) {
+        .main-icon { top: 35%; }
+        .quadrant h2 { top: 65%; line-height: 1.3; }
+        .global-nav-tracker { display: none !important; } 
+        .close-btn { top: 20px; left: 20px; font-size: 14px; padding: 8px 15px; z-index: 105; }
+        .split-container, .slider-container { display: block; position: relative; }
+        .split-left { width: 100%; height: 100%; background: transparent; z-index: 2; }
+        .split-right { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .split-icon { font-size: 150px; opacity: 0.08; margin-top: 88%; }
+        .content-block { padding: 130px 25px 140px 25px; justify-content: flex-start; align-items: flex-start; text-align: left; }
+        .slider-nav { right: auto; left: 50%; transform: translateX(-50%); bottom: 120px; }
+      }
+
+      @media (max-width: 480px) {
+        .circular-menu { top: 15px; right: 15px; }
+        .circular-menu .floating-btn { line-height: 45px; }
+        .bottom-nav { height: 75px; }
+        .bottom-nav-container { bottom: -100px; }
+        .bottom-nav ul li i { font-size: 22px; }
+        .bottom-nav ul li span { font-size: 10px; }
+        .bottom-nav ul li:after { width: 50px; height: 40px; }
+        .bottom-nav ul li.active .bottom-nav-item { transform: translate3d(0, -15px, 0); }
+      }
+    </style>
+
+    <div id="circularMenu" class="circular-menu">
+      <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active'); event.stopPropagation();">
+        <i id="main-menu-icon" class="fa-solid fa-house"></i>
+      </a>
+      <menu class="items-wrapper">
+        <a class="menu-item" onclick="jumpToSection(1); event.stopPropagation();" title="Listening"><i class="fa-solid fa-ear-listen"></i></a>
+        <a class="menu-item" onclick="jumpToSection(2); event.stopPropagation();" title="Reading"><i class="fa-solid fa-book-open"></i></a>
+        <a class="menu-item" onclick="jumpToSection(3); event.stopPropagation();" title="Speaking"><i class="fa-solid fa-comments"></i></a>
+        <a class="menu-item" onclick="jumpToSection(4); event.stopPropagation();" title="Writing"><i class="fa-solid fa-pen-to-square"></i></a>
+      </menu>
+    </div>
+
+    <div id="app-container">
+      <div class="page active" id="page-0">
+        <div class="quadrant q1" onclick="handleSectionClick(event, 1)">
+          <i class="fa-solid fa-ear-listen main-icon"></i>
+          <h2>Listening</h2>
+          <div class="hint-text">Auditory Processing</div>
+        </div>
+        <div class="quadrant q2" onclick="handleSectionClick(event, 2)">
+          <i class="fa-solid fa-book-open main-icon"></i>
+          <h2>Reading</h2>
+          <div class="hint-text">Visual Decoding</div>
+        </div>
+        <div class="quadrant q3" onclick="handleSectionClick(event, 3)">
+          <i class="fa-solid fa-comments main-icon"></i>
+          <h2>Speaking</h2>
+          <div class="hint-text">Verbal Formulation</div>
+        </div>
+        <div class="quadrant q4" onclick="handleSectionClick(event, 4)">
+          <i class="fa-solid fa-pen-to-square main-icon"></i>
+          <h2>Writing</h2>
+          <div class="hint-text">Structural Composition</div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-1" onclick="handleSectionClick(event, 1)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-house"></i></div>
+        <div class="slider-container">
+          <div class="slide active">
+            <div class="split-left content-block">
+              <h3>Attention</h3>
+              <h1>Hearing Sounds</h1>
+              <p><strong>Pipeline Stage:</strong> Detect Signals<br><br>The foundational capability to perceive acoustic input before active interpretation begins.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-wave-square split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Learning</h3>
+              <h1>Understanding</h1>
+              <p><strong>Pipeline Stage:</strong> Recognize Patterns<br><br>Translating raw auditory signals into recognizable linguistic structures.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-brain split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Memory</h3>
+              <h1>Remembering</h1>
+              <p><strong>Pipeline Stage:</strong> Identify Words<br><br>Accessing the mental lexicon to match established auditory patterns with known vocabulary.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-database split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Reasoning</h3>
+              <h1>Interpreting</h1>
+              <p><strong>Pipeline Stage:</strong> Organize Relationships<br><br>Analyzing the syntax and context of identified words to establish conceptual relationships.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-project-diagram split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Deciding</h3>
+              <h1>Evaluating</h1>
+              <p><strong>Pipeline Stage:</strong> Construct Meaning<br><br>Synthesizing all inputs to form a complete semantic understanding of the speaker's intent.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-scale-balanced split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Response</h3>
+              <h1>Responding</h1>
+              <p><strong>Pipeline Stage:</strong> Communicate Intention<br><br>The final outcome of the listening process, leading to the formulation of an appropriate reaction.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-reply-all split-icon"></i></div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" onclick="changeSlide(1)"></div>
+            <div class="slider-dot" onclick="changeSlide(2)"></div>
+            <div class="slider-dot" onclick="changeSlide(3)"></div>
+            <div class="slider-dot" onclick="changeSlide(4)"></div>
+            <div class="slider-dot" onclick="changeSlide(5)"></div>
+            <div class="slider-dot" onclick="changeSlide(6)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-2" onclick="handleSectionClick(event, 2)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-house"></i></div>
+        <div class="slider-container">
+          <div class="slide active">
+            <div class="split-left content-block">
+              <h3>Attention</h3>
+              <h1>Phonology</h1>
+              <p><strong>Pipeline Stage:</strong> Detect Signals<br><br>Recognizing visual symbols and decoding their corresponding phonetic values.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-eye split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Learning</h3>
+              <h1>Comprehension</h1>
+              <p><strong>Pipeline Stage:</strong> Recognize Patterns<br><br>Grouping individual phonemes and symbols into recognizable morphemes and structural units.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-puzzle-piece split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Memory</h3>
+              <h1>Lexical Category</h1>
+              <p><strong>Pipeline Stage:</strong> Identify Words<br><br>Retrieving the specific categorical and grammatical function of recognized words from memory.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-tags split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Reasoning</h3>
+              <h1>Syntax</h1>
+              <p><strong>Pipeline Stage:</strong> Organize Relationships<br><br>Mapping how the words interact based on the structural rules of the language.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-code-branch split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Deciding</h3>
+              <h1>Semantics</h1>
+              <p><strong>Pipeline Stage:</strong> Construct Meaning<br><br>Extracting the deeper logic and intended meaning behind the organized syntax.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-lightbulb split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Response</h3>
+              <h1>Phonetic Fluency</h1>
+              <p><strong>Pipeline Stage:</strong> Communicate Intention<br><br>The ability to fluidly process and potentially vocalize the constructed meaning.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-microphone-lines split-icon"></i></div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" onclick="changeSlide(1)"></div>
+            <div class="slider-dot" onclick="changeSlide(2)"></div>
+            <div class="slider-dot" onclick="changeSlide(3)"></div>
+            <div class="slider-dot" onclick="changeSlide(4)"></div>
+            <div class="slider-dot" onclick="changeSlide(5)"></div>
+            <div class="slider-dot" onclick="changeSlide(6)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-3" onclick="handleSectionClick(event, 3)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-house"></i></div>
+        <div class="slider-container">
+          <div class="slide active">
+            <div class="split-left content-block">
+              <h3>Attention</h3>
+              <h1>Articulation</h1>
+              <p><strong>Pipeline Stage:</strong> Detect Signals<br><br>The mechanical and neurological focus required to prepare vocal apparatus for speech.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-lips split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Learning</h3>
+              <h1>Conceptualization</h1>
+              <p><strong>Pipeline Stage:</strong> Recognize Patterns<br><br>The pre-verbal stage of structuring an abstract idea or thought before language is applied.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-cloud-bolt split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Memory</h3>
+              <h1>Accessing Lexicon</h1>
+              <p><strong>Pipeline Stage:</strong> Identify Words<br><br>Retrieving the exact vocabulary required to accurately express the internal concept.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-magnifying-glass-arrow-right split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Reasoning</h3>
+              <h1>Formulation</h1>
+              <p><strong>Pipeline Stage:</strong> Organize Relationships<br><br>Assembling the retrieved vocabulary into grammatically correct and culturally appropriate sentences.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-hammer split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Deciding</h3>
+              <h1>Self-Monitoring</h1>
+              <p><strong>Pipeline Stage:</strong> Construct Meaning<br><br>The real-time evaluation of speech to ensure it aligns with the intended message and social context.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-tower-observation split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Response</h3>
+              <h1>Transmission</h1>
+              <p><strong>Pipeline Stage:</strong> Communicate Intention<br><br>The physical execution and delivery of the fully formulated verbal message.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-satellite-dish split-icon"></i></div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" onclick="changeSlide(1)"></div>
+            <div class="slider-dot" onclick="changeSlide(2)"></div>
+            <div class="slider-dot" onclick="changeSlide(3)"></div>
+            <div class="slider-dot" onclick="changeSlide(4)"></div>
+            <div class="slider-dot" onclick="changeSlide(5)"></div>
+            <div class="slider-dot" onclick="changeSlide(6)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-4" onclick="handleSectionClick(event, 4)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-house"></i></div>
+        <div class="slider-container">
+          <div class="slide active">
+            <div class="split-left content-block">
+              <h3>Attention</h3>
+              <h1>Spelling-to-Dictation</h1>
+              <p><strong>Pipeline Stage:</strong> Detect Signals<br><br>The fundamental cognitive focus on translating sounds or ideas into correct orthography.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-spell-check split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Learning</h3>
+              <h1>Composition</h1>
+              <p><strong>Pipeline Stage:</strong> Recognize Patterns<br><br>Structuring sentences and paragraphs to establish a coherent flow of written information.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-align-left split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Memory</h3>
+              <h1>Lexicon</h1>
+              <p><strong>Pipeline Stage:</strong> Identify Words<br><br>Accessing advanced vocabulary and written conventions from long-term memory.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-book split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Reasoning</h3>
+              <h1>Syntax</h1>
+              <p><strong>Pipeline Stage:</strong> Organize Relationships<br><br>Applying strict grammatical rules, punctuation, and structural logic to the written text.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-link split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Deciding</h3>
+              <h1>Semantics</h1>
+              <p><strong>Pipeline Stage:</strong> Construct Meaning<br><br>Refining the draft to ensure the precise meaning and tone are conveyed without ambiguity.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-glasses split-icon"></i></div>
+          </div>
+          <div class="slide">
+            <div class="split-left content-block">
+              <h3>Response</h3>
+              <h1>Pragmatics</h1>
+              <p><strong>Pipeline Stage:</strong> Communicate Intention<br><br>The final adaptation of the text to suit the specific audience, medium, and social objective.</p>
+            </div>
+            <div class="split-right"><i class="fa-solid fa-paper-plane split-icon"></i></div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" onclick="changeSlide(1)"></div>
+            <div class="slider-dot" onclick="changeSlide(2)"></div>
+            <div class="slider-dot" onclick="changeSlide(3)"></div>
+            <div class="slider-dot" onclick="changeSlide(4)"></div>
+            <div class="slider-dot" onclick="changeSlide(5)"></div>
+            <div class="slider-dot" onclick="changeSlide(6)"></div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="global-nav-tracker">
+      <div class="g-nav-arrow" onclick="navScroll(-1)"><i class="fa-solid fa-chevron-up"></i></div>
+      <div class="g-nav-dot active" id="g-dot-1" data-label="Listening" onclick="jumpToSection(1)"></div>
+      <div class="g-nav-dot" id="g-dot-2" data-label="Reading" onclick="jumpToSection(2)"></div>
+      <div class="g-nav-dot" id="g-dot-3" data-label="Speaking" onclick="jumpToSection(3)"></div>
+      <div class="g-nav-dot" id="g-dot-4" data-label="Writing" onclick="jumpToSection(4)"></div>
+      <div class="g-nav-arrow" onclick="navScroll(1)"><i class="fa-solid fa-chevron-down"></i></div>
+    </div>
+
+    <div class="bottom-nav-container">
+      <div class="bottom-nav">
+        <ul id="gooey-menu">
+          <li onclick="jumpToSection(1)"><div class="bottom-nav-item"><i class="fa-solid fa-ear-listen"></i><span>Listening</span></div></li>
+          <li onclick="jumpToSection(2)"><div class="bottom-nav-item"><i class="fa-solid fa-book-open"></i><span>Reading</span></div></li>
+          <li onclick="jumpToSection(3)"><div class="bottom-nav-item"><i class="fa-solid fa-comments"></i><span>Speaking</span></div></li>
+          <li onclick="jumpToSection(4)"><div class="bottom-nav-item"><i class="fa-solid fa-pen-to-square"></i><span>Writing</span></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
+      <defs>
+        <filter id="fancy-goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <script>
+      const circularMenu = document.getElementById('circularMenu');
+      const menuIcon = document.getElementById('main-menu-icon');
+      const gooeyItems = document.querySelectorAll('#gooey-menu li');
+      
+      const pages = [
+        document.getElementById('page-0'), document.getElementById('page-1'),
+        document.getElementById('page-2'), document.getElementById('page-3'), document.getElementById('page-4')
+      ];
+      
+      const sectionIcons = ['fa-house', 'fa-ear-listen', 'fa-book-open', 'fa-comments', 'fa-pen-to-square'];
+      const navThemeColors = ['#111', '#d97706', '#0284c7', '#059669', '#be123c']; 
+
+      let currentSection = 0; 
+      let isAnimating = false; 
+      let currentSlide = 1; 
+      const totalSlides = 6; 
+
+      document.addEventListener('click', (e) => {
+        if (!circularMenu.contains(e.target) && circularMenu.classList.contains('active')) {
+          circularMenu.classList.remove('active');
+        }
+      });
+
+      window.updateMenuState = function(index) {
+        document.body.classList.toggle('in-section', index > 0);
+        menuIcon.classList.remove(...sectionIcons);
+        menuIcon.classList.add(sectionIcons[index]);
+        document.documentElement.style.setProperty('--nav-bg', navThemeColors[index]);
+
+        gooeyItems.forEach((li, i) => li.classList.toggle('active', i === (index - 1)));
+        if(index > 0) {
+          for(let i=1; i<=4; i++) document.getElementById(`g-dot-${i}`).classList.toggle('active', i === index);
+        }
+      }
+
+      window.triggerAnimationLock = function() {
+        isAnimating = true;
+        setTimeout(() => { isAnimating = false; }, 800); 
+      }
+
+      window.executeSlide = function(oldIndex, newIndex, dir) {
+        const oldPage = pages[oldIndex];
+        const newPage = pages[newIndex];
+        
+        newPage.style.transition = 'none';
+        if (dir === 1) newPage.className = 'page hidden-bottom'; 
+        else newPage.className = 'page hidden-top'; 
+        void newPage.offsetWidth; 
+        
+        newPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        oldPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        if (dir === 1) oldPage.className = 'page hidden-top'; 
+        else oldPage.className = 'page hidden-bottom'; 
+        
+        newPage.className = 'page active';
+        currentSection = newIndex;
+        updateMenuState(currentSection);
+
+        if (currentSection !== 0) {
+          changeSlide(1);
+        }
+      }
+
+      window.openSection = function(index) {
+        if (currentSection === index || isAnimating) return;
+        triggerAnimationLock();
+        executeSlide(currentSection, index, 1); 
+      }
+
+      window.jumpToSection = function(index) {
+        if (currentSection === index || isAnimating) return;
+        triggerAnimationLock();
+        let dir = index > currentSection ? 1 : -1;
+        if (currentSection === 0 && index === 4) dir = -1; 
+        if (currentSection === 4 && index === 0) dir = 1;  
+        executeSlide(currentSection, index, dir);
+      }
+
+      window.navScroll = function(direction) {
+        if (isAnimating) return;
+        let nextIndex = currentSection + direction;
+        if (nextIndex > 4) nextIndex = 0;
+        if (nextIndex < 0) nextIndex = 4;
+        triggerAnimationLock();
+        executeSlide(currentSection, nextIndex, direction);
+      }
+
+      function isInteractiveTarget(target) {
+        if (!target || typeof target.closest !== 'function') return false;
+        const ignore = ['slider-dot', 'floating-btn', 'menu-item', 'close-btn', 'g-nav-dot', 'g-nav-arrow', 'bottom-nav-item', 'circular-menu'];
+        return ignore.some(cls => target.closest('.' + cls));
+      }
+
+      window.changeSlide = function(slideIndex) {
+        currentSlide = slideIndex;
+        const activePage = pages[currentSection];
+        if (!activePage) return;
+
+        activePage.querySelectorAll('.slider-dot').forEach((dot, index) => dot.classList.toggle('active', index === (slideIndex - 1)));
+        activePage.querySelectorAll('.slide').forEach((slide, index) => slide.classList.toggle('active', index === (slideIndex - 1)));
+      }
+
+      window.handleSectionClick = function(event, index) {
+        if (currentSection === 0) {
+          openSection(index);
+        } else if (currentSection === index && !isAnimating) {
+          if (!isInteractiveTarget(event.target)) {
+            changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+          }
+        }
+      }
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      window.addEventListener('touchstart', (e) => {
+        if (isInteractiveTarget(e.target) || isAnimating) return;
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, {passive: false});
+
+      window.addEventListener('touchend', (e) => {
+        if (isInteractiveTarget(e.target) || isAnimating) return;
+        let touchEndX = e.changedTouches[0].screenX;
+        let touchEndY = e.changedTouches[0].screenY;
+        
+        let dx = touchEndX - touchStartX;
+        let dy = touchEndY - touchStartY;
+        
+        if (Math.max(Math.abs(dx), Math.abs(dy)) > 40) {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            if (currentSection !== 0) {
+              if (dx < 0) { 
+                changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+              } else { 
+                changeSlide(currentSlide <= 1 ? totalSlides : currentSlide - 1);
+              }
+            }
+          } else {
+            if (dy < 0) navScroll(1);
+            else navScroll(-1);
+          }
+        }
+      });
+
+      window.addEventListener('wheel', (e) => {
+        if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
+        if (!isAnimating) {
+          if (e.deltaY > 0) navScroll(1);  
+          else if (e.deltaY < 0) navScroll(-1); 
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp', 'Escape', 'ArrowRight', 'ArrowLeft', 'Enter'].includes(e.key)) {
+          if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
+        }
+
+        if (!isAnimating) {
+          if (e.key === 'ArrowDown' || e.key === 'PageDown') navScroll(1); 
+          else if (e.key === 'ArrowUp' || e.key === 'PageUp') navScroll(-1); 
+          else if (e.key === 'Enter' && currentSection === 0) jumpToSection(1);
+          else if (e.key === 'Escape' && currentSection !== 0) jumpToSection(0);
+          else if (e.key === 'ArrowRight' && currentSection !== 0) {
+            changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+          }
+          else if (e.key === 'ArrowLeft' && currentSection !== 0) {
+            changeSlide(currentSlide <= 1 ? totalSlides : currentSlide - 1);
+          }
+        }
+      });
+    </script>
+  </main>
+</body>
+</html>
