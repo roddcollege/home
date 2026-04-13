@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Rodd College - Value Proposition</title>
+  <title>Rodd College - Business Lab</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* --- GLOBAL STYLES & PHYSICS --- */
@@ -28,6 +28,25 @@
     }
     * { box-sizing: border-box; }
     
+    /* --- THE SEAMLESS BLUE SPACE BACKGROUND --- */
+    .bg-mainBg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0524a1;
+      background-image: 
+        radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 80px 150px, rgba(255,255,255,0.3), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 190px 40px, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.2), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 320px 80px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+        radial-gradient(circle at center, #1b5cd4 0%, #0829a6 60%, #03135c 100%);
+      background-repeat: repeat, repeat, repeat, repeat, repeat, no-repeat;
+      background-size: 150px 150px, 200px 200px, 250px 250px, 300px 300px, 350px 350px, 100% 100%;
+    }
+
     /* Interactive elements */
     a, .close-btn, .v-menu-item-inner, .slider-dot, .bottom-nav-item, .circular-menu, .quadrant {
       cursor: pointer;
@@ -68,7 +87,7 @@
     .page.hidden-bottom { transform: translateY(100%); z-index: 10; }
 
     /* --- PAGE 0: GRID VIEW --- */
-    #page-0 { background: #000; }
+    #page-0 { background: transparent; } /* Let the blue space show through! */
     .quadrant {
       position: absolute; width: 50%; height: 50%; overflow: hidden;
       transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -206,43 +225,35 @@
     }
 
     @media (max-width: 768px) {
-
-      /* Grid View Mobile Scaling */
       .main-icon { top: 35%; }
       .quadrant h2 { top: 65%; line-height: 1.3; }
 
-      /* Hide Side Dots on Phones */
       .global-nav-tracker { display: none !important; } 
       
       .close-btn { top: 20px; left: 20px; font-size: 14px; padding: 8px 15px; z-index: 105; }
       
-      /* WATERMARK MOBILE LAYOUT */
       .split-container, .slider-container { display: block; position: relative; }
       .split-left { width: 100%; height: 100%; background: transparent; z-index: 2; }
       .split-right { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
         z-index: 1; pointer-events: none;
       }
-      /* Turns the icon into a faint background watermark */
-      .split-icon { font-size: 150px; opacity: 0.08; margin-top: 97%; }
+      .split-icon { font-size: 150px; opacity: 0.08; margin-top: 88%; }
       
-      /* Re-align text for mobile reading */
       .content-block { padding: 80px 25px 140px 25px; align-items: flex-start; text-align: left; }
       .static-content { padding: 80px 25px 120px 25px; justify-content: center; }
       
-      /* Safely park interactive controls above the bottom menu */
       .slider-nav { right: auto; left: 50%; transform: translateX(-50%); bottom: 120px; }
       
       .v-menu { 
-        position: absolute; bottom: 14%; right: 0%; transform: translateX(-50%); 
-        flex-direction: column; justify-content: center; z-index: 10; 
+        position: absolute; bottom: 22%; left: 50%; transform: translateX(-50%); 
+        flex-direction: row; justify-content: center; z-index: 10; 
       }
     }
 
     @media (max-width: 480px) {
       .circular-menu { top: 15px; right: 15px; }
       
-      /* Shrink bottom menu slightly for small screens */
       .bottom-nav { height: 75px; }
       .bottom-nav-container { bottom: -100px; }
       .bottom-nav ul li i { font-size: 22px; }
@@ -254,315 +265,325 @@
 </head>
 <body>
 
-  <div id="circularMenu" class="circular-menu">
-    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active'); event.stopPropagation();">
-      <i id="main-menu-icon" class="fa-solid fa-house"></i>
-    </a>
-    <menu class="items-wrapper">
-      <a class="menu-item" onclick="jumpToSection(1); event.stopPropagation();" title="Storefront"><i class="fa-solid fa-store"></i></a>
-      <a class="menu-item" onclick="jumpToSection(2); event.stopPropagation();" title="Student Campus"><i class="fa-solid fa-graduation-cap"></i></a>
-      <a class="menu-item" onclick="jumpToSection(3); event.stopPropagation();" title="Teacher Lounge"><i class="fa-solid fa-chalkboard-user"></i></a>
-      <a class="menu-item" onclick="jumpToSection(4); event.stopPropagation();" title="Engine Room"><i class="fa-solid fa-server"></i></a>
-    </menu>
-  </div>
+  <main id="cd-main" class="bg-mainBg">
 
-  <div id="app-container">
-    
-    <div class="page active" id="page-0">
-      <div class="quadrant q1" onclick="handleSectionClick(event, 1)">
-        <i class="fa-solid fa-store main-icon"></i>
-        <h2>The Storefront</h2>
-        <div class="hint-text">Public Facing Funnel</div>
-      </div>
-      <div class="quadrant q2" onclick="handleSectionClick(event, 2)">
-        <i class="fa-solid fa-graduation-cap main-icon"></i>
-        <h2>Student Campus</h2>
-        <div class="hint-text">Training Solutions</div>
-      </div>
-      <div class="quadrant q3" onclick="handleSectionClick(event, 3)">
-        <i class="fa-solid fa-chalkboard-user main-icon"></i>
-        <h2>Teacher Lounge</h2>
-        <div class="hint-text">Strategy Alignment</div>
-      </div>
-      <div class="quadrant q4" onclick="handleSectionClick(event, 4)">
-        <i class="fa-solid fa-server main-icon"></i>
-        <h2>Engine Room</h2>
-        <div class="hint-text">Design Architecture</div>
-      </div>
+    <div id="circularMenu" class="circular-menu">
+      <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active'); event.stopPropagation();">
+        <i id="main-menu-icon" class="fa-solid fa-house"></i>
+      </a>
+      <menu class="items-wrapper">
+        <a class="menu-item" onclick="jumpToSection(1); event.stopPropagation();" title="Storefront"><i class="fa-solid fa-store"></i></a>
+        <a class="menu-item" onclick="jumpToSection(2); event.stopPropagation();" title="Student Campus"><i class="fa-solid fa-graduation-cap"></i></a>
+        <a class="menu-item" onclick="jumpToSection(3); event.stopPropagation();" title="Teacher Lounge"><i class="fa-solid fa-chalkboard-user"></i></a>
+        <a class="menu-item" onclick="jumpToSection(4); event.stopPropagation();" title="Engine Room"><i class="fa-solid fa-server"></i></a>
+      </menu>
     </div>
 
-    <div class="page hidden-bottom" id="page-1" onclick="handleSectionClick(event, 1)">
-      <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-grid-2"></i> Home</div>
-      <div class="slider-container">
-        <div class="slide active" id="slide-1">
-          <div class="split-left content-block">
-            <h3>Public Facing Funnel</h3>
-            <h1>Retail Subscriptions</h1>
-            <p>The $5/mo Base Subscription granting access to the AI Study Hub. Upsells include Dynamic Point packages where students book Matchmaker classes.</p>
+    <div id="app-container">
+      
+      <div class="page active" id="page-0">
+        <div class="quadrant q1" onclick="handleSectionClick(event, 1)">
+          <i class="fa-solid fa-store main-icon"></i>
+          <h2>The Storefront</h2>
+          <div class="hint-text">Public Facing Funnel</div>
+        </div>
+        <div class="quadrant q2" onclick="handleSectionClick(event, 2)">
+          <i class="fa-solid fa-graduation-cap main-icon"></i>
+          <h2>Student Campus</h2>
+          <div class="hint-text">Training Solutions</div>
+        </div>
+        <div class="quadrant q3" onclick="handleSectionClick(event, 3)">
+          <i class="fa-solid fa-chalkboard-user main-icon"></i>
+          <h2>Teacher Lounge</h2>
+          <div class="hint-text">Strategy Alignment</div>
+        </div>
+        <div class="quadrant q4" onclick="handleSectionClick(event, 4)">
+          <i class="fa-solid fa-server main-icon"></i>
+          <h2>Engine Room</h2>
+          <div class="hint-text">Design Architecture</div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-1" onclick="handleSectionClick(event, 1)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i id="main-menu-icon" class="fa-solid fa-house"></i></div>
+        <div class="slider-container">
+          <div class="slide active" id="slide-1">
+            <div class="split-left content-block">
+              <h3>Public Facing Funnel</h3>
+              <h1>Retail Subscriptions</h1>
+              <p>The $5/mo Base Subscription granting access to the AI Study Hub. Upsells include Dynamic Point packages where students book Matchmaker classes.</p>
+            </div>
+            <div class="split-right">
+              <i class="fa-solid fa-cart-shopping split-icon"></i>
+            </div>
+          </div>
+          <div class="slide" id="slide-2">
+            <div class="split-left content-block">
+              <h3>Enterprise Solutions</h3>
+              <h1>B2B Corporate HR</h1>
+              <p>Targeting SMBs & SMEs companies. Features the "Point Burn" accountability metric and the Team Heatmap for HR tracking.</p>
+            </div>
+            <div class="split-right">
+              <i class="fa-solid fa-building split-icon"></i>
+            </div>
+          </div>
+          <div class="slider-nav">
+            <div class="slider-dot active" onclick="changeSlide(1)"></div>
+            <div class="slider-dot" onclick="changeSlide(2)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-2" onclick="handleSectionClick(event, 2)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i id="main-menu-icon" class="fa-solid fa-house"></i></div>
+        <div class="split-container">
+          <div class="split-left">
+            <div class="v-tab content-block active" id="tab-1">
+              <h3 style="color: #6ee7b7;">Strategy Alignment</h3>
+              <h1>Value Proposition</h1>
+              <p><strong>Pain Relievers:</strong> No group scheduling hassle, strict accountability.<br><br><strong>Gain Creators:</strong> AI-hyper-personalized "Life OS" content, Global Cultural Exchange in group classes.</p>
+            </div>
+            <div class="v-tab content-block" id="tab-2">
+              <h3 style="color: #6ee7b7;">Design Architecture</h3>
+              <h1>CUBI UX Model</h1>
+              <p><strong>User Goals:</strong> Fluency, track progress.<br><br><strong>Biz Goals:</strong> Retention, Breakage revenue.<br><br><strong>Interaction:</strong> Seamless matchmaking and automated point deductions.</p>
+            </div>
+            <div class="v-tab content-block" id="tab-3">
+              <h3 style="color: #6ee7b7;">Financial Engine</h3>
+              <h1>Business Model</h1>
+              <p><strong>Revenue:</strong> $5 Sub, Point Burn, 1% Recovery Fees.<br><br><strong>Customer Relationships:</strong> Self-service AI hub & Community Conversation Clubs.</p>
+            </div>
           </div>
           <div class="split-right">
-            <i class="fa-solid fa-cart-shopping split-icon"></i>
-          </div>
-        </div>
-        <div class="slide" id="slide-2">
-          <div class="split-left content-block">
-            <h3>Enterprise Solutions</h3>
-            <h1>B2B Corporate HR</h1>
-            <p>Targeting SMBs & SMEs companies. Features the "Point Burn" accountability metric and the Team Heatmap for HR tracking.</p>
-          </div>
-          <div class="split-right">
-            <i class="fa-solid fa-building split-icon"></i>
-          </div>
-        </div>
-        <div class="slider-nav">
-          <div class="slider-dot active" onclick="changeSlide(1)"></div>
-          <div class="slider-dot" onclick="changeSlide(2)"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="page hidden-bottom" id="page-2" onclick="handleSectionClick(event, 2)">
-      <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-grid-2"></i> Home</div>
-      <div class="split-container">
-        <div class="split-left">
-          <div class="v-tab content-block active" id="tab-1">
-            <h3 style="color: #6ee7b7;">Strategy Alignment</h3>
-            <h1>Value Proposition</h1>
-            <p><strong>Pain Relievers:</strong> No group scheduling hassle, strict accountability.<br><br><strong>Gain Creators:</strong> AI-hyper-personalized "Life OS" content, Global Cultural Exchange in group classes.</p>
-          </div>
-          <div class="v-tab content-block" id="tab-2">
-            <h3 style="color: #6ee7b7;">Design Architecture</h3>
-            <h1>CUBI UX Model</h1>
-            <p><strong>User Goals:</strong> Fluency, track progress.<br><br><strong>Biz Goals:</strong> Retention, Breakage revenue.<br><br><strong>Interaction:</strong> Seamless matchmaking and automated point deductions.</p>
-          </div>
-          <div class="v-tab content-block" id="tab-3">
-            <h3 style="color: #6ee7b7;">Financial Engine</h3>
-            <h1>Business Model</h1>
-            <p><strong>Revenue:</strong> $5 Sub, Point Burn, 1% Recovery Fees.<br><br><strong>Customer Relationships:</strong> Self-service AI hub & Community Conversation Clubs.</p>
-          </div>
-        </div>
-        <div class="split-right">
-          <div class="v-menu">
-            <div class="v-menu-item-inner active" onclick="changeTab(1)" title="Value Proposition"><i class="fa-solid fa-bullseye"></i></div>
-            <div class="v-menu-item-inner" onclick="changeTab(2)" title="CUBI UX Model"><i class="fa-solid fa-cubes"></i></div>
-            <div class="v-menu-item-inner" onclick="changeTab(3)" title="Business Model"><i class="fa-solid fa-chart-pie"></i></div>
+            <div class="v-menu">
+              <div class="v-menu-item-inner active" onclick="changeTab(1)" title="Value Proposition"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="v-menu-item-inner" onclick="changeTab(2)" title="CUBI UX Model"><i class="fa-solid fa-cubes"></i></div>
+              <div class="v-menu-item-inner" onclick="changeTab(3)" title="Business Model"><i class="fa-solid fa-chart-pie"></i></div>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="page hidden-bottom" id="page-3" onclick="handleSectionClick(event, 3)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i id="main-menu-icon" class="fa-solid fa-house"></i></div>
+        <div class="static-content">
+          <h1>The Incubator</h1>
+          <p>A zero-admin environment for freelance teachers.<br><br>Features the 30-Day ASU-TESOL Certification timer, automated Adyen escrow payouts, and guaranteed $15/hr baseline through dynamic matchmaking.</p>
+        </div>
+      </div>
+
+      <div class="page hidden-bottom" id="page-4" onclick="handleSectionClick(event, 4)">
+        <div class="close-btn" onclick="jumpToSection(0)"><i id="main-menu-icon" class="fa-solid fa-house"></i></div>
+        <div class="static-content">
+          <h1>The Core Tech Stack</h1>
+          <p><strong>Frontend:</strong> Vanilla JS + HTML + CSS for instant load times.<br><br><strong>Backend:</strong> Node.js & PostgreSQL for complex tag networking.<br><br><strong>Webcams:</strong> Jitsi integrated webhooks.<br><br><strong>Brain:</strong> Gemini API dynamic generation.</p>
+        </div>
+      </div>
+    </div> 
+
+    <div class="global-nav-tracker">
+      <div class="g-nav-arrow" onclick="navScroll(-1)"><i class="fa-solid fa-chevron-up"></i></div>
+      <div class="g-nav-dot active" id="g-dot-1" data-label="Storefront" onclick="jumpToSection(1)"></div>
+      <div class="g-nav-dot" id="g-dot-2" data-label="Student Campus" onclick="jumpToSection(2)"></div>
+      <div class="g-nav-dot" id="g-dot-3" data-label="Teacher Lounge" onclick="jumpToSection(3)"></div>
+      <div class="g-nav-dot" id="g-dot-4" data-label="Engine Room" onclick="jumpToSection(4)"></div>
+      <div class="g-nav-arrow" onclick="navScroll(1)"><i class="fa-solid fa-chevron-down"></i></div>
     </div>
 
-    <div class="page hidden-bottom" id="page-3" onclick="handleSectionClick(event, 3)">
-      <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-grid-2"></i> Home</div>
-      <div class="static-content">
-        <h1>The Incubator</h1>
-        <p>A zero-admin environment for freelance teachers.<br><br>Features the 30-Day ASU-TESOL Certification timer, automated Adyen escrow payouts, and guaranteed $15/hr baseline through dynamic matchmaking.</p>
+    <div class="bottom-nav-container">
+      <div class="bottom-nav">
+        <ul id="gooey-menu">
+          <li onclick="jumpToSection(1)">
+            <div class="bottom-nav-item"><i class="fa-solid fa-store"></i><span>Storefront</span></div>
+          </li>
+          <li onclick="jumpToSection(2)">
+            <div class="bottom-nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Campus</span></div>
+          </li>
+          <li onclick="jumpToSection(3)">
+            <div class="bottom-nav-item"><i class="fa-solid fa-chalkboard-user"></i><span>Lounge</span></div>
+          </li>
+          <li onclick="jumpToSection(4)">
+            <div class="bottom-nav-item"><i class="fa-solid fa-server"></i><span>Engine</span></div>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="page hidden-bottom" id="page-4" onclick="handleSectionClick(event, 4)">
-      <div class="close-btn" onclick="jumpToSection(0)"><i class="fa-solid fa-grid-2"></i> Home</div>
-      <div class="static-content">
-        <h1>The Core Tech Stack</h1>
-        <p><strong>Frontend:</strong> Vanilla JS + HTML + CSS for instant load times.<br><br><strong>Backend:</strong> Node.js & PostgreSQL for complex tag networking.<br><br><strong>Webcams:</strong> Jitsi integrated webhooks.<br><br><strong>Brain:</strong> Gemini API dynamic generation.</p>
-      </div>
-    </div>
-  </div> 
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
+      <defs>
+        <filter id="fancy-goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
+      </defs>
+    </svg>
 
-  <div class="global-nav-tracker">
-    <div class="g-nav-arrow" onclick="navScroll(-1)"><i class="fa-solid fa-chevron-up"></i></div>
-    <div class="g-nav-dot active" id="g-dot-1" data-label="Storefront" onclick="jumpToSection(1)"></div>
-    <div class="g-nav-dot" id="g-dot-2" data-label="Student Campus" onclick="jumpToSection(2)"></div>
-    <div class="g-nav-dot" id="g-dot-3" data-label="Teacher Lounge" onclick="jumpToSection(3)"></div>
-    <div class="g-nav-dot" id="g-dot-4" data-label="Engine Room" onclick="jumpToSection(4)"></div>
-    <div class="g-nav-arrow" onclick="navScroll(1)"><i class="fa-solid fa-chevron-down"></i></div>
-  </div>
+    <script>
+      // --- Initialization wrapper to ensure scripts fire if loaded via AJAX ---
+      function initCommandCenter() {
+        const circularMenu = document.getElementById('circularMenu');
+        const menuIcon = document.getElementById('main-menu-icon');
+        const gooeyItems = document.querySelectorAll('#gooey-menu li');
+        
+        const pages = [
+          document.getElementById('page-0'),
+          document.getElementById('page-1'),
+          document.getElementById('page-2'),
+          document.getElementById('page-3'),
+          document.getElementById('page-4')
+        ];
+        
+        const sectionIcons = ['fa-house', 'fa-store', 'fa-graduation-cap', 'fa-chalkboard-user', 'fa-server'];
+        const navThemeColors = ['#111', '#1e3a8a', '#064e3b', '#78350f', '#1e293b']; 
 
-  <div class="bottom-nav-container">
-    <div class="bottom-nav">
-      <ul id="gooey-menu">
-        <li onclick="jumpToSection(1)">
-          <div class="bottom-nav-item"><i class="fa-solid fa-store"></i><span>Storefront</span></div>
-        </li>
-        <li onclick="jumpToSection(2)">
-          <div class="bottom-nav-item"><i class="fa-solid fa-graduation-cap"></i><span>Campus</span></div>
-        </li>
-        <li onclick="jumpToSection(3)">
-          <div class="bottom-nav-item"><i class="fa-solid fa-chalkboard-user"></i><span>Lounge</span></div>
-        </li>
-        <li onclick="jumpToSection(4)">
-          <div class="bottom-nav-item"><i class="fa-solid fa-server"></i><span>Engine</span></div>
-        </li>
-      </ul>
-    </div>
-  </div>
+        let currentSection = 0; 
+        let isAnimating = false; 
+        let currentSlide = 1, totalSlides = 2; 
+        let currentTab = 1, totalTabs = 3;   
 
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
-    <defs>
-      <filter id="fancy-goo">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-        <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-      </filter>
-    </defs>
-  </svg>
+        document.addEventListener('click', (e) => {
+          if (!circularMenu.contains(e.target) && circularMenu.classList.contains('active')) {
+            circularMenu.classList.remove('active');
+          }
+        });
 
-  <script>
-    const circularMenu = document.getElementById('circularMenu');
-    const menuIcon = document.getElementById('main-menu-icon');
-    const gooeyItems = document.querySelectorAll('#gooey-menu li');
-    
-    // Page Elements
-    const pages = [
-      document.getElementById('page-0'),
-      document.getElementById('page-1'),
-      document.getElementById('page-2'),
-      document.getElementById('page-3'),
-      document.getElementById('page-4')
-    ];
-    
-    const sectionIcons = ['fa-house', 'fa-store', 'fa-graduation-cap', 'fa-chalkboard-user', 'fa-server'];
-    const navThemeColors = ['#111', '#1e3a8a', '#064e3b', '#78350f', '#1e293b']; 
+        // Attach globally so inline HTML onclick handlers still work
+        window.updateMenuState = function(index) {
+          document.body.classList.toggle('in-section', index > 0);
+          menuIcon.classList.remove(...sectionIcons);
+          menuIcon.classList.add(sectionIcons[index]);
+          document.documentElement.style.setProperty('--nav-bg', navThemeColors[index]);
 
-    let currentSection = 0; 
-    let isAnimating = false; 
-    let currentSlide = 1, totalSlides = 2; 
-    let currentTab = 1, totalTabs = 3;   
-
-    document.addEventListener('click', (e) => {
-      if (!circularMenu.contains(e.target) && circularMenu.classList.contains('active')) {
-        circularMenu.classList.remove('active');
-      }
-    });
-
-    function updateMenuState(index) {
-      document.body.classList.toggle('in-section', index > 0);
-      menuIcon.classList.remove(...sectionIcons);
-      menuIcon.classList.add(sectionIcons[index]);
-      document.documentElement.style.setProperty('--nav-bg', navThemeColors[index]);
-
-      gooeyItems.forEach((li, i) => li.classList.toggle('active', i === (index - 1)));
-      if(index > 0) {
-        for(let i=1; i<=4; i++) document.getElementById(`g-dot-${i}`).classList.toggle('active', i === index);
-      }
-    }
-
-    function triggerAnimationLock() {
-      isAnimating = true;
-      setTimeout(() => { isAnimating = false; }, 800); 
-    }
-
-    // --- ANIMATION CORE ---
-    function executeSlide(oldIndex, newIndex, dir) {
-      const oldPage = pages[oldIndex];
-      const newPage = pages[newIndex];
-      
-      newPage.style.transition = 'none';
-      if (dir === 1) newPage.className = 'page hidden-bottom'; 
-      else newPage.className = 'page hidden-top'; 
-      
-      void newPage.offsetWidth; 
-      
-      newPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-      oldPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-      
-      if (dir === 1) oldPage.className = 'page hidden-top'; 
-      else oldPage.className = 'page hidden-bottom'; 
-      
-      newPage.className = 'page active';
-      
-      currentSection = newIndex;
-      updateMenuState(currentSection);
-    }
-
-    function openSection(index) {
-      if (currentSection === index || isAnimating) return;
-      triggerAnimationLock();
-      executeSlide(currentSection, index, 1); 
-    }
-
-    function jumpToSection(index) {
-      if (currentSection === index || isAnimating) return;
-      triggerAnimationLock();
-      
-      let dir = index > currentSection ? 1 : -1;
-      if (currentSection === 0 && index === 4) dir = -1; 
-      if (currentSection === 4 && index === 0) dir = 1;  
-      
-      executeSlide(currentSection, index, dir);
-    }
-
-    function navScroll(direction) {
-      if (isAnimating) return;
-      
-      let nextIndex = currentSection + direction;
-      if (nextIndex > 4) nextIndex = 0;
-      if (nextIndex < 0) nextIndex = 4;
-      
-      triggerAnimationLock();
-      executeSlide(currentSection, nextIndex, direction);
-    }
-
-    // --- CLICK TO ADVANCE LOGIC ---
-    function isInteractiveTarget(target) {
-      const ignore = ['slider-dot', 'v-menu-item-inner', 'floating-btn', 'menu-item', 'close-btn', 'g-nav-dot', 'g-nav-arrow', 'bottom-nav-item', 'circular-menu'];
-      return ignore.some(cls => target.closest('.' + cls));
-    }
-
-    function handleSectionClick(event, index) {
-      if (currentSection === 0) {
-        openSection(index);
-      } else if (currentSection === index && !isAnimating) {
-        if (!isInteractiveTarget(event.target)) {
-          if (index === 1) {
-            changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
-          } else if (index === 2) {
-            changeTab(currentTab >= totalTabs ? 1 : currentTab + 1);
+          gooeyItems.forEach((li, i) => li.classList.toggle('active', i === (index - 1)));
+          if(index > 0) {
+            for(let i=1; i<=4; i++) document.getElementById(`g-dot-${i}`).classList.toggle('active', i === index);
           }
         }
-      }
-    }
 
-    window.addEventListener('wheel', (e) => {
-      if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
-      if (!isAnimating) {
-        if (e.deltaY > 0) navScroll(1);  
-        else if (e.deltaY < 0) navScroll(-1); 
-      }
-    });
-
-    // --- HORIZONTAL SLIDER/TABS ---
-    function changeTab(tabIndex) {
-      currentTab = tabIndex;
-      document.querySelectorAll('.v-menu-item-inner').forEach((item, index) => item.classList.toggle('active', index === (tabIndex - 1)));
-      document.querySelectorAll('.v-tab').forEach((tab, index) => tab.classList.toggle('active', index === (tabIndex - 1)));
-    }
-    function changeSlide(slideIndex) {
-      currentSlide = slideIndex;
-      document.querySelectorAll('.slider-dot').forEach((dot, index) => dot.classList.toggle('active', index === (slideIndex - 1)));
-      document.querySelectorAll('.slide').forEach((slide, index) => slide.classList.toggle('active', index === (slideIndex - 1)));
-    }
-
-    // --- KEYBOARD ---
-    window.addEventListener('keydown', (e) => {
-      if (['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp', 'Escape', 'ArrowRight', 'ArrowLeft', 'Enter'].includes(e.key)) {
-        if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
-      }
-
-      if (!isAnimating) {
-        if (e.key === 'ArrowDown' || e.key === 'PageDown') navScroll(1); 
-        else if (e.key === 'ArrowUp' || e.key === 'PageUp') navScroll(-1); 
-        else if (e.key === 'Enter' && currentSection === 0) jumpToSection(1);
-        else if (e.key === 'Escape' && currentSection !== 0) jumpToSection(0);
-        else if (e.key === 'ArrowRight' && currentSection !== 0) {
-          if (currentSection === 1) changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
-          else if (currentSection === 2) changeTab(currentTab >= totalTabs ? 1 : currentTab + 1);
+        window.triggerAnimationLock = function() {
+          isAnimating = true;
+          setTimeout(() => { isAnimating = false; }, 800); 
         }
-        else if (e.key === 'ArrowLeft' && currentSection !== 0) {
-          if (currentSection === 1) changeSlide(currentSlide <= 1 ? totalSlides : currentSlide - 1);
-          else if (currentSection === 2) changeTab(currentTab <= 1 ? totalTabs : currentTab - 1);
+
+        window.executeSlide = function(oldIndex, newIndex, dir) {
+          const oldPage = pages[oldIndex];
+          const newPage = pages[newIndex];
+          
+          newPage.style.transition = 'none';
+          if (dir === 1) newPage.className = 'page hidden-bottom'; 
+          else newPage.className = 'page hidden-top'; 
+          
+          void newPage.offsetWidth; 
+          
+          newPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+          oldPage.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+          
+          if (dir === 1) oldPage.className = 'page hidden-top'; 
+          else oldPage.className = 'page hidden-bottom'; 
+          
+          newPage.className = 'page active';
+          
+          currentSection = newIndex;
+          updateMenuState(currentSection);
         }
+
+        window.openSection = function(index) {
+          if (currentSection === index || isAnimating) return;
+          triggerAnimationLock();
+          executeSlide(currentSection, index, 1); 
+        }
+
+        window.jumpToSection = function(index) {
+          if (currentSection === index || isAnimating) return;
+          triggerAnimationLock();
+          
+          let dir = index > currentSection ? 1 : -1;
+          if (currentSection === 0 && index === 4) dir = -1; 
+          if (currentSection === 4 && index === 0) dir = 1;  
+          
+          executeSlide(currentSection, index, dir);
+        }
+
+        window.navScroll = function(direction) {
+          if (isAnimating) return;
+          
+          let nextIndex = currentSection + direction;
+          if (nextIndex > 4) nextIndex = 0;
+          if (nextIndex < 0) nextIndex = 4;
+          
+          triggerAnimationLock();
+          executeSlide(currentSection, nextIndex, direction);
+        }
+
+        function isInteractiveTarget(target) {
+          const ignore = ['slider-dot', 'v-menu-item-inner', 'floating-btn', 'menu-item', 'close-btn', 'g-nav-dot', 'g-nav-arrow', 'bottom-nav-item', 'circular-menu'];
+          return ignore.some(cls => target.closest('.' + cls));
+        }
+
+        window.handleSectionClick = function(event, index) {
+          if (currentSection === 0) {
+            openSection(index);
+          } else if (currentSection === index && !isAnimating) {
+            if (!isInteractiveTarget(event.target)) {
+              if (index === 1) {
+                changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+              } else if (index === 2) {
+                changeTab(currentTab >= totalTabs ? 1 : currentTab + 1);
+              }
+            }
+          }
+        }
+
+        window.addEventListener('wheel', (e) => {
+          if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
+          if (!isAnimating) {
+            if (e.deltaY > 0) navScroll(1);  
+            else if (e.deltaY < 0) navScroll(-1); 
+          }
+        });
+
+        window.changeTab = function(tabIndex) {
+          currentTab = tabIndex;
+          document.querySelectorAll('.v-menu-item-inner').forEach((item, index) => item.classList.toggle('active', index === (tabIndex - 1)));
+          document.querySelectorAll('.v-tab').forEach((tab, index) => tab.classList.toggle('active', index === (tabIndex - 1)));
+        }
+        
+        window.changeSlide = function(slideIndex) {
+          currentSlide = slideIndex;
+          document.querySelectorAll('.slider-dot').forEach((dot, index) => dot.classList.toggle('active', index === (slideIndex - 1)));
+          document.querySelectorAll('.slide').forEach((slide, index) => slide.classList.toggle('active', index === (slideIndex - 1)));
+        }
+
+        window.addEventListener('keydown', (e) => {
+          if (['ArrowDown', 'PageDown', 'ArrowUp', 'PageUp', 'Escape', 'ArrowRight', 'ArrowLeft', 'Enter'].includes(e.key)) {
+            if (circularMenu.classList.contains('active')) circularMenu.classList.remove('active');
+          }
+
+          if (!isAnimating) {
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') navScroll(1); 
+            else if (e.key === 'ArrowUp' || e.key === 'PageUp') navScroll(-1); 
+            else if (e.key === 'Enter' && currentSection === 0) jumpToSection(1);
+            else if (e.key === 'Escape' && currentSection !== 0) jumpToSection(0);
+            else if (e.key === 'ArrowRight' && currentSection !== 0) {
+              if (currentSection === 1) changeSlide(currentSlide >= totalSlides ? 1 : currentSlide + 1);
+              else if (currentSection === 2) changeTab(currentTab >= totalTabs ? 1 : currentTab + 1);
+            }
+            else if (e.key === 'ArrowLeft' && currentSection !== 0) {
+              if (currentSection === 1) changeSlide(currentSlide <= 1 ? totalSlides : currentSlide - 1);
+              else if (currentSection === 2) changeTab(currentTab <= 1 ? totalTabs : currentTab - 1);
+            }
+          }
+        });
       }
-    });
-  </script>
+
+      // Fire script on standard direct load
+      document.addEventListener("DOMContentLoaded", initCommandCenter);
+
+      // Important: If you are using CodyHouse's AJAX transition, standard DOMContentLoaded 
+      // won't fire when this page is injected. It will instead listen for this custom event:
+      document.addEventListener('pageTransitionComplete', initCommandCenter);
+    </script>
+  </main>
 </body>
 </html>
