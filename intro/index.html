@@ -229,18 +229,26 @@
 
             // 5. Animate the Transition
             const tlTrans = gsap.timeline({
-                onComplete: () => {
-                    // Stop Intro Loop & Cleanup
-                    if (introRafId) cancelAnimationFrame(introRafId);
-                    currentMain.remove();
-                    gsap.to(loadingBar, { opacity: 0, duration: 0.3 });
-                    
-                    // Push URL to History for seamless SPA feel
-                    window.history.pushState({path: targetUrl}, '', targetUrl);
-                    
-                    // Boot up the scripts in the newly injected page
-                    document.dispatchEvent(new Event('pageTransitionComplete'));
-                }
+				onComplete: () => {
+					// Stop Intro Loop & Cleanup
+					if (introRafId) cancelAnimationFrame(introRafId);
+					currentMain.remove();
+					gsap.to(loadingBar, { opacity: 0, duration: 0.3 });
+					
+					// Push URL to History for seamless SPA feel
+					window.history.pushState({path: targetUrl}, '', targetUrl);
+					
+					// NEW: Manually evaluate scripts from the injected page
+					const newScripts = newMain.querySelectorAll('script');
+					newScripts.forEach(oldScript => {
+						const newScript = document.createElement('script');
+						newScript.textContent = oldScript.textContent;
+						document.body.appendChild(newScript);
+					});
+
+					// Boot up the scripts in the newly injected page
+					document.dispatchEvent(new Event('pageTransitionComplete'));
+				}
             });
 
             // The CodyHouse Effect: Old content pushes back slightly, New content sweeps over
