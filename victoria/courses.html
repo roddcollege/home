@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Courses - Español Vivo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&amp;family=Montserrat:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-background": "#0d1c2e",
+                "outline-variant": "#e1bfb2",
+                "on-error-container": "#93000a",
+                "inverse-surface": "#233144",
+                "surface-container-lowest": "#ffffff",
+                "on-primary": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "outline": "#8d7165",
+                "inverse-primary": "#ffb596",
+                "on-secondary-container": "#3e637e",
+                "surface": "#f8f9ff",
+                "primary-fixed-dim": "#ffb596",
+                "tertiary-fixed-dim": "#f9bc47",
+                "primary-container": "#c74e00",
+                "on-secondary-fixed-variant": "#244a64",
+                "inverse-on-surface": "#eaf1ff",
+                "on-tertiary-fixed-variant": "#5e4100",
+                "surface-bright": "#f8f9ff",
+                "surface-dim": "#ccdbf3",
+                "on-tertiary-fixed": "#271900",
+                "on-surface": "#0d1c2e",
+                "surface-tint": "#a33e00",
+                "on-primary-fixed-variant": "#7c2e00",
+                "on-primary-container": "#fffbff",
+                "surface-container-low": "#eff4ff",
+                "on-surface-variant": "#594137",
+                "tertiary-fixed": "#ffdea9",
+                "primary": "#9f3d00",
+                "secondary-fixed-dim": "#a5cbea",
+                "surface-container": "#e6eeff",
+                "primary-fixed": "#ffdbcd",
+                "background": "#f8f9ff",
+                "error-container": "#ffdad6",
+                "on-error": "#ffffff",
+                "surface-container-highest": "#d5e3fc",
+                "surface-container-high": "#dce9ff",
+                "on-primary-fixed": "#360f00",
+                "tertiary-container": "#996c00",
+                "surface-variant": "#d5e3fc",
+                "secondary-container": "#b9dffe",
+                "on-secondary": "#ffffff",
+                "tertiary": "#7a5500",
+                "secondary-fixed": "#cae6ff",
+                "secondary": "#3d627d",
+                "on-tertiary-container": "#fffbff",
+                "error": "#ba1a1a",
+                "on-secondary-fixed": "#001e2f"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "max-width": "1280px",
+                "sm": "12px",
+                "xs": "4px",
+                "md": "24px",
+                "margin-mobile": "16px",
+                "lg": "48px",
+                "gutter": "24px",
+                "base": "8px",
+                "xl": "80px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Montserrat"
+                ],
+                "headline-lg-mobile": [
+                        "Montserrat"
+                ],
+                "body-md": [
+                        "Literata"
+                ],
+                "body-lg": [
+                        "Literata"
+                ],
+                "headline-md": [
+                        "Montserrat"
+                ],
+                "headline-lg": [
+                        "Montserrat"
+                ],
+                "display-lg": [
+                        "Montserrat"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .geometric-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239f3d00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-video-placeholder {
+            background: linear-gradient(rgba(13, 28, 46, 0.7), rgba(13, 28, 46, 0.8)), url('https://images.unsplash.com/photo-1544604862-23c3b03657cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover fixed;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col geometric-pattern">
+<!-- TopNavBar Component -->
+<nav class="docked full-width top-0 sticky z-50 bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-md bg-surface dark:bg-surface-dim shadow-sm shadow-sm">
+<div class="flex justify-between items-center w-full px-gutter max-w-max-width mx-auto h-20">
+<!-- Brand -->
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">
+                Español Vivo
+            </div>
+<!-- Navigation Links (Desktop) -->
+<div class="hidden md:flex space-x-md">
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary transition-colors hover:bg-primary/5 dark:hover:bg-primary-fixed/10 hover:text-primary px-sm py-xs rounded text-label-md font-label-md" href="index.html">Home</a>
+<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary dark:border-primary-fixed pb-1 hover:bg-primary/5 dark:hover:bg-primary-fixed/10 hover:text-primary px-sm py-xs rounded text-label-md font-label-md scale-95 transition-all duration-200 cursor-pointer" href="#">Courses</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary transition-colors hover:bg-primary/5 dark:hover:bg-primary-fixed/10 hover:text-primary px-sm py-xs rounded text-label-md font-label-md" href="#">About</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary transition-colors hover:bg-primary/5 dark:hover:bg-primary-fixed/10 hover:text-primary px-sm py-xs rounded text-label-md font-label-md" href="#">Contact</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center space-x-sm">
+<div class="hidden md:flex relative text-on-surface-variant">
+<span class="material-symbols-outlined absolute right-3 top-2 text-on-surface-variant/50">search</span>
+<input class="pl-3 pr-10 py-2 border border-outline-variant/50 rounded-full bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-label-md font-label-md w-48" placeholder="Search..." type="text"/>
+</div>
+<button class="text-primary hover:bg-primary/5 px-sm py-2 rounded text-label-md font-label-md transition-colors">Log In</button>
+<button class="bg-primary text-on-primary hover:bg-surface-tint px-md py-2 rounded text-label-md font-label-md transition-colors shadow-sm hover:translate-y-px">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="hero-video-placeholder relative py-xl px-margin-mobile md:px-lg flex items-center justify-center text-center min-h-[614px]">
+<div class="max-w-3xl mx-auto z-10 text-on-primary">
+<h1 class="text-display-lg font-display-lg mb-md text-on-primary drop-shadow-md">
+                    Domina el Español con Propósito
+                </h1>
+<p class="text-body-lg font-body-lg mb-lg text-inverse-on-surface/90 max-w-2xl mx-auto">
+                    Un viaje estructurado desde los fundamentos hasta la fluidez comunicativa.
+                </p>
+<button class="bg-primary text-on-primary hover:bg-surface-tint px-lg py-3 rounded-full text-label-md font-label-md transition-all shadow-md hover:translate-y-[2px] inline-flex items-center gap-2">
+                    Comenzar Viaje <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+</button>
+</div>
+</section>
+<div class="max-w-max-width mx-auto px-margin-mobile md:px-gutter py-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Main Course Grid -->
+<div class="lg:col-span-8 space-y-xl">
+<!-- Section 1: Fundamentos -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">1. Fundamentos</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow group">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">abc</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Alfabeto y Pronunciación</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Las bases del sonido español.</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">format_quote</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Reglas de Acentuación</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Sílabas tónicas, agudas, llanas, esdrújulas.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Artículos, Sustantivos y Adjetivos -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">2. Artículos, Sustantivos y Adjetivos</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow group">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">wc</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Género y Número</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Masculino, femenino, singular y plural.</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">compare_arrows</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Concordancia y Grados</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Adjetivos, comparativos y superlativos.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Pronombres y Determinantes -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">3. Pronombres y Determinantes</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow group">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Personales y Posesivos</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Sujeto, demostrativos y pertenencia.</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-slate-500/10 shadow-[0px_4px_20px_rgba(0,48,73,0.05)] hover:shadow-[0px_10px_30px_rgba(0,48,73,0.12)] transition-shadow">
+<div class="flex items-start gap-sm mb-sm">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">multiple_stop</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Objeto y Reflexivos</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm mt-xs">Objeto directo, indirecto y verbos reflexivos.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 4: Tiempos Verbales -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">4. Tiempos Verbales</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-lg rounded-xl border-t-4 border-tertiary-fixed-dim shadow-[0px_10px_30px_rgba(0,48,73,0.12)] relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 text-primary">
+<span class="material-symbols-outlined text-[100px]">history</span>
+</div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-tertiary-container/10 text-tertiary-container rounded-full text-xs font-bold mb-md uppercase tracking-wider">Núcleo</span>
+<h3 class="text-headline-lg font-headline-lg text-primary mb-sm">Presente y Pasados</h3>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-md">Acciones habituales y narración en el pasado.</p>
+<div class="space-y-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Presente de Indicativo</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Pretérito Perfecto e Indefinido</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Pretérito Imperfecto</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary p-lg rounded-xl shadow-[0px_10px_30px_rgba(0,48,73,0.12)] text-on-primary relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 text-on-primary">
+<span class="material-symbols-outlined text-[100px]">update</span>
+</div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-white/20 text-white rounded-full text-xs font-bold mb-md uppercase tracking-wider">Avanzado</span>
+<h3 class="text-headline-lg font-headline-lg mb-sm">Futuro y Condicional</h3>
+<p class="text-body-lg font-body-lg text-on-primary/90 mb-md">Expresando planes, predicciones y situaciones hipotéticas.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-on-primary/20 rounded text-xs font-label-md">Futuro Próximo</span>
+<span class="px-2 py-1 bg-on-primary/20 rounded text-xs font-label-md">Futuro Simple</span>
+<span class="px-2 py-1 bg-on-primary/20 rounded text-xs font-label-md">Condicional Simple</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: El Mundo del Subjuntivo -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">5. El Mundo del Subjuntivo</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(0,48,73,0.05)] border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 text-secondary">
+<span class="material-symbols-outlined text-[100px]">psychology</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-headline-lg font-headline-lg text-on-surface mb-sm">Presente de Subjuntivo</h3>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-md">Expresión de deseos, dudas, emociones y recomendaciones.</p>
+<div class="space-y-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Verbos Regulares e Irregulares</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Usos Comunes (Ojalá, Quiero que...)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(0,48,73,0.05)] border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 text-secondary">
+<span class="material-symbols-outlined text-[100px]">auto_stories</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-headline-lg font-headline-lg text-on-surface mb-sm">Imperfecto y Pluscuamperfecto</h3>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-md">Cláusulas condicionales y situaciones irreales.</p>
+<div class="space-y-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Imperfecto de Subjuntivo</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-body-md font-body-md text-sm">Pluscuamperfecto de Subjuntivo</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 6: Estructuras Avanzadas -->
+<div class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-primary border-b border-outline-variant/30 pb-sm">6. Estructuras Avanzadas</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-tertiary-container text-4xl mb-sm">campaign</span>
+<h4 class="text-headline-md font-headline-md text-on-surface text-base mb-xs">Imperativo</h4>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs">Órdenes, consejos y peticiones (Afirmativo y Negativo).</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-sm">compare_arrows</span>
+<h4 class="text-headline-md font-headline-md text-on-surface text-base mb-xs">Preposiciones</h4>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs">Por vs Para, A, De, En, Con.</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary text-4xl mb-sm">link</span>
+<h4 class="text-headline-md font-headline-md text-on-surface text-base mb-xs">Adverbios y Conectores</h4>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs">Estructuración del discurso y cohesión de textos.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Sidebar -->
+<div class="lg:col-span-4 relative">
+<div class="sticky top-28 space-y-lg">
+<!-- Mini Resumen Clave -->
+<div class="bg-surface-container p-md rounded-xl border border-secondary/20 shadow-sm">
+<div class="flex items-center gap-sm mb-md pb-sm border-b border-secondary/20">
+<span class="material-symbols-outlined text-secondary">lightbulb</span>
+<h3 class="text-headline-md font-headline-md text-on-surface text-lg">Mini Resumen Clave</h3>
+</div>
+<ul class="space-y-md">
+<li class="flex flex-col gap-1">
+<span class="text-label-md font-label-md text-secondary uppercase tracking-wider text-xs">Modos Verbales</span>
+<div class="bg-surface-container-lowest p-sm rounded border border-outline-variant/20 text-body-md font-body-md text-sm">
+<span class="font-semibold text-primary">Indicativo</span> → Realidad, hechos.<br/>
+<span class="font-semibold text-secondary">Subjuntivo</span> → Deseo, duda, emoción.
+                                    </div>
+</li>
+<li class="flex flex-col gap-1">
+<span class="text-label-md font-label-md text-secondary uppercase tracking-wider text-xs">Ser vs Estar</span>
+<div class="bg-surface-container-lowest p-sm rounded border border-outline-variant/20 text-body-md font-body-md text-sm">
+<span class="font-semibold text-primary">Ser</span> → Identidad, origen, características permanentes.<br/>
+<span class="font-semibold text-secondary">Estar</span> → Ubicación, estados temporales.
+                                    </div>
+</li>
+</ul>
+</div>
+<!-- Quick Reference Table Link -->
+<div class="bg-surface-container-highest p-md rounded-xl flex items-center justify-between group cursor-pointer hover:bg-secondary-container transition-colors">
+<div>
+<h4 class="text-headline-md font-headline-md text-on-surface text-base">Tablas de Referencia</h4>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs">Conjugaciones rápidas.</p>
+</div>
+<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-lg px-gutter max-w-max-width mx-auto grid grid-cols-1 md:grid-cols-4 gap-md full-width relative border-t border-outline-variant/20 dark:border-outline/10 bg-surface-container-highest dark:bg-inverse-surface">
+<div class="col-span-1 md:col-span-2">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim mb-sm">
+                Español Vivo
+            </div>
+<p class="text-body-md font-body-md text-on-surface dark:text-inverse-on-surface text-sm max-w-sm mb-md">
+                © 2026 Español Vivo. Aprendizaje Consciente.
+            </p>
+</div>
+<div class="col-span-1 flex flex-col space-y-sm">
+<span class="text-label-md font-label-md text-on-surface-variant dark:text-surface-variant font-bold uppercase tracking-wider text-xs mb-xs">Legal</span>
+<a class="text-on-surface dark:text-inverse-on-surface text-body-md font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface dark:text-inverse-on-surface text-body-md font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-sm" href="#">Terms of Service</a>
+<a class="text-on-surface dark:text-inverse-on-surface text-body-md font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-sm" href="#">Accreditations</a>
+</div>
+<div class="col-span-1 flex flex-col space-y-sm">
+<span class="text-label-md font-label-md text-on-surface-variant dark:text-surface-variant font-bold uppercase tracking-wider text-xs mb-xs">Company</span>
+<a class="text-on-surface dark:text-inverse-on-surface text-body-md font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-sm" href="#">Career</a>
+<a class="text-on-surface dark:text-inverse-on-surface text-body-md font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-sm" href="#">Blog</a>
+</div>
+</footer>
+</body></html>
