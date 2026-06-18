@@ -1,0 +1,131 @@
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #151a23;
+            --border-color: #2d3748;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #fbbf24; 
+            --accent-hover: #f59e0b;
+            --team-bg: #1f2937;
+            --selected: #0284c7;
+            --forecast: #8b5cf6; 
+            --bracket-line: #334155;
+        }
+
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; zoom: 0.90; }
+        .header-container { position: relative; text-align: center; margin-bottom: 30px; }
+        h1 { color: var(--text-main); margin: 0 0 5px 0; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { color: var(--text-muted); font-weight: 600; letter-spacing: 2px; font-size: 0.9rem; }
+
+		.top-actions { position: absolute; top: 0; right: 20px; display: flex; gap: 12px; }
+        .icon-btn { background: transparent; border: none; font-size: 1.6rem; cursor: pointer; padding: 0; margin: 0; color: var(--text-muted); }
+        .icon-btn.loading { color: var(--accent); pointer-events: none; }
+
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+		.tab-btn { background-color: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px 20px; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-weight: 500;}
+        .tab-btn.active, .tab-btn:hover { border-color: var(--selected); color: var(--selected); background-color: rgba(2, 132, 199, 0.1);}
+
+        .tab-content { display: none; width: 100%; max-width: 1400px; margin: 0 auto; }
+        .tab-content.active { display: block; }
+
+        /* GROUP STAGE GRID */
+        .group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .group-card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.2s; }
+        .group-card:hover { border-color: var(--selected); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.4);}
+        .group-header { background-color: #0e1219; color: var(--text-main); padding: 12px 15px; font-weight: bold; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; letter-spacing: 1px;}
+        
+        .standings-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .standings-table th { text-align: left; padding: 10px 15px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-weight: 500; font-size: 0.8rem; text-transform: uppercase;}
+        .standings-table th.center, .standings-table td.center { text-align: center; }
+        .standings-table td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); }
+        .standings-table tr:last-child td { border-bottom: none; }
+        .standings-table tr:nth-child(1) td { border-left: 3px solid var(--selected); }
+        .standings-table tr:nth-child(2) td { border-left: 3px solid #38bdf8; }
+        .standings-table tr:nth-child(3) td { border-left: 3px solid var(--border-color); }
+
+        .team-name-col { font-weight: 600; font-size: 1rem; display: flex; flex-direction: column; }
+        .elo-badge { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; margin-top: 4px;}
+        .star-icon { color: var(--forecast); font-size: 0.8rem; margin-left: 4px; }
+        .schedule-icon { color: var(--schedule); font-size: 0.8rem; margin-left: 4px; }
+
+        /* --- FIXED GEOMETRIC KNOCKOUT MATRIX (TRIGRAM WIDTHS) --- */
+        .bracket-wrapper { 
+            width: 100%; overflow-x: auto; padding: 20px 0 60px 0;
+            background: linear-gradient(180deg, #1e1b2e 0%, #151828 50%, #12182b 100%);
+            border-radius: 12px; border: 1px solid var(--border-color);
+        }
+        .bracket-title { text-align: center; color: var(--accent); font-size: 1.8rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 50px; text-transform: uppercase;}
+        
+        .symmetric-bracket { 
+            display: flex; justify-content: center; width: max-content; 
+            margin: 0 auto; padding: 0 30px; height: 820px; position: relative;
+        }
+
+        .bracket-half { display: flex; }
+        .bracket-half.left { flex-direction: row; }
+        .bracket-half.right { flex-direction: row-reverse; }
+        
+        /* SHRUNK COLUMNS FOR 3-LETTER CODES */
+        .bracket-col { position: relative; width: 110px; height: 100%; }
+        .bracket-half.left .bracket-col { margin-right: 35px; }
+        .bracket-half.right .bracket-col { margin-left: 35px; }
+
+        .center-col { position: relative; width: 150px; height: 100%; display: flex; flex-direction: column; align-items: center; }
+
+        .col-title { position: absolute; top: -35px; width: 100%; text-align: center; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+
+        .match { position: absolute; width: 110px; z-index: 5;}
+        
+        .match-card { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .match-num { position: absolute; top: -8px; background: var(--bg-color); padding: 0 4px; font-size: 0.6rem; color: #64748b; font-weight: bold; }
+        .match.left-side .match-num { left: 5px; }
+        .match.right-side .match-num { right: 5px; }
+
+        .team-row { display: flex; justify-content: center; align-items: center; padding: 8px 4px; cursor: pointer; color: var(--text-main); border-bottom: 1px solid var(--border-color); transition: 0.2s;}
+        .team-row:last-child { border-bottom: none; }
+        .team-row:hover { background: var(--team-bg); }
+        .team-row.selected { background: var(--selected); font-weight: bold; color: #fff;}
+        .team-row.empty { color: #4b5563; font-style: italic; pointer-events: none;}
+        
+        .team-name { font-size: 1rem; font-weight: bold; letter-spacing: 1px; margin-left: 6px;}
+        .seed { font-size: 0.65rem; color: var(--accent); font-weight: bold; position: absolute;}
+        
+        .team-row.left-side .seed { left: -25px; }
+        .team-row.right-side .seed { right: -25px; }
+
+        /* The Connecting Lines */
+        .line-tree-left, .line-tree-right, .line-straight { position: absolute; top: 50%; width: 35px; z-index: 1;}
+        .line-tree-left { right: -35px; border-right: 2px solid var(--bracket-line); border-top: 2px solid var(--bracket-line); border-bottom: 2px solid var(--bracket-line); }
+        .line-tree-right { left: -35px; border-left: 2px solid var(--bracket-line); border-top: 2px solid var(--bracket-line); border-bottom: 2px solid var(--bracket-line); }
+        .line-straight.left { right: -35px; border-bottom: 2px solid var(--bracket-line); }
+        .line-straight.right { left: -35px; border-bottom: 2px solid var(--bracket-line); }
+
+		/* Center Column Layout */
+        .final-title { color: var(--accent); font-size: 1.1rem; font-weight: bold; margin-top: 290px; margin-bottom: 5px; text-transform: uppercase;}
+        .final-sub { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 15px;}
+        .final-match-wrapper { width: 100%; position: absolute; top: 360px; z-index: 10; }
+        .champion-box { position: absolute; top: 190px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; color: #000; width: 100%; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); text-transform: uppercase; transition: 0.3s;}
+        .champion-box.empty { background: var(--panel-bg); color: var(--text-muted); border: 1px dashed var(--border-color); box-shadow: none;}
+		
+        /* MODAL */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+        .modal-content { background-color: var(--panel-bg); margin: 5% auto; padding: 30px; border: 1px solid var(--border-color); border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .close { color: var(--text-muted); float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: var(--text-main); }
+        .match-edit-row { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--team-bg); margin-bottom: 10px; border-radius: 8px; border: 1px solid transparent;}
+        .match-edit-row:focus-within { border-color: var(--selected); }
+        .match-edit-row.locked-match { opacity: 0.5; background: #0e1219; }
+        .match-edit-row input { width: 45px; text-align: center; font-size: 1.2rem; font-weight: bold; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; }
+        .match-edit-row input:focus { outline: none; border-color: var(--selected); }
+        .match-edit-row input.forecasted-input { color: var(--forecast); border-color: var(--forecast); }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        .match-edit-row input.locked-input { background: transparent; border: none; cursor: not-allowed; }
+        .team-label { flex: 1; font-weight: 600; font-size: 1.05rem; }
+        .save-btn { width: 100%; background-color: var(--selected); color: #fff; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: 0.2s;}
+        .save-btn:hover { background-color: #0369a1; }
+        
+        .guide-container { max-width: 900px; margin: 0 auto; background: var(--panel-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 1.05rem; }
+        .guide-container h2 { color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 40px; }
+        .guide-container ul { margin-left: 20px; color: var(--text-muted); }
+        .guide-container li { margin-bottom: 10px; }
