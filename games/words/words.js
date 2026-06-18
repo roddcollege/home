@@ -1,0 +1,5 @@
+const WORD_DICTIONARY = {
+    "ACTION": ["ACTION", "COIN", "TOON", "TOO", "TO", "IT", "NO", "NON", "TON", "INACTION", "COAT", "INTO", "CAT", "ACT", "ANT", "NOT", "NOON",  "ICON", "CON", "CAN", "CANNOT", "TAN", "INN", "IN", "ON", "A", "AN", "AT"],
+    "PLANET": ["PLANET", "PLATE", "PLANE", "TALL", "TELL", "TALE", "TEEN", "PEEL", "PLANT", "LANE", "PLAN", "LATE", "LATTE", "LAP", "LEAP", "TAP", "TAPE", "PALE", "PAL", "NEAT", "EAT", "ATE", "TEA", "PAN", "PEN", "NAP", "NET", "TEN", "A", "AT", "AN", "ANT", "ALL", "APPLE", "APP", "APE", "PET", "LET", "LEAN", "PEE", "PEA"],
+    "STREAM": ["STREAM", "MASTER", "TEASE", "EASE", "ERA", "STAR", "TREE", "TASTE", "START", "ART", "RARE", "REAR", "SET", "STEER", "MASS", "ARM", "ATM", "REST", "STEAM", "SMART", "TEAR", "RAT", "RATE", "TEAM", "MATE", "MEAT", "MEET", "TAME", "RAM", "SEA", "SEE", "STREET", "STATE", "STARE", "EAR", "TEST", "STRESS", "SEEM", "SAME", "SEAT", "SAT", "TREAT", "TEA", "MAT", "MARS", "ME", "MESS", "MET", "A", "AS", "ASS", "EAST", "EASTER", "EAT", "ATE", "AT", "ARE", "AM"]
+};

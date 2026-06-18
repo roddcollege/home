@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Challenge Legacy Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-card">
+        <!-- Playfish Header Layout Panel -->
+        <div id="header-hud">
+            <div class="hud-item-box bg-blue">TIME: <span id="timer-val">120</span>s</div>
+            <div id="combo-meter" class="hud-item-box bg-orange pulse-idle">COMBO x1</div>
+            <div class="hud-item-box bg-green">SCORE: <span id="score-val">0</span></div>
+        </div>
+
+        <!-- Hidden Anagram Slots Display Arena -->
+        <div id="matrix-board"></div>
+
+        <!-- Dynamic Typing Area Display Tray -->
+        <div id="typing-tray-row">
+            <span class="tray-placeholder">TYPE LETTERS WITH KEYBOARD...</span>
+        </div>
+
+        <!-- Interactive Scrambled Letter Tiles Array Pool -->
+        <div id="tile-dock-pool"></div>
+
+        <!-- Action Control Center Button Tray -->
+        <div id="control-panel-row">
+            <button id="btn-twist" class="action-btn orange-btn" disabled>TWIST [SPACE]</button>
+            <button id="btn-clear" class="action-btn red-btn" disabled>CLEAR [ESC]</button>
+        </div>
+        
+        <button id="btn-game-trigger" class="action-btn purple-btn">START CHALLENGE</button>
+
+        <!-- Modals and Score Summary Ranks Screen Overlay -->
+        <div id="summary-overlay" class="hidden-view">
+            <div class="modal-card">
+                <h2 class="arcade-title animate-bounce">CHALLENGE OVER</h2>
+                <div class="summary-stat-row">FINAL SCORE: <strong id="final-score-txt">0</strong></div>
+                <div class="summary-stat-row">VOCABULARY RANK: <span id="badge-rank-title">--</span></div>
+                <div id="review-words-box">
+                    <h3>WORDS YOU MISSED:</h3>
+                    <div id="missed-words-grid"></div>
+                </div>
+                <button id="btn-modal-close" class="action-btn purple-btn">PLAY AGAIN</button>
+            </div>
+        </div>
+    </div>
+    <script src="words.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
