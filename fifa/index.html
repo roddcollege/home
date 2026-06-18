@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup - Official FIFA Simulator</title>
+    <title>2026 World Cup - Elo Predictive Simulator</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -15,199 +15,86 @@
             --accent-hover: #f59e0b;
             --team-bg: #273548;
             --selected: #0ea5e9;
-            --win: #4ade80;
-            --loss: #f87171;
+            --forecast: #a855f7; /* Purple for AI predictions */
         }
 
+        /* 80% Scale adjustment to fit screen better */
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
             padding: 20px;
+            zoom: 0.8;
         }
 
-        /* Header & Settings Icon */
-        .header-container {
-            position: relative;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        /* Header & Sync Icon */
+        .header-container { position: relative; text-align: center; margin-bottom: 20px; }
+        h1 { color: var(--text-main); margin: 0 0 5px 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { color: var(--accent); font-weight: bold; letter-spacing: 1px; }
 
-        h1 {
-            color: var(--text-main);
-            margin: 0 0 5px 0;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .sync-btn {
+            position: absolute; top: 0; right: 20px;
+            background: var(--panel-bg); border: 1px solid var(--selected);
+            color: var(--selected); font-size: 1.5rem; padding: 10px 15px;
+            border-radius: 50%; cursor: pointer; transition: all 0.3s;
         }
-
-        .subtitle {
-            color: var(--accent);
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
+        .sync-btn:hover { background: var(--selected); color: #fff; transform: rotate(180deg); }
 
         /* Navigation Tabs */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        .tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        
+        .tab-btn, .action-btn {
+            background-color: var(--panel-bg); color: var(--text-main);
+            border: 2px solid var(--border-color); padding: 10px 20px;
+            font-size: 1.05rem; border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
-
-        .tab-btn {
-            background-color: var(--panel-bg);
-            color: var(--text-main);
-            border: 2px solid var(--border-color);
-            padding: 10px 24px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
         .tab-btn.active, .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+        
+        .action-btn.forecast { border-color: var(--forecast); color: var(--forecast); font-weight: bold; }
+        .action-btn.forecast:hover { background-color: var(--forecast); color: #fff; }
 
         .tab-content { display: none; width: 100%; max-width: 1600px; margin: 0 auto; }
         .tab-content.active { display: block; }
 
         /* Group Stage Tables */
-        .group-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 25px;
-        }
+        .group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 25px; }
+        .group-card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .group-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .group-header { background-color: #000; color: var(--accent); padding: 12px; font-weight: bold; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
 
-        .group-card {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .group-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .group-header {
-            background-color: #000;
-            color: var(--accent);
-            padding: 12px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px solid var(--border-color);
-            letter-spacing: 1px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .click-hint { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; }
-
-        .standings-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        .standings-table th {
-            text-align: left;
-            padding: 8px 10px;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
-            background: #151e2e;
-        }
-        
+        .standings-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .standings-table th { text-align: left; padding: 8px 10px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); background: #151e2e; }
         .standings-table th.center, .standings-table td.center { text-align: center; }
-
-        .standings-table td {
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--team-bg);
-        }
-
+        .standings-table td { padding: 10px; border-bottom: 1px solid var(--border-color); background-color: var(--team-bg); }
         .standings-table tr:nth-child(1) td { border-left: 3px solid var(--accent); }
         .standings-table tr:nth-child(2) td { border-left: 3px solid var(--selected); }
         .standings-table tr:nth-child(3) td { border-left: 3px solid #64748b; }
-        
-        .team-name { font-weight: 600; font-size: 1rem;}
+        .team-name { font-weight: 600; font-size: 1rem; }
+        .elo-badge { font-size: 0.7rem; color: var(--text-muted); margin-left: 5px; font-weight: normal;}
 
         /* Modal (Record Keeper) */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 100; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            background-color: var(--panel-bg);
-            margin: 5% auto;
-            padding: 30px;
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .close {
-            color: var(--text-muted);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+        .modal-content { background-color: var(--panel-bg); margin: 5% auto; padding: 30px; border: 1px solid var(--accent); border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .close { color: var(--text-muted); float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close:hover { color: var(--text-main); }
 
-        .match-edit-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: var(--team-bg);
-            margin-bottom: 10px;
-            border-radius: 6px;
-        }
-
-        .match-edit-row input {
-            width: 40px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            background: var(--bg-color);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 5px;
-        }
-
-        .match-edit-row input:focus { outline: none; border-color: var(--accent); }
-        .team-label { flex: 1; text-align: center; font-weight: 500; }
+        .match-edit-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--team-bg); margin-bottom: 10px; border-radius: 6px; }
+        .match-edit-row.locked-match { opacity: 0.5; background: #111827; }
         
-        .save-btn {
-            width: 100%;
-            background-color: var(--accent);
-            color: #000;
-            border: none;
-            padding: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.2s;
-        }
+        .match-edit-row input { width: 40px; text-align: center; font-size: 1.1rem; font-weight: bold; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 4px; padding: 5px; }
+        .match-edit-row input:focus { outline: none; border-color: var(--accent); }
+        .match-edit-row input.forecasted-input { color: var(--forecast); border-color: var(--forecast); }
+        
+        /* Remove Number Input Arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        .match-edit-row input.locked-input { background: transparent; border: none; cursor: not-allowed; }
+
+        .team-label { flex: 1; text-align: center; font-weight: 500; }
+        .save-btn { width: 100%; background-color: var(--accent); color: #000; border: none; padding: 15px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: 0.2s; }
         .save-btn:hover { background-color: var(--accent-hover); }
 
         /* Knockout Bracket View */
@@ -222,56 +109,34 @@
         .team:hover:not(.empty) { background: var(--team-bg); color: var(--accent); }
         .team.selected { background: var(--selected); color: white; font-weight: bold; }
         .team.empty { color: var(--text-muted); font-style: italic; }
-
-        .champion-box {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); border: none; text-align: center; padding: 20px; border-radius: 8px; font-weight: bold; font-size: 1.4rem; color: #000; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); margin-top: 20px;
-        }
+        .champion-box { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); border: none; text-align: center; padding: 20px; border-radius: 8px; font-weight: bold; font-size: 1.4rem; color: #000; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div class="header-container">
         <h1>2026 FIFA World Cup</h1>
-        <div class="subtitle">OFFICIAL SCORING ENGINE & PREDICTOR</div>
+        <div class="subtitle">STATISTICAL FORECASTING ENGINE</div>
+        <button class="sync-btn" onclick="alert('API Hook Ready! Insert your Google Sheet CSV url in the Javascript.')" title="Sync Live Data">🔄</button>
     </div>
 
     <div class="tabs">
         <button class="tab-btn" onclick="showTab('bracket')">32-Team Knockout Bracket</button>
         <button class="tab-btn active" onclick="showTab('groups')">Group Stage Engine</button>
+        <button class="action-btn forecast" onclick="forecastMatches()">🔮 Auto-Forecast Remaining</button>
     </div>
 
-    <!-- GROUP STAGE VIEW -->
     <div id="groups" class="tab-content active">
-        <p style="text-align:center; margin-bottom:20px;">
-            <strong>Click on any Group Card</strong> to open the Record Keeper and input upcoming match scores. Standings and the Knockout Bracket will auto-calculate based on FIFA rules (Points, GD, GF).
-        </p>
-        <div class="group-grid" id="group-grid-container">
-            <!-- Rendered by JS -->
-        </div>
+        <div class="group-grid" id="group-grid-container"></div>
     </div>
 
-    <!-- KNOCKOUT BRACKET VIEW -->
     <div id="bracket" class="tab-content">
         <div class="bracket-wrapper">
             <div class="bracket-container">
-                <!-- Round of 32 -->
-                <div class="bracket-column" id="r32-col">
-                    <div class="col-title">Round of 32</div>
-                    <!-- Dynamically generated to avoid massive HTML block -->
-                </div>
-                <!-- Round of 16 -->
-                <div class="bracket-column" id="r16-col">
-                    <div class="col-title">Round of 16</div>
-                </div>
-                <!-- Quarterfinals -->
-                <div class="bracket-column" id="qf-col">
-                    <div class="col-title">Quarterfinals</div>
-                </div>
-                <!-- Semifinals -->
-                <div class="bracket-column" id="sf-col">
-                    <div class="col-title">Semifinals</div>
-                </div>
-                <!-- Final -->
+                <div class="bracket-column" id="r32-col"><div class="col-title">Round of 32</div></div>
+                <div class="bracket-column" id="r16-col"><div class="col-title">Round of 16</div></div>
+                <div class="bracket-column" id="qf-col"><div class="col-title">Quarterfinals</div></div>
+                <div class="bracket-column" id="sf-col"><div class="col-title">Semifinals</div></div>
                 <div class="bracket-column">
                     <div class="col-title" style="color: var(--accent);">Grand Final</div>
                     <div class="match" id="final-1" data-next="champion-slot" data-slot="top" style="border-color: var(--accent);">
@@ -289,62 +154,55 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2 id="modalGroupTitle" style="color:var(--accent); margin-top:0;">Edit Group Scores</h2>
-            <p style="color:var(--text-muted); font-size:0.9rem;">Leave fields blank for unplayed matches.</p>
-            <div id="modalMatchesContainer">
-                <!-- Inputs injected by JS -->
-            </div>
+            <div id="modalMatchesContainer"></div>
             <button class="save-btn" onclick="saveScores()">Save & Recalculate</button>
         </div>
     </div>
 
     <script>
-        // --- DATA MODEL ---
-        // Setup initial teams from Matchday 1 based on your exact prompt
+        // Data model now includes baseline Elo Ratings (Higher = Stronger)
         const initialSetup = {
-            'A': [{t: '🇲🇽 Mexico', sc: 2}, {t: '🇿🇦 South Africa', sc: 0}, {t: '🇰🇷 South Korea', sc: 2}, {t: '🇨🇿 Czechia', sc: 1}],
-            'B': [{t: '🇨🇦 Canada', sc: 1}, {t: '🇧🇦 Bosnia', sc: 1}, {t: '🇶🇦 Qatar', sc: 1}, {t: '🇨🇭 Switzerland', sc: 1}],
-            'C': [{t: '🇧🇷 Brazil', sc: 1}, {t: '🇲🇦 Morocco', sc: 1}, {t: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland', sc: 1}, {t: '🇭🇹 Haiti', sc: 0}],
-            'D': [{t: '🇺🇸 USA', sc: 4}, {t: '🇵🇾 Paraguay', sc: 1}, {t: '🇦🇺 Australia', sc: 2}, {t: '🇹🇷 Türkiye', sc: 0}],
-            'E': [{t: '🇩🇪 Germany', sc: 7}, {t: '🇨🇼 Curaçao', sc: 1}, {t: '🇨🇮 Ivory Coast', sc: 1}, {t: '🇪🇨 Ecuador', sc: 0}],
-            'F': [{t: '🇸🇪 Sweden', sc: 5}, {t: '🇹🇳 Tunisia', sc: 1}, {t: '🇳🇱 Netherlands', sc: 2}, {t: '🇯🇵 Japan', sc: 2}],
-            'G': [{t: '🇧🇪 Belgium', sc: 1}, {t: '🇪🇬 Egypt', sc: 1}, {t: '🇮🇷 Iran', sc: 2}, {t: '🇳🇿 New Zealand', sc: 2}],
-            'H': [{t: '🇪🇸 Spain', sc: 0}, {t: '🇨🇻 Cabo Verde', sc: 0}, {t: '🇸🇦 Saudi Arabia', sc: 1}, {t: '🇺🇾 Uruguay', sc: 1}],
-            'I': [{t: '🇫🇷 France', sc: 3}, {t: '🇸🇳 Senegal', sc: 1}, {t: '🇳🇴 Norway', sc: 4}, {t: '🇮🇶 Iraq', sc: 1}],
-            'J': [{t: '🇦🇷 Argentina', sc: 3}, {t: '🇩🇿 Algeria', sc: 0}, {t: '🇦🇹 Austria', sc: 3}, {t: '🇯🇴 Jordan', sc: 1}],
-            'K': [{t: '🇨🇴 Colombia', sc: 3}, {t: '🇺🇿 Uzbekistan', sc: 1}, {t: '🇵🇹 Portugal', sc: 1}, {t: '🇨🇩 DR Congo', sc: 1}],
-            'L': [{t: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 England', sc: 4}, {t: '🇭🇷 Croatia', sc: 2}, {t: '🇬🇭 Ghana', sc: 1}, {t: '🇵🇦 Panama', sc: 0}]
+            'A': [{t: '🇲🇽 Mexico', sc: 2, elo: 1850}, {t: '🇿🇦 South Africa', sc: 0, elo: 1500}, {t: '🇰🇷 South Korea', sc: 2, elo: 1750}, {t: '🇨🇿 Czechia', sc: 1, elo: 1700}],
+            'B': [{t: '🇨🇦 Canada', sc: 1, elo: 1750}, {t: '🇧🇦 Bosnia', sc: 1, elo: 1600}, {t: '🇶🇦 Qatar', sc: 1, elo: 1650}, {t: '🇨🇭 Switzerland', sc: 1, elo: 1850}],
+            'C': [{t: '🇧🇷 Brazil', sc: 1, elo: 2050}, {t: '🇲🇦 Morocco', sc: 1, elo: 1800}, {t: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland', sc: 1, elo: 1700}, {t: '🇭🇹 Haiti', sc: 0, elo: 1400}],
+            'D': [{t: '🇺🇸 USA', sc: 4, elo: 1800}, {t: '🇵🇾 Paraguay', sc: 1, elo: 1650}, {t: '🇦🇺 Australia', sc: 2, elo: 1700}, {t: '🇹🇷 Türkiye', sc: 0, elo: 1750}],
+            'E': [{t: '🇩🇪 Germany', sc: 7, elo: 1950}, {t: '🇨🇼 Curaçao', sc: 1, elo: 1300}, {t: '🇨🇮 Ivory Coast', sc: 1, elo: 1700}, {t: '🇪🇨 Ecuador', sc: 0, elo: 1750}],
+            'F': [{t: '🇸🇪 Sweden', sc: 5, elo: 1800}, {t: '🇹🇳 Tunisia', sc: 1, elo: 1650}, {t: '🇳🇱 Netherlands', sc: 2, elo: 1950}, {t: '🇯🇵 Japan', sc: 2, elo: 1850}],
+            'G': [{t: '🇧🇪 Belgium', sc: 1, elo: 1900}, {t: '🇪🇬 Egypt', sc: 1, elo: 1650}, {t: '🇮🇷 Iran', sc: 2, elo: 1750}, {t: '🇳🇿 New Zealand', sc: 2, elo: 1500}],
+            'H': [{t: '🇪🇸 Spain', sc: 0, elo: 2000}, {t: '🇨🇻 Cabo Verde', sc: 0, elo: 1550}, {t: '🇸🇦 Saudi Arabia', sc: 1, elo: 1600}, {t: '🇺🇾 Uruguay', sc: 1, elo: 1900}],
+            'I': [{t: '🇫🇷 France', sc: 3, elo: 2100}, {t: '🇸🇳 Senegal', sc: 1, elo: 1750}, {t: '🇳🇴 Norway', sc: 4, elo: 1800}, {t: '🇮🇶 Iraq', sc: 1, elo: 1550}],
+            'J': [{t: '🇦🇷 Argentina', sc: 3, elo: 2100}, {t: '🇩🇿 Algeria', sc: 0, elo: 1700}, {t: '🇦🇹 Austria', sc: 3, elo: 1850}, {t: '🇯🇴 Jordan', sc: 1, elo: 1500}],
+            'K': [{t: '🇨🇴 Colombia', sc: 3, elo: 1900}, {t: '🇺🇿 Uzbekistan', sc: 1, elo: 1600}, {t: '🇵🇹 Portugal', sc: 1, elo: 2000}, {t: '🇨🇩 DR Congo', sc: 1, elo: 1550}],
+            'L': [{t: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 England', sc: 4, elo: 2000}, {t: '🇭🇷 Croatia', sc: 2, elo: 1900}, {t: '🇬🇭 Ghana', sc: 1, elo: 1650}, {t: '🇵🇦 Panama', sc: 0, elo: 1550}]
         };
 
-        // Master Schedule Array (72 Matches)
         let matches = [];
         let standings = {};
+        let globalPowerRank = {};
+        let eloDirectory = {};
 
-        // Generate the 6 match permutations for each group
+        // Build Engine Data
         Object.keys(initialSetup).forEach(g => {
             let teams = initialSetup[g];
-            // Match 1 & 2 (Already played - Matchday 1)
-            matches.push({ id: `${g}1`, group: g, t1: teams[0].t, t2: teams[1].t, s1: teams[0].sc, s2: teams[1].sc, played: true });
-            matches.push({ id: `${g}2`, group: g, t1: teams[2].t, t2: teams[3].t, s1: teams[2].sc, s2: teams[3].sc, played: true });
-            // Match 3, 4, 5, 6 (Pending)
-            matches.push({ id: `${g}3`, group: g, t1: teams[3].t, t2: teams[1].t, s1: null, s2: null, played: false });
-            matches.push({ id: `${g}4`, group: g, t1: teams[0].t, t2: teams[2].t, s1: null, s2: null, played: false });
-            matches.push({ id: `${g}5`, group: g, t1: teams[3].t, t2: teams[0].t, s1: null, s2: null, played: false });
-            matches.push({ id: `${g}6`, group: g, t1: teams[1].t, t2: teams[2].t, s1: null, s2: null, played: false });
+            matches.push({ id: `${g}1`, group: g, t1: teams[0].t, t2: teams[1].t, s1: teams[0].sc, s2: teams[1].sc, played: true, locked: true, forecasted: false });
+            matches.push({ id: `${g}2`, group: g, t1: teams[2].t, t2: teams[3].t, s1: teams[2].sc, s2: teams[3].sc, played: true, locked: true, forecasted: false });
+            matches.push({ id: `${g}3`, group: g, t1: teams[3].t, t2: teams[1].t, s1: null, s2: null, played: false, locked: false, forecasted: false });
+            matches.push({ id: `${g}4`, group: g, t1: teams[0].t, t2: teams[2].t, s1: null, s2: null, played: false, locked: false, forecasted: false });
+            matches.push({ id: `${g}5`, group: g, t1: teams[3].t, t2: teams[0].t, s1: null, s2: null, played: false, locked: false, forecasted: false });
+            matches.push({ id: `${g}6`, group: g, t1: teams[1].t, t2: teams[2].t, s1: null, s2: null, played: false, locked: false, forecasted: false });
             
-            // Init standings object
-            teams.forEach(t => { standings[t.t] = { group: g, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 }; });
+            teams.forEach(t => { 
+                standings[t.t] = { group: g, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 }; 
+                eloDirectory[t.t] = t.elo;
+            });
         });
 
         let activeModalGroup = null;
 
-        // --- CALCULATE STANDINGS (FIFA MATH) ---
+        // --- MATH ENGINE ---
         function calculateStandings() {
-            // Reset all stats
-            Object.keys(standings).forEach(t => {
-                standings[t] = { group: standings[t].group, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
-            });
+            Object.keys(standings).forEach(t => { standings[t] = { group: standings[t].group, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 }; });
 
-            // Tally matches
             matches.forEach(m => {
                 if (m.played) {
                     let st1 = standings[m.t1]; let st2 = standings[m.t2];
@@ -358,48 +216,75 @@
                 }
             });
 
-            // Calc Goal Difference
             Object.keys(standings).forEach(t => { standings[t].gd = standings[t].gf - standings[t].ga; });
-
+            calculatePowerRanks();
             renderGroupTables();
             syncKnockoutBracket();
         }
 
-        // --- RENDER UI ---
+        function calculatePowerRanks() {
+            let allTeams = Object.keys(standings);
+            allTeams.sort((a, b) => {
+                let stA = standings[a]; let stB = standings[b];
+                if (stB.pts !== stA.pts) return stB.pts - stA.pts;
+                if (stB.gd !== stA.gd) return stB.gd - stA.gd;
+                return stB.gf - stA.gf;
+            });
+            globalPowerRank = {};
+            allTeams.forEach((t, i) => globalPowerRank[t] = i + 1);
+        }
+
+        // --- ELO FORECASTING ---
+        function forecastMatches() {
+            matches.forEach(m => {
+                // Predict scores only for pending matches (or override old forecasts)
+                if (!m.locked && (m.s1 === null || m.s2 === null || m.forecasted)) {
+                    let elo1 = eloDirectory[m.t1];
+                    let elo2 = eloDirectory[m.t2];
+                    let diff = elo1 - elo2;
+
+                    // Probabilistic goal generation based on Elo difference
+                    if (diff > 250) { m.s1 = 3; m.s2 = 0; }
+                    else if (diff > 150) { m.s1 = 2; m.s2 = 0; }
+                    else if (diff > 50) { m.s1 = 2; m.s2 = 1; }
+                    else if (diff > -50) { m.s1 = 1; m.s2 = 1; }
+                    else if (diff > -150) { m.s1 = 1; m.s2 = 2; }
+                    else if (diff > -250) { m.s1 = 0; m.s2 = 2; }
+                    else { m.s1 = 0; m.s2 = 3; }
+
+                    m.played = true;
+                    m.forecasted = true; // Flags it for visual purple styling
+                }
+            });
+            resetBracketPredictions();
+            calculateStandings();
+            
+            // Auto switch to bracket view to see the results
+            showTab('bracket');
+        }
+
+        // --- RENDERING ---
         function renderGroupTables() {
             const container = document.getElementById('group-grid-container');
             container.innerHTML = '';
-
             Object.keys(initialSetup).forEach(g => {
-                // Get teams for this group and sort by FIFA rules
                 let groupTeams = Object.keys(standings).filter(t => standings[t].group === g);
-                groupTeams.sort((a, b) => {
-                    let stA = standings[a]; let stB = standings[b];
-                    if (stB.pts !== stA.pts) return stB.pts - stA.pts; // 1. Points
-                    if (stB.gd !== stA.gd) return stB.gd - stA.gd;     // 2. Goal Difference
-                    return stB.gf - stA.gf;                            // 3. Goals For
-                });
+                groupTeams.sort((a, b) => globalPowerRank[a] - globalPowerRank[b]);
 
                 let html = `<div class="group-card" onclick="openModal('${g}')">
-                    <div class="group-header"><span>GROUP ${g}</span> <span class="click-hint">Click to edit ⚙️</span></div>
+                    <div class="group-header"><span title="Click to edit" style="cursor:pointer;">⚙️</span> <span>GROUP ${g}</span> <span style="width:20px;"></span></div>
                     <table class="standings-table">
-                        <tr><th>Team</th><th class="center" title="Matches Played">MP</th><th class="center" title="Goal Difference">GD</th><th class="center" title="Points">Pts</th></tr>`;
+                        <tr><th>Team</th><th class="center">MP</th><th class="center">GD</th><th class="center">Pts</th></tr>`;
                 
-                groupTeams.forEach((t, index) => {
+                groupTeams.forEach(t => {
                     let st = standings[t];
-                    html += `<tr>
-                        <td class="team-name">${t}</td>
-                        <td class="center">${st.mp}</td>
-                        <td class="center">${st.gd > 0 ? '+'+st.gd : st.gd}</td>
-                        <td class="center" style="font-weight:bold;">${st.pts}</td>
-                    </tr>`;
+                    html += `<tr><td class="team-name">${t} <span class="elo-badge">(Elo: ${eloDirectory[t]})</span></td><td class="center">${st.mp}</td><td class="center">${st.gd > 0 ? '+'+st.gd : st.gd}</td><td class="center" style="font-weight:bold;">${st.pts}</td></tr>`;
                 });
                 html += `</table></div>`;
                 container.innerHTML += html;
             });
         }
 
-        // --- MODAL LOGIC (RECORD KEEPER) ---
         function openModal(group) {
             activeModalGroup = group;
             document.getElementById('modalGroupTitle').innerText = `Update Group ${group} Matches`;
@@ -410,12 +295,20 @@
             groupMatches.forEach(m => {
                 let s1Val = m.s1 !== null ? m.s1 : '';
                 let s2Val = m.s2 !== null ? m.s2 : '';
+                
+                let readOnlyAttr = m.locked ? 'readonly' : '';
+                let lockedClass = m.locked ? 'locked-input' : '';
+                let matchRowClass = m.locked ? 'locked-match' : '';
+                let separator = m.locked ? '🔒' : '-';
+                
+                let forecastClass = m.forecasted ? 'forecasted-input' : '';
+
                 container.innerHTML += `
-                    <div class="match-edit-row">
+                    <div class="match-edit-row ${matchRowClass}">
                         <span class="team-label" style="text-align:right; padding-right:10px;">${m.t1}</span>
-                        <input type="number" id="s1_${m.id}" value="${s1Val}" min="0">
-                        <span style="font-weight:bold; padding:0 10px;">-</span>
-                        <input type="number" id="s2_${m.id}" value="${s2Val}" min="0">
+                        <input type="number" id="s1_${m.id}" value="${s1Val}" min="0" class="${lockedClass} ${forecastClass}" ${readOnlyAttr}>
+                        <span style="font-weight:bold; padding:0 10px;">${separator}</span>
+                        <input type="number" id="s2_${m.id}" value="${s2Val}" min="0" class="${lockedClass} ${forecastClass}" ${readOnlyAttr}>
                         <span class="team-label" style="text-align:left; padding-left:10px;">${m.t2}</span>
                     </div>`;
             });
@@ -427,12 +320,17 @@
         function saveScores() {
             let groupMatches = matches.filter(m => m.group === activeModalGroup);
             groupMatches.forEach(m => {
-                let val1 = document.getElementById(`s1_${m.id}`).value;
-                let val2 = document.getElementById(`s2_${m.id}`).value;
-                if (val1 !== '' && val2 !== '') {
-                    m.s1 = parseInt(val1); m.s2 = parseInt(val2); m.played = true;
-                } else {
-                    m.s1 = null; m.s2 = null; m.played = false;
+                if (!m.locked) {
+                    let val1 = document.getElementById(`s1_${m.id}`).value;
+                    let val2 = document.getElementById(`s2_${m.id}`).value;
+                    
+                    // If user manually changed it, remove the forecast flag
+                    if (val1 !== '' && val2 !== '') {
+                        if (m.s1 != val1 || m.s2 != val2) m.forecasted = false;
+                        m.s1 = parseInt(val1); m.s2 = parseInt(val2); m.played = true;
+                    } else {
+                        m.s1 = null; m.s2 = null; m.played = false; m.forecasted = false;
+                    }
                 }
             });
             closeModal();
@@ -440,38 +338,25 @@
             calculateStandings();
         }
 
-        // --- KNOCKOUT BRACKET LOGIC ---
         function generateBracketHTML() {
-            // Generate the blank HTML structure for Knockout rounds once
             const r32Pairings = [
                 ['1A', '3rd C/D/E/F/I'], ['2A', '2B'], ['1C', '2F'], ['1F', '2C'],
                 ['1E', '3rd A/B/C/D/F'], ['2E', '2I'], ['1I', '3rd A/B/F/G/H'], ['1L', '3rd E/H/I/J/K'],
                 ['1G', '3rd A/E/H/I/J'], ['1D', '3rd B/E/F/G/J'], ['1H', '2J'], ['2K', '2L'],
                 ['1B', '3rd E/F/G/I/J'], ['2D', '2G'], ['1J', '2H'], ['1K', '3rd A/B/C/D/L']
             ];
-
             let r32HTML = '';
             r32Pairings.forEach((pair, idx) => {
-                let mId = idx + 1;
-                let nextMatch = Math.ceil(mId / 2);
-                let slot = mId % 2 !== 0 ? 'top' : 'bottom';
-                r32HTML += `<div class="match" id="r32-${mId}" data-next="r16-${nextMatch}" data-slot="${slot}">
-                    <div class="team seed-target" data-seed="${pair[0]}" onclick="advance(this)">TBD <span class="seed-label">${pair[0]}</span></div>
-                    <div class="team seed-target" data-seed="${pair[1].startsWith('3rd') ? '3rd' : pair[1]}" onclick="advance(this)">TBD <span class="seed-label">${pair[1]}</span></div>
-                </div>`;
+                let mId = idx + 1; let nextMatch = Math.ceil(mId / 2); let slot = mId % 2 !== 0 ? 'top' : 'bottom';
+                r32HTML += `<div class="match" id="r32-${mId}" data-next="r16-${nextMatch}" data-slot="${slot}"><div class="team seed-target" data-seed="${pair[0]}" onclick="advance(this)">TBD <span class="seed-label">${pair[0]}</span></div><div class="team seed-target" data-seed="${pair[1].startsWith('3rd') ? '3rd' : pair[1]}" onclick="advance(this)">TBD <span class="seed-label">${pair[1]}</span></div></div>`;
             });
             document.getElementById('r32-col').innerHTML += r32HTML;
 
-            // Generate R16, QF, SF empty slots
             const generateEmptyRound = (numMatches, currentRound, nextRoundPrefix) => {
                 let html = '';
                 for(let i=1; i<=numMatches; i++) {
-                    let nextMatch = Math.ceil(i/2);
-                    let slot = i % 2 !== 0 ? 'top' : 'bottom';
-                    html += `<div class="match" id="${currentRound}-${i}" data-next="${nextRoundPrefix}-${nextMatch}" data-slot="${slot}">
-                        <div class="team empty slot-top" onclick="advance(this)">TBD</div>
-                        <div class="team empty slot-bottom" onclick="advance(this)">TBD</div>
-                    </div>`;
+                    let nextMatch = Math.ceil(i/2); let slot = i % 2 !== 0 ? 'top' : 'bottom';
+                    html += `<div class="match" id="${currentRound}-${i}" data-next="${nextRoundPrefix}-${nextMatch}" data-slot="${slot}"><div class="team empty slot-top" onclick="advance(this)">TBD</div><div class="team empty slot-bottom" onclick="advance(this)">TBD</div></div>`;
                 }
                 return html;
             }
@@ -481,108 +366,93 @@
         }
 
         function syncKnockoutBracket() {
-            const seeds = {};
-            let allThirdPlaces = [];
-
-            // Identify 1st, 2nd, 3rd for all groups
+            const seeds = {}; let allThirdPlaces = [];
             Object.keys(initialSetup).forEach(g => {
                 let groupTeams = Object.keys(standings).filter(t => standings[t].group === g);
-                groupTeams.sort((a, b) => {
-                    let stA = standings[a]; let stB = standings[b];
-                    if (stB.pts !== stA.pts) return stB.pts - stA.pts;
-                    if (stB.gd !== stA.gd) return stB.gd - stA.gd;
-                    return stB.gf - stA.gf;
-                });
-                
-                seeds['1' + g] = groupTeams[0];
-                seeds['2' + g] = groupTeams[1];
-                allThirdPlaces.push(groupTeams[2]);
+                groupTeams.sort((a, b) => globalPowerRank[a] - globalPowerRank[b]);
+                seeds['1' + g] = groupTeams[0]; seeds['2' + g] = groupTeams[1]; allThirdPlaces.push(groupTeams[2]);
             });
 
-            // Calculate the 8 BEST 3rd place teams globally based on FIFA rules
-            allThirdPlaces.sort((a, b) => {
-                let stA = standings[a]; let stB = standings[b];
-                if (stB.pts !== stA.pts) return stB.pts - stA.pts;
-                if (stB.gd !== stA.gd) return stB.gd - stA.gd;
-                return stB.gf - stA.gf;
-            });
+            allThirdPlaces.sort((a, b) => globalPowerRank[a] - globalPowerRank[b]);
             const top8ThirdPlaces = allThirdPlaces.slice(0, 8);
 
-            // Inject into DOM
             let thirdPlaceIndex = 0;
             document.querySelectorAll('.seed-target').forEach(slot => {
-                const requiredSeed = slot.getAttribute('data-seed');
-                let teamToInsert = "TBD";
+                const requiredSeed = slot.getAttribute('data-seed'); let teamToInsert = "TBD";
+                if (requiredSeed === '3rd') { if (thirdPlaceIndex < top8ThirdPlaces.length) { teamToInsert = top8ThirdPlaces[thirdPlaceIndex]; thirdPlaceIndex++; } } 
+                else { if (seeds[requiredSeed]) teamToInsert = seeds[requiredSeed]; }
 
-                if (requiredSeed === '3rd') {
-                    if (thirdPlaceIndex < top8ThirdPlaces.length) {
-                        teamToInsert = top8ThirdPlaces[thirdPlaceIndex];
-                        thirdPlaceIndex++;
-                    }
-                } else {
-                    if (seeds[requiredSeed]) teamToInsert = seeds[requiredSeed];
-                }
-
-                // Preserve original label
                 const rawLabel = slot.innerHTML.split('<span')[1]; 
                 slot.innerHTML = `${teamToInsert} <span ${rawLabel}`;
                 slot.classList.remove('selected');
-                if(teamToInsert === "TBD") slot.classList.add('empty');
-                else slot.classList.remove('empty');
+                if(teamToInsert === "TBD") slot.classList.add('empty'); else slot.classList.remove('empty');
             });
+
+            autoPrefillBracketRounds();
         }
 
-        function advance(clickedElement) {
+        function autoPrefillBracketRounds() {
+            const triggerWin = (matchId) => {
+                let matchDiv = document.getElementById(matchId);
+                if(!matchDiv) return;
+                let teams = matchDiv.querySelectorAll('.team');
+                if(teams.length === 2) {
+                    let t1 = teams[0].innerText.replace(/1[A-L]|2[A-L]|3rd.*/g, '').trim();
+                    let t2 = teams[1].innerText.replace(/1[A-L]|2[A-L]|3rd.*/g, '').trim();
+                    if(t1 !== 'TBD' && t2 !== 'TBD') {
+                        let r1 = globalPowerRank[t1] || 99;
+                        let r2 = globalPowerRank[t2] || 99;
+                        let winnerElem = r1 < r2 ? teams[0] : teams[1];
+                        advance(winnerElem, true); 
+                    }
+                }
+            };
+            for(let i=1; i<=16; i++) triggerWin(`r32-${i}`);
+            for(let i=1; i<=8; i++) triggerWin(`r16-${i}`);
+        }
+
+        function advance(clickedElement, isAuto = false) {
             const rawTeamName = clickedElement.innerText.replace(/1[A-L]|2[A-L]|3rd.*/g, '').trim();
             if (clickedElement.classList.contains('empty') || rawTeamName === 'TBD' || rawTeamName === '🏆 Champion') return;
 
             const matchDiv = clickedElement.parentElement;
-            const nextMatchId = matchDiv.getAttribute('data-next');
-            const targetSlot = matchDiv.getAttribute('data-slot');
+            const nextMatchId = matchDiv.getAttribute('data-next'); const targetSlot = matchDiv.getAttribute('data-slot');
             
-            Array.from(matchDiv.children).forEach(child => child.classList.remove('selected'));
-            clickedElement.classList.add('selected');
+            if(!isAuto) {
+                Array.from(matchDiv.children).forEach(child => child.classList.remove('selected'));
+                clickedElement.classList.add('selected');
+            }
 
             const nextMatchDiv = document.getElementById(nextMatchId);
             if (!nextMatchDiv) return;
 
             if (nextMatchId === 'champion-slot') {
-                nextMatchDiv.classList.remove('empty');
-                nextMatchDiv.innerText = "🏆 " + rawTeamName;
+                nextMatchDiv.classList.remove('empty'); nextMatchDiv.innerText = "🏆 " + rawTeamName;
             } else {
                 let targetElement = nextMatchDiv.querySelector(`.slot-${targetSlot}`);
-                targetElement.classList.remove('empty');
-                targetElement.innerText = rawTeamName;
-                targetElement.classList.remove('selected');
-                clearDownstream(nextMatchId, targetSlot);
+                targetElement.classList.remove('empty'); targetElement.innerText = rawTeamName;
+                targetElement.classList.remove('selected'); clearDownstream(nextMatchId, targetSlot);
             }
         }
 
         function clearDownstream(matchId, slotChanged) {
             const matchDiv = document.getElementById(matchId);
-            const nextMatchId = matchDiv.getAttribute('data-next');
-            const targetSlot = matchDiv.getAttribute('data-slot');
+            const nextMatchId = matchDiv.getAttribute('data-next'); const targetSlot = matchDiv.getAttribute('data-slot');
             if (!nextMatchId) return;
 
             const nextMatchDiv = document.getElementById(nextMatchId);
             if (nextMatchId === 'champion-slot') {
-                nextMatchDiv.classList.add('empty');
-                nextMatchDiv.innerText = "🏆 Champion";
+                nextMatchDiv.classList.add('empty'); nextMatchDiv.innerText = "🏆 Champion";
             } else {
                 let targetElement = nextMatchDiv.querySelector(`.slot-${targetSlot}`);
-                targetElement.classList.add('empty');
-                targetElement.innerText = "TBD";
-                targetElement.classList.remove('selected');
-                clearDownstream(nextMatchId, targetSlot);
+                targetElement.classList.add('empty'); targetElement.innerText = "TBD";
+                targetElement.classList.remove('selected'); clearDownstream(nextMatchId, targetSlot);
             }
         }
 
         function resetBracketPredictions() {
-            document.querySelectorAll('#r16-col .team, #qf-col .team, #sf-col .team, #final-1 .team').forEach(el => {
-                el.innerText = 'TBD'; el.classList.add('empty'); el.classList.remove('selected');
-            });
-            document.getElementById('champion-slot').innerText = '🏆 Champion';
-            document.getElementById('champion-slot').classList.add('empty');
+            document.querySelectorAll('#r16-col .team, #qf-col .team, #sf-col .team, #final-1 .team').forEach(el => { el.innerText = 'TBD'; el.classList.add('empty'); el.classList.remove('selected'); });
+            document.getElementById('champion-slot').innerText = '🏆 Champion'; document.getElementById('champion-slot').classList.add('empty');
             document.querySelectorAll('#r32-col .team').forEach(el => el.classList.remove('selected'));
         }
 
@@ -593,11 +463,7 @@
             event.target.classList.add('active');
         }
 
-        // Init App
-        window.onload = () => {
-            generateBracketHTML();
-            calculateStandings();
-        };
+        window.onload = () => { generateBracketHTML(); calculateStandings(); };
     </script>
 </body>
 </html>
