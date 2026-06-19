@@ -21,9 +21,8 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('groups')">Group Stage Matrix</button>
-        <button class="tab-btn" onclick="showTab('bracket')">Knockout Matrix</button>
-        <button class="tab-btn" onclick="showTab('guide')">Documentation</button>
+        <button class="tab-btn active" onclick="showTab('groups')">Group Stages</button>
+        <button class="tab-btn" onclick="showTab('bracket')">Knockouts</button>
     </div>
 
     <div id="groups" class="tab-content active">
@@ -32,25 +31,54 @@
 
     <div id="bracket" class="tab-content">
         <div class="bracket-wrapper">
-            <div class="bracket-title">KNOCKOUT STAGE</div>
+            <div class="bracket-title">KNOCKOUT STAGES</div>
             <div class="symmetric-bracket" id="bracket-render-target">
                 </div>
         </div>
     </div>
 
-    <div id="guide" class="tab-content">
-        <div class="guide-container">
-            <h1 style="text-align: center; color: var(--text-main); margin-top:0;">The Intangibles Analytics Engine</h1>
-            <h2>The 7 Pillars of Prediction</h2>
-            <ul>
-                <li><strong>Base Elo:</strong> A team's statistical strength over the last 4 years.</li>
-                <li><strong>Host Advantage (+50 Power):</strong> USA, Mexico, and Canada receive a massive boost.</li>
-                <li><strong>Historical Pedigree (+10 per Trophy):</strong> "Patrimony." Teams like Brazil, Germany, and Argentina get a heritage shield.</li>
-                <li><strong>Superstar Clutch Factor (+15 to +30 Power):</strong> Elite players taking over tight games.</li>
-                <li><strong>In-Tournament Momentum (+5 per GD):</strong> Form carried from the Group Stage.</li>
-                <li style="color:#10b981; font-weight:bold;">Commercial Bias (+10 per Tier 💰): TV revenue draws find favorable conditions.</li>
-                <li style="color:#ef4444; font-weight:bold;">Schedule Advantage 📅: Later groups manipulate Goal Difference to dodge heavyweights.</li>
-            </ul>
+    <div id="tunerModal" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 20px; margin: 5% auto;">
+            <span class="close" onclick="closeTunerModal()">&times;</span>
+            <h2 id="tunerModalTitle" style="color:var(--text-main); margin: 0 0 15px 0; font-size: 1.4rem;">Tune Intangibles</h2>
+            
+            <input type="hidden" id="tuner-active-team">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight:bold;">Base Elo</label>
+                    <input type="number" id="tune-elo" oninput="updateTunerCalc()" style="background: var(--bg-color); border: 1px solid var(--border-color); color: #fff; padding: 8px; border-radius: 6px; font-size: 1rem; outline: none;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight:bold;">Goal Diff</label>
+                    <input type="number" id="tune-gd" value="0" oninput="updateTunerCalc()" style="background: var(--bg-color); border: 1px solid var(--border-color); color: #fff; padding: 8px; border-radius: 6px; font-size: 1rem; outline: none;">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label style="display:flex; align-items:center; gap:8px; color: var(--text-muted); font-weight:bold; font-size: 0.9rem; cursor: not-allowed;">
+                        <input type="checkbox" id="tune-host" disabled style="width:16px; height:16px; accent-color:var(--accent); cursor: not-allowed;">
+                        Host Nation Bias (+50)
+                    </label>
+                </div>
+                <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 4px;">
+                    <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; display: flex; justify-content: space-between; font-weight:bold;">Historical Pedigree (0-5) <span id="val-ped" style="color:var(--accent);"></span></label>
+                    <input type="range" id="tune-ped" min="0" max="5" oninput="updateTunerCalc()" style="accent-color: var(--accent); cursor: pointer;">
+                </div>
+                <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 4px;">
+                    <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; display: flex; justify-content: space-between; font-weight:bold;">Superstar Clutch (1-5) <span id="val-star" style="color:var(--accent);"></span></label>
+                    <input type="range" id="tune-star" min="1" max="5" oninput="updateTunerCalc()" style="accent-color: var(--accent); cursor: pointer;">
+                </div>
+                <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 4px;">
+                    <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; display: flex; justify-content: space-between; font-weight:bold;">Commercial Bias (1-5) <span id="val-comm" style="color:var(--accent);"></span></label>
+                    <input type="range" id="tune-comm" min="1" max="5" oninput="updateTunerCalc()" style="accent-color: var(--accent); cursor: pointer;">
+                </div>
+            </div>
+            
+            <div id="tuner-results-panel" style="background: #0e1219; border-radius: 8px; padding: 15px; border-left: 4px solid var(--accent);">
+                </div>
+
+            <button class="save-btn" id="tuner-save-btn" onclick="applyTunerChanges()" style="margin-top:15px; padding: 12px; background-color: var(--accent); color: #000;">
+                Inject into Engine
+            </button>
         </div>
     </div>
 

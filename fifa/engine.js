@@ -8,14 +8,17 @@ let activeModalGroup = null;
 
 async function initEngine() {
     try {
-        const response = await fetch('2026data.json');
-        const data = await response.json();
+        // 1. Fetch YOUR data (Teams, Elo, Overrides) with cache-busting
+        const myUrl = 'https://raw.githubusercontent.com/roddcollege/home/main/fifa/2026data.json?t=' + new Date().getTime();
+        const myResponse = await fetch(myUrl);
+        const myData = await myResponse.json();
         
-        initialSetup = data.groups || {}; // <-- 2. We fill it with the loaded JSON data
-        trigrams = data.trigrams || {};
-        forecastOverrides = data.forecastOverrides || {};
+        initialSetup = myData.groups || {}; 
+        trigrams = myData.trigrams || {};
+        forecastOverrides = myData.forecastOverrides || {};
         
-        Object.keys(initialSetup).forEach(g => { // <-- 3. We iterate over it
+        // Build the base matrix
+        Object.keys(initialSetup).forEach(g => { 
             let teams = initialSetup[g];
             matches.push({ id: `${g}1`, group: g, t1: teams[0].t, t2: teams[1].t, s1: teams[0].sc, s2: teams[1].sc, played: true, locked: true, forecasted: false });
             matches.push({ id: `${g}2`, group: g, t1: teams[2].t, t2: teams[3].t, s1: teams[2].sc, s2: teams[3].sc, played: true, locked: true, forecasted: false });
@@ -30,10 +33,35 @@ async function initEngine() {
             });
         });
 
+        // 2. Fetch LIVE REALITY from OpenFootball immediately and inject it
+        try {
+            const liveResponse = await fetch('https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json');
+            const liveData = await liveResponse.json();
+            
+            if (liveData && liveData.matches) {
+                liveData.matches.forEach(lm => {
+                    if (lm.score && lm.score.ft && lm.score.ft.length === 2) {
+                        let m = matches.find(match => 
+                            (match.t1.includes(lm.team1) && match.t2.includes(lm.team2)) || 
+                            (match.t1.includes(lm.team2) && match.t2.includes(lm.team1))
+                        );
+                        if (m) {
+                            if (m.t1.includes(lm.team1)) { m.s1 = lm.score.ft[0]; m.s2 = lm.score.ft[1]; }
+                            else { m.s1 = lm.score.ft[1]; m.s2 = lm.score.ft[0]; }
+                            m.played = true; m.locked = true; m.forecasted = false;
+                        }
+                    }
+                });
+            }
+        } catch (syncError) {
+            console.warn("Live sync failed on load, proceeding with base data.", syncError);
+        }
+
+        // 3. Draw the UI
         generateBracketHTML(); 
         calculateStandings();
     } catch (error) {
-        console.error("Not able to load for security reasons, visit official site.", error);
+        console.error("Error loading JSON from GitHub.", error);
     }
 }
 
@@ -141,11 +169,13 @@ function renderGroupTables() {
         groupTeams.forEach(t => {
             let st = standings[t];
             let pwr = getAdjustedPower(t, true); 
-            html += `<tr><td class="team-name-col">
-                <div>${t}</div>
-                <span class="elo-badge">Knockout Power: ${pwr}</span>
+            html += `<tr><td class="team-name" style="position: relative; padding-right: 30px;">
+                <div style="font-weight: bold;">${t}</div>
+                <span class="elo-badge" style="color:var(--accent); display:inline-block; margin-top:4px;">Knockout Power: ${pwr}</span>
+                <span title="Adjust Knock out power" onclick="openTunerModal('${t}', event)" style="position: absolute; top: 12px; right: 10px; cursor: pointer; font-size: 1.1rem; opacity: 0.6; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">⚙️</span>
                 </td><td class="center">${st.mp}</td><td class="center">${st.gd > 0 ? '+'+st.gd : st.gd}</td><td class="center" style="font-weight:bold;">${st.pts}</td></tr>`;
         });
+		
         html += `</table></div>`;
         container.innerHTML += html;
     });
@@ -194,8 +224,10 @@ function saveScores() {
 }
 
 window.onclick = function(event) {
-    let modal = document.getElementById('scoreModal');
-    if (event.target == modal) { closeModal(); }
+    let scoreModal = document.getElementById('scoreModal');
+    let tunerModal = document.getElementById('tunerModal');
+    if (event.target == scoreModal) { closeModal(); }
+    if (event.target == tunerModal) { closeTunerModal(); }
 }
 
 // --- SYMMETRIC GEOMETRIC BRACKET GENERATION ---
@@ -506,6 +538,89 @@ function showTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     if (event && event.target) event.target.classList.add('active');
+}
+
+// --- INTANGIBLES TUNER MODAL LOGIC ---
+function openTunerModal(team, event) {
+    event.stopPropagation(); // Stops the group click event from firing
+
+    if(!teamData[team]) return;
+    const data = teamData[team];
+    const st = standings[team] || {gd: 0};
+
+    document.getElementById('tunerModalTitle').innerText = ` ${team}`;
+    document.getElementById('tuner-active-team').value = team;
+
+    document.getElementById('tune-elo').value = data.elo;
+    document.getElementById('tune-gd').value = st.gd;
+    document.getElementById('tune-host').checked = data.host;
+    document.getElementById('tune-ped').value = data.ped;
+    document.getElementById('tune-star').value = data.star;
+    document.getElementById('tune-comm').value = data.comm;
+
+    updateTunerCalc();
+    document.getElementById('tunerModal').style.display = 'block';
+}
+
+function closeTunerModal() {
+    document.getElementById('tunerModal').style.display = 'none';
+}
+
+function updateTunerCalc() {
+    const team = document.getElementById('tuner-active-team').value;
+    const elo = parseInt(document.getElementById('tune-elo').value) || 0;
+    const gd = parseInt(document.getElementById('tune-gd').value) || 0;
+    const host = document.getElementById('tune-host').checked;
+    const ped = parseInt(document.getElementById('tune-ped').value) || 0;
+    const star = parseInt(document.getElementById('tune-star').value) || 0;
+    const comm = parseInt(document.getElementById('tune-comm').value) || 0;
+
+    document.getElementById('val-ped').innerText = ped;
+    document.getElementById('val-star').innerText = star;
+    document.getElementById('val-comm').innerText = comm;
+
+    const hostBonus = host ? 50 : 0;
+    const pedBonus = ped * 10;
+    const starBonus = star * 15; 
+    const commBonus = comm * 10;
+    const gdBonus = gd * 5;
+    
+    const groupLetter = standings[team] ? standings[team].group : 'A';
+    const groupBonus = (groupLetter.charCodeAt(0) - 65) * 2;
+
+    const total = elo + hostBonus + pedBonus + starBonus + commBonus + gdBonus + groupBonus;
+
+    document.getElementById('tuner-results-panel').innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span>Base Elo</span> <span>${elo}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span>Host Advantage</span> <span>+${hostBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span>Pedigree (${ped})</span> <span>+${pedBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span>Superstar Clutch (${star})</span> <span>+${starBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span style="color:var(--money);">Commercial Bias (${comm}) 💰</span> <span>+${commBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span>Goal Diff (${gd})</span> <span>+${gdBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem; color:var(--text-muted);"><span style="color:var(--schedule);">Group (${groupLetter}) 📅</span> <span>+${groupBonus}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid var(--border-color); font-size:1.1rem; font-weight:bold; color:#fff;"><span>Total Power</span> <span style="color:var(--accent);">${total}</span></div>
+    `;
+}
+
+function applyTunerChanges() {
+    const team = document.getElementById('tuner-active-team').value;
+    if(!teamData[team]) return;
+
+    teamData[team].elo = parseInt(document.getElementById('tune-elo').value) || 0;
+    teamData[team].host = document.getElementById('tune-host').checked;
+    teamData[team].ped = parseInt(document.getElementById('tune-ped').value) || 0;
+    teamData[team].star = parseInt(document.getElementById('tune-star').value) || 0;
+    teamData[team].comm = parseInt(document.getElementById('tune-comm').value) || 0;
+    
+    // Force UI refresh
+    calculateStandings(); 
+    
+    const btn = document.getElementById('tuner-save-btn');
+    btn.innerText = "Applied to Engine!";
+    setTimeout(() => { 
+        btn.innerText = "Inject into Engine"; 
+        closeTunerModal(); // Auto-close after saving
+    }, 1000);
 }
 
 window.onload = () => { initEngine(); };
