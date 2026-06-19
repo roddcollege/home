@@ -8,7 +8,7 @@ let activeModalGroup = null;
 
 async function initEngine() {
     try {
-        // 1. Fetch YOUR data (Teams, Elo, Overrides) with cache-busting
+        // 1. FETCH YOUR BACKUP/SOURCE OF TRUTH (Always works)
         const myUrl = 'https://raw.githubusercontent.com/roddcollege/home/main/fifa/2026data.json?t=' + new Date().getTime();
         const myResponse = await fetch(myUrl);
         const myData = await myResponse.json();
@@ -33,9 +33,28 @@ async function initEngine() {
             });
         });
 
-        // 2. Fetch LIVE REALITY from OpenFootball immediately and inject it
+        // 2. APPLY YOUR LOCAL BACKUPS FIRST
+        if (myData.completedMatches) {
+            myData.completedMatches.forEach(cm => {
+                let m = matches.find(match => 
+                    (match.t1 === cm.t1 && match.t2 === cm.t2) || 
+                    (match.t1 === cm.t2 && match.t2 === cm.t1)
+                );
+                if (m) {
+                    if (m.t1 === cm.t1) { m.s1 = cm.s1; m.s2 = cm.s2; }
+                    else { m.s1 = cm.s2; m.s2 = cm.s1; }
+                    m.played = true; m.locked = true; m.forecasted = false;
+                }
+            });
+        }
+
+        // 3. TRY TO FETCH LIVE REALITY (The external API)
         try {
             const liveResponse = await fetch('https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json');
+            
+            // If the external site is deleted or returns a 404 error, this throws an error immediately
+            if (!liveResponse.ok) throw new Error("External API is down or missing."); 
+            
             const liveData = await liveResponse.json();
             
             if (liveData && liveData.matches) {
@@ -54,14 +73,16 @@ async function initEngine() {
                 });
             }
         } catch (syncError) {
-            console.warn("Live sync failed on load, proceeding with base data.", syncError);
+            // THE FALLBACK: If the above try{} block fails, it lands here. 
+            // It warns you in the console, but the app keeps running perfectly using your backup data!
+            console.warn("Live external sync failed. Relying entirely on your GitHub backup JSON.", syncError);
         }
 
-        // 3. Draw the UI
+        // 4. Draw the UI
         generateBracketHTML(); 
         calculateStandings();
     } catch (error) {
-        console.error("Error loading JSON from GitHub.", error);
+        console.error("Critical Error: Could not load your primary GitHub JSON.", error);
     }
 }
 
