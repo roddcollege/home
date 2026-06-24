@@ -80,6 +80,7 @@ async function initEngine() {
 
         // 4. Draw the UI
         generateBracketHTML(); 
+		renderSuperstars();
         calculateStandings();
     } catch (error) {
         console.error("Critical Error: Could not load your primary GitHub JSON.", error);
@@ -164,7 +165,7 @@ function forecastMatches() {
             m.played = true; m.forecasted = true; 
         }
     });
-    resetBracketPredictions(); calculateStandings(); showTab('bracket');
+    resetBracketPredictions(); calculateStandings(); showTab('bracket'); autoPrefillBracketRounds();
 }
 
 function renderGroupTables() {
@@ -446,7 +447,7 @@ function syncKnockoutBracket() {
         if(teamToInsert === "TBD") slot.classList.add('empty'); else slot.classList.remove('empty');
     });
 
-    autoPrefillBracketRounds();
+    
 }
 
 function autoPrefillBracketRounds() {
@@ -642,6 +643,68 @@ function applyTunerChanges() {
         btn.innerText = "Inject into Engine"; 
         closeTunerModal(); // Auto-close after saving
     }, 1000);
+}
+
+// --- SUPERSTAR GALLERY LOGIC ---
+
+// Dictionary mapping the top teams to their marquee players
+const superstarDictionary = {
+    'France': 'Kylian Mbappé',
+    'Argentina': 'Lionel Messi',
+    'Portugal': 'Cristiano Ronaldo',
+    'Brazil': 'Vinícius Júnior',
+    'England': 'Jude Bellingham',
+    'Norway': 'Erling Haaland',
+    'Belgium': 'Kevin De Bruyne',
+    'Mexico': 'Santiago Giménez',
+    'USA': 'Christian Pulisic',
+    'Germany': 'Jamal Musiala',
+    'Netherlands': 'Xavi Simons',
+    'Spain': 'Lamine Yamal',
+    'Uruguay': 'Federico Valverde',
+    'Senegal': 'Sadio Mané',
+    'Colombia': 'Luis Díaz',
+    'Croatia': 'Luka Modrić'
+};
+
+function renderSuperstars() {
+    const target = document.getElementById('superstar-render-target');
+    if (!target) return;
+    target.innerHTML = '';
+
+    // Filter teamData for Tier 4 and 5, sort by Star rating, then Elo
+    let superstarTeams = Object.keys(teamData)
+        .filter(t => teamData[t].star >= 4)
+        .sort((a, b) => {
+            if (teamData[b].star !== teamData[a].star) return teamData[b].star - teamData[a].star;
+            return teamData[b].elo - teamData[a].elo;
+        });
+
+    let html = '';
+    superstarTeams.forEach(t => {
+        let cleanName = t.replace(/[^a-zA-Z\s-]/g, '').trim();
+        let flag = t.replace(/[a-zA-Z\s-]/g, '').trim();
+        
+        let playerName = superstarDictionary[cleanName] || 'Marquee Player';
+        let starCount = teamData[t].star;
+        let starIcons = '★'.repeat(starCount);
+        let clutchMultiplier = starCount * 15; // Matches your Engine Math
+        
+        // Apply special class if it's a Tier 5 player
+        let tierClass = starCount === 5 ? 'sc-tier-5' : 'sc-tier-4';
+
+        html += `
+            <div class="superstar-card ${tierClass}">
+                <div class="sc-flag">${flag}</div>
+                <div class="sc-player">${playerName}</div>
+                <div class="sc-country">${cleanName}</div>
+                <div class="sc-stars">${starIcons}</div>
+                <div class="sc-power">Clutch Power: +${clutchMultiplier}</div>
+            </div>
+        `;
+    });
+    
+    target.innerHTML = html;
 }
 
 window.onload = () => { initEngine(); };

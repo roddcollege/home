@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 World Cup Dashboard</title>
-	<link rel="icon" href="https://www.icons.com/media/catalog/product/cache/15cebca97e59bef64f61d5558d86d273/i/5/i5760_-_morgan_rogers_signed_fwc_2026_football_signed_by_fifa_logo__1.webp" type="image/x-icon">
-    <link rel="shortcut icon" href="https://www.icons.com/media/catalog/product/cache/15cebca97e59bef64f61d5558d86d273/i/5/i5760_-_morgan_rogers_signed_fwc_2026_football_signed_by_fifa_logo__1.webp" type="image/x-icon">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,6 +23,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('groups')">Group Stages</button>
         <button class="tab-btn" onclick="showTab('bracket')">Knockouts</button>
+		<button class="tab-btn" onclick="showTab('superstars')">Superstars</button>
     </div>
 
     <div id="groups" class="tab-content active">
@@ -36,6 +37,12 @@
                 </div>
         </div>
     </div>
+	
+	<div id="superstars" class="tab-content">
+    <h2 style="text-align: center; color: var(--accent); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Tournament Superstars</h2>
+    <div class="superstar-masonry" id="superstar-render-target">
+        </div>
+	</div>
 
     <div id="tunerModal" class="modal">
         <div class="modal-content" style="max-width: 500px; padding: 20px; margin: 5% auto;">

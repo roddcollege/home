@@ -124,8 +124,59 @@
         .team-label { flex: 1; font-weight: 600; font-size: 1.05rem; }
         .save-btn { width: 100%; background-color: var(--selected); color: #fff; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: 0.2s;}
         .save-btn:hover { background-color: #0369a1; }
-        
-        .guide-container { max-width: 900px; margin: 0 auto; background: var(--panel-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); line-height: 1.6; font-size: 1.05rem; }
-        .guide-container h2 { color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 40px; }
-        .guide-container ul { margin-left: 20px; color: var(--text-muted); }
-        .guide-container li { margin-bottom: 10px; }
+		
+		/* --- SUPERSTAR MASONRY GALLERY --- */
+		.superstar-masonry {
+			column-count: 3;
+			column-gap: 20px;
+			padding: 0 20px 40px 20px;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+
+		@media (max-width: 900px) { .superstar-masonry { column-count: 2; } }
+		@media (max-width: 600px) { .superstar-masonry { column-count: 1; } }
+
+		.superstar-card {
+			background: var(--panel-bg);
+			border: 1px solid var(--border-color);
+			border-radius: 12px;
+			padding: 30px 20px;
+			margin-bottom: 20px;
+			break-inside: avoid; /* Prevents cards from splitting across columns */
+			text-align: center;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+			transition: transform 0.2s, border-color 0.2s;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.superstar-card:hover {
+			transform: translateY(-5px);
+			border-color: var(--accent);
+		}
+
+		.sc-flag { font-size: 4rem; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
+		.sc-player { font-size: 1.5rem; font-weight: bold; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;}
+		.sc-country { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; text-transform: uppercase; font-weight: 600; }
+		.sc-stars { color: var(--accent); font-size: 1.2rem; margin-bottom: 20px; letter-spacing: 2px;}
+
+		.sc-power {
+			background: linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(2, 132, 199, 0.05) 100%);
+			border: 1px solid var(--selected);
+			color: #38bdf8;
+			padding: 12px;
+			border-radius: 8px;
+			font-size: 1.1rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		/* Give Tier 5 players a special gold highlight */
+		.sc-tier-5 { border-color: rgba(251, 191, 36, 0.3); }
+		.sc-tier-5 .sc-power {
+			background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%);
+			border-color: var(--accent);
+			color: var(--accent);
+		}

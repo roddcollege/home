@@ -1,0 +1,574 @@
+﻿{
+    "players":  [
+                    {
+                        "lastName":  "ABDALLAH",
+                        "firstName":  "NASIB",
+                        "image":  "/players/ABDALLAH-NASIB.avif"
+                    },
+                    {
+                        "lastName":  "ADAMS",
+                        "firstName":  "Tyler",
+                        "image":  "/players/ADAMS-Tyler.avif"
+                    },
+                    {
+                        "lastName":  "ADJETEY",
+                        "firstName":  "Jonas",
+                        "image":  "/players/ADJETEY-Jonas.avif"
+                    },
+                    {
+                        "lastName":  "AGBADOU",
+                        "firstName":  "Emmanuel",
+                        "image":  "/players/AGBADOU-Emmanuel.avif"
+                    },
+                    {
+                        "lastName":  "AHMED",
+                        "firstName":  "FATOUH",
+                        "image":  "/players/AHMED-FATOUH.avif"
+                    },
+                    {
+                        "lastName":  "AJER",
+                        "firstName":  "Kristoffer",
+                        "image":  "/players/AJER-Kristoffer.avif"
+                    },
+                    {
+                        "lastName":  "AKANJI",
+                        "firstName":  "Manuel",
+                        "image":  "/players/AKANJI-Manuel.avif"
+                    },
+                    {
+                        "lastName":  "ALABA",
+                        "firstName":  "David",
+                        "image":  "/players/ALABA-David.avif"
+                    },
+                    {
+                        "lastName":  "ALVAREZ",
+                        "firstName":  "Edson",
+                        "image":  "/players/ALVAREZ-Edson.avif"
+                    },
+                    {
+                        "lastName":  "ANDERSON",
+                        "firstName":  "Elliot",
+                        "image":  "/players/ANDERSON-Elliot.avif"
+                    },
+                    {
+                        "lastName":  "ANDRADE",
+                        "firstName":  "Andres",
+                        "image":  "/players/ANDRADE-Andres.avif"
+                    },
+                    {
+                        "lastName":  "ASARE",
+                        "firstName":  "Benjamin",
+                        "image":  "/players/ASARE-Benjamin.avif"
+                    },
+                    {
+                        "lastName":  "AYARI",
+                        "firstName":  "Yasin",
+                        "image":  "/players/AYARI-Yasin.avif"
+                    },
+                    {
+                        "lastName":  "BELLEGARDE-Jean",
+                        "firstName":  "Ricner",
+                        "image":  "/players/BELLEGARDE-Jean-Ricner.avif"
+                    },
+                    {
+                        "lastName":  "BOUNOU",
+                        "firstName":  "Yassine",
+                        "image":  "/players/BOUNOU-Yassine.avif"
+                    },
+                    {
+                        "lastName":  "BOXALL",
+                        "firstName":  "Michael",
+                        "image":  "/players/BOXALL-Michael.avif"
+                    },
+                    {
+                        "lastName":  "BRUNO",
+                        "firstName":  "GUIMARAES",
+                        "image":  "/players/BRUNO-GUIMARAES.avif"
+                    },
+                    {
+                        "lastName":  "BURGESS",
+                        "firstName":  "Cameron",
+                        "image":  "/players/BURGESS-Cameron.avif"
+                    },
+                    {
+                        "lastName":  "CACERES",
+                        "firstName":  "Sebastian",
+                        "image":  "/players/CACERES-Sebastian.avif"
+                    },
+                    {
+                        "lastName":  "CAICEDO",
+                        "firstName":  "Moises",
+                        "image":  "/players/CAICEDO-Moises.avif"
+                    },
+                    {
+                        "lastName":  "CASEMIRO-CASEMIRO",
+                        "firstName":  "CASEMIRO",
+                        "image":  "/players/CASEMIRO.avif"
+                    },
+                    {
+                        "lastName":  "CASTAGNE",
+                        "firstName":  "Timothy",
+                        "image":  "/players/CASTAGNE-Timothy.avif"
+                    },
+                    {
+                        "lastName":  "CHALOUPEK",
+                        "firstName":  "Stepan",
+                        "image":  "/players/CHALOUPEK-Stepan.avif"
+                    },
+                    {
+                        "lastName":  "CIRCATI",
+                        "firstName":  "Alessandro",
+                        "image":  "/players/CIRCATI-Alessandro.avif"
+                    },
+                    {
+                        "lastName":  "COMENENCIA",
+                        "firstName":  "Livano",
+                        "image":  "/players/COMENENCIA-Livano.avif"
+                    },
+                    {
+                        "lastName":  "CORNELIUS",
+                        "firstName":  "Derek",
+                        "image":  "/players/CORNELIUS-Derek.avif"
+                    },
+                    {
+                        "lastName":  "CUCURELLA",
+                        "firstName":  "Marc",
+                        "image":  "/players/CUCURELLA-Marc.avif"
+                    },
+                    {
+                        "lastName":  "DE-CUYPER",
+                        "firstName":  "Maxim",
+                        "image":  "/players/DE-CUYPER-Maxim.avif"
+                    },
+                    {
+                        "lastName":  "DE-FOUGEROLLES",
+                        "firstName":  "Luc",
+                        "image":  "/players/DE-FOUGEROLLES-Luc.avif"
+                    },
+                    {
+                        "lastName":  "DE-KETELAERE",
+                        "firstName":  "Charles",
+                        "image":  "/players/DE-KETELAERE-Charles.avif"
+                    },
+                    {
+                        "lastName":  "DELCROIX",
+                        "firstName":  "Hannes",
+                        "image":  "/players/DELCROIX-Hannes.avif"
+                    },
+                    {
+                        "lastName":  "DEROY",
+                        "firstName":  "DUARTE",
+                        "image":  "/players/DEROY-DUARTE.avif"
+                    },
+                    {
+                        "lastName":  "DINEY",
+                        "firstName":  "BORGES",
+                        "image":  "/players/DINEY-BORGES.avif"
+                    },
+                    {
+                        "lastName":  "DOUE",
+                        "firstName":  "Guela",
+                        "image":  "/players/DOUE-Guela.avif"
+                    },
+                    {
+                        "lastName":  "DOUGLAS",
+                        "firstName":  "SANTOS",
+                        "image":  "/players/DOUGLAS-SANTOS.avif"
+                    },
+                    {
+                        "lastName":  "ELVEDI",
+                        "firstName":  "Nico",
+                        "image":  "/players/ELVEDI-Nico.avif"
+                    },
+                    {
+                        "lastName":  "EZATOLAHI",
+                        "firstName":  "Saeid",
+                        "image":  "/players/EZATOLAHI-Saeid.avif"
+                    },
+                    {
+                        "lastName":  "FERGUSON",
+                        "firstName":  "Lewis",
+                        "image":  "/players/FERGUSON-Lewis.avif"
+                    },
+                    {
+                        "lastName":  "FRANCO",
+                        "firstName":  "Alan",
+                        "image":  "/players/FRANCO-Alan.avif"
+                    },
+                    {
+                        "lastName":  "FREEMAN",
+                        "firstName":  "Alex",
+                        "image":  "/players/FREEMAN-Alex.avif"
+                    },
+                    {
+                        "lastName":  "GALLARDO",
+                        "firstName":  "Jesus",
+                        "image":  "/players/GALLARDO-Jesus.avif"
+                    },
+                    {
+                        "lastName":  "getnamesofplayers-getnamesofplayers",
+                        "firstName":  "getnamesofplayers",
+                        "image":  "/players/getnamesofplayers.bat"
+                    },
+                    {
+                        "lastName":  "GRAVENBERCH",
+                        "firstName":  "Ryan",
+                        "image":  "/players/GRAVENBERCH-Ryan.avif"
+                    },
+                    {
+                        "lastName":  "GUNN",
+                        "firstName":  "Angus",
+                        "image":  "/players/GUNN-Angus.avif"
+                    },
+                    {
+                        "lastName":  "HANLEY",
+                        "firstName":  "Grant",
+                        "image":  "/players/HANLEY-Grant.avif"
+                    },
+                    {
+                        "lastName":  "HERNANDEZ",
+                        "firstName":  "Theo",
+                        "image":  "/players/HERNANDEZ-Theo.avif"
+                    },
+                    {
+                        "lastName":  "HICKEY",
+                        "firstName":  "Aaron",
+                        "image":  "/players/HICKEY-Aaron.avif"
+                    },
+                    {
+                        "lastName":  "KATIC",
+                        "firstName":  "Nikola",
+                        "image":  "/players/KATIC-Nikola.avif"
+                    },
+                    {
+                        "lastName":  "KEVIN",
+                        "firstName":  "PINA",
+                        "image":  "/players/KEVIN-PINA.avif"
+                    },
+                    {
+                        "lastName":  "KIM",
+                        "firstName":  "Minjae",
+                        "image":  "/players/KIM-Minjae.avif"
+                    },
+                    {
+                        "lastName":  "KONE",
+                        "firstName":  "Ismael",
+                        "image":  "/players/KONE-Ismael.avif"
+                    },
+                    {
+                        "lastName":  "LAPORTE",
+                        "firstName":  "Aymeric",
+                        "image":  "/players/LAPORTE-Aymeric.avif"
+                    },
+                    {
+                        "lastName":  "LARYEA",
+                        "firstName":  "Richie",
+                        "image":  "/players/LARYEA-Richie.avif"
+                    },
+                    {
+                        "lastName":  "LEE",
+                        "firstName":  "Gihyuk",
+                        "image":  "/players/LEE-Gihyuk.avif"
+                    },
+                    {
+                        "lastName":  "LIRA",
+                        "firstName":  "Erik",
+                        "image":  "/players/LIRA-Erik.avif"
+                    },
+                    {
+                        "lastName":  "LUCAS",
+                        "firstName":  "PAQUETA",
+                        "image":  "/players/LUCAS-PAQUETA.avif"
+                    },
+                    {
+                        "lastName":  "MAC-ALLISTER",
+                        "firstName":  "Alexis",
+                        "image":  "/players/MAC-ALLISTER-Alexis.avif"
+                    },
+                    {
+                        "lastName":  "MBATHA",
+                        "firstName":  "Thalente",
+                        "image":  "/players/MBATHA-Thalente.avif"
+                    },
+                    {
+                        "lastName":  "MECHELE",
+                        "firstName":  "Brandon",
+                        "image":  "/players/MECHELE-Brandon.avif"
+                    },
+                    {
+                        "lastName":  "MENSAH",
+                        "firstName":  "Gideon",
+                        "image":  "/players/MENSAH-Gideon.avif"
+                    },
+                    {
+                        "lastName":  "MESSI",
+                        "firstName":  "Lionel",
+                        "image":  "/players/MESSI-Lionel.avif"
+                    },
+                    {
+                        "lastName":  "MOHAMMED",
+                        "firstName":  "ALOWAIS",
+                        "image":  "/players/MOHAMMED-ALOWAIS.avif"
+                    },
+                    {
+                        "lastName":  "MOHANAD",
+                        "firstName":  "LASHIN",
+                        "image":  "/players/MOHANAD-LASHIN.avif"
+                    },
+                    {
+                        "lastName":  "MOLINA",
+                        "firstName":  "Nahuel",
+                        "image":  "/players/MOLINA-Nahuel.avif"
+                    },
+                    {
+                        "lastName":  "MOSTAFA",
+                        "firstName":  "SHOUBIR",
+                        "image":  "/players/MOSTAFA-SHOUBIR.avif"
+                    },
+                    {
+                        "lastName":  "MUNOZ",
+                        "firstName":  "Daniel",
+                        "image":  "/players/MUNOZ-Daniel.avif"
+                    },
+                    {
+                        "lastName":  "MURILLO",
+                        "firstName":  "Amir",
+                        "image":  "/players/MURILLO-Amir.avif"
+                    },
+                    {
+                        "lastName":  "NASSER",
+                        "firstName":  "ALDAWSARI",
+                        "image":  "/players/NASSER-ALDAWSARI.avif"
+                    },
+                    {
+                        "lastName":  "NDOYE",
+                        "firstName":  "Dan",
+                        "image":  "/players/NDOYE-Dan.avif"
+                    },
+                    {
+                        "lastName":  "NMECHA",
+                        "firstName":  "Felix",
+                        "image":  "/players/NMECHA-Felix.avif"
+                    },
+                    {
+                        "lastName":  "OKON-ENGSTLER",
+                        "firstName":  "Paul",
+                        "image":  "/players/OKON-ENGSTLER-Paul.avif"
+                    },
+                    {
+                        "lastName":  "OLIVERA",
+                        "firstName":  "Mathias",
+                        "image":  "/players/OLIVERA-Mathias.avif"
+                    },
+                    {
+                        "lastName":  "OLUWASEYI",
+                        "firstName":  "Tani",
+                        "image":  "/players/OLUWASEYI-Tani.avif"
+                    },
+                    {
+                        "lastName":  "ONANA",
+                        "firstName":  "Amadou",
+                        "image":  "/players/ONANA-Amadou.avif"
+                    },
+                    {
+                        "lastName":  "OPOKU",
+                        "firstName":  "Jerome",
+                        "image":  "/players/OPOKU-Jerome.avif"
+                    },
+                    {
+                        "lastName":  "OWUSU",
+                        "firstName":  "Elisha",
+                        "image":  "/players/OWUSU-Elisha.avif"
+                    },
+                    {
+                        "lastName":  "OYARZABAL",
+                        "firstName":  "Mikel",
+                        "image":  "/players/OYARZABAL-Mikel.avif"
+                    },
+                    {
+                        "lastName":  "PEDRI-PEDRI",
+                        "firstName":  "PEDRI",
+                        "image":  "/players/PEDRI.avif"
+                    },
+                    {
+                        "lastName":  "PICO",
+                        "firstName":  "LOPES",
+                        "image":  "/players/PICO-LOPES.avif"
+                    },
+                    {
+                        "lastName":  "POSCH",
+                        "firstName":  "Stefan",
+                        "image":  "/players/POSCH-Stefan.avif"
+                    },
+                    {
+                        "lastName":  "PRECIADO",
+                        "firstName":  "Angelo",
+                        "image":  "/players/PRECIADO-Angelo.avif"
+                    },
+                    {
+                        "lastName":  "RAMOS",
+                        "firstName":  "Jiovany",
+                        "image":  "/players/RAMOS-Jiovany.avif"
+                    },
+                    {
+                        "lastName":  "RANGEL",
+                        "firstName":  "Raul",
+                        "image":  "/players/RANGEL-Raul.avif"
+                    },
+                    {
+                        "lastName":  "rename-rename",
+                        "firstName":  "rename",
+                        "image":  "/players/rename.bat"
+                    },
+                    {
+                        "lastName":  "REYES",
+                        "firstName":  "Israel",
+                        "image":  "/players/REYES-Israel.avif"
+                    },
+                    {
+                        "lastName":  "REZAEIAN",
+                        "firstName":  "Ramin",
+                        "image":  "/players/REZAEIAN-Ramin.avif"
+                    },
+                    {
+                        "lastName":  "RICHARDS",
+                        "firstName":  "Chris",
+                        "image":  "/players/RICHARDS-Chris.avif"
+                    },
+                    {
+                        "lastName":  "ROBINSON",
+                        "firstName":  "Antonee",
+                        "image":  "/players/ROBINSON-Antonee.avif"
+                    },
+                    {
+                        "lastName":  "RODRI-RODRI",
+                        "firstName":  "RODRI",
+                        "image":  "/players/RODRI.avif"
+                    },
+                    {
+                        "lastName":  "ROMERO",
+                        "firstName":  "Cristian",
+                        "image":  "/players/ROMERO-Cristian.avif"
+                    },
+                    {
+                        "lastName":  "RUIZ",
+                        "firstName":  "Fabian",
+                        "image":  "/players/RUIZ-Fabian.avif"
+                    },
+                    {
+                        "lastName":  "RYERSON",
+                        "firstName":  "Julian",
+                        "image":  "/players/RYERSON-Julian.avif"
+                    },
+                    {
+                        "lastName":  "SCHLAGER",
+                        "firstName":  "Alexander",
+                        "image":  "/players/SCHLAGER-Alexander.avif"
+                    },
+                    {
+                        "lastName":  "SCHLAGER",
+                        "firstName":  "Xaver",
+                        "image":  "/players/SCHLAGER-Xaver.avif"
+                    },
+                    {
+                        "lastName":  "SCHLOTTERBECK",
+                        "firstName":  "Nico",
+                        "image":  "/players/SCHLOTTERBECK-Nico.avif"
+                    },
+                    {
+                        "lastName":  "SEIWALD",
+                        "firstName":  "Nicolas",
+                        "image":  "/players/SEIWALD-Nicolas.avif"
+                    },
+                    {
+                        "lastName":  "SEMENYO",
+                        "firstName":  "Antoine",
+                        "image":  "/players/SEMENYO-Antoine.avif"
+                    },
+                    {
+                        "lastName":  "SIBO",
+                        "firstName":  "Kwasi",
+                        "image":  "/players/SIBO-Kwasi.avif"
+                    },
+                    {
+                        "lastName":  "SIDNY-LOPES",
+                        "firstName":  "CABRAL",
+                        "image":  "/players/SIDNY-LOPES-CABRAL.avif"
+                    },
+                    {
+                        "lastName":  "SIMON",
+                        "firstName":  "Unai",
+                        "image":  "/players/SIMON-Unai.avif"
+                    },
+                    {
+                        "lastName":  "SINGO",
+                        "firstName":  "Wilfried",
+                        "image":  "/players/SINGO-Wilfried.avif"
+                    },
+                    {
+                        "lastName":  "STAMENIC",
+                        "firstName":  "Marko",
+                        "image":  "/players/STAMENIC-Marko.avif"
+                    },
+                    {
+                        "lastName":  "SURMAN",
+                        "firstName":  "Finn",
+                        "image":  "/players/SURMAN-Finn.avif"
+                    },
+                    {
+                        "lastName":  "TILLMAN",
+                        "firstName":  "Malik",
+                        "image":  "/players/TILLMAN-Malik.avif"
+                    },
+                    {
+                        "lastName":  "TOMAS",
+                        "firstName":  "ARAUJO",
+                        "image":  "/players/TOMAS-ARAUJO.avif"
+                    },
+                    {
+                        "lastName":  "UGARTE",
+                        "firstName":  "Manuel",
+                        "image":  "/players/UGARTE-Manuel.avif"
+                    },
+                    {
+                        "lastName":  "UPAMECANO",
+                        "firstName":  "Dayot",
+                        "image":  "/players/UPAMECANO-Dayot.avif"
+                    },
+                    {
+                        "lastName":  "VAN-HECKE-Jan",
+                        "firstName":  "Paul",
+                        "image":  "/players/VAN-HECKE-Jan-Paul.avif"
+                    },
+                    {
+                        "lastName":  "VITE",
+                        "firstName":  "Pedro",
+                        "image":  "/players/VITE-Pedro.avif"
+                    },
+                    {
+                        "lastName":  "VOZINHA-VOZINHA",
+                        "firstName":  "VOZINHA",
+                        "image":  "/players/VOZINHA.avif"
+                    },
+                    {
+                        "lastName":  "WILLY",
+                        "firstName":  "SEMEDO",
+                        "image":  "/players/WILLY-SEMEDO.avif"
+                    },
+                    {
+                        "lastName":  "YUKSEK",
+                        "firstName":  "Ismail",
+                        "image":  "/players/YUKSEK-Ismail.avif"
+                    },
+                    {
+                        "lastName":  "ZAKARIA",
+                        "firstName":  "Denis",
+                        "image":  "/players/ZAKARIA-Denis.avif"
+                    },
+                    {
+                        "lastName":  "ZIGI-Lawrence",
+                        "firstName":  "Ati",
+                        "image":  "/players/ZIGI-Lawrence-Ati.avif"
+                    }
+                ]
+}

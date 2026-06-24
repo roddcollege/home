@@ -1,0 +1,804 @@
+{
+    "players": [
+        {
+            "rank": 1,
+            "name": "Lionel MESSI",
+            "country": "Argentina",
+            "overall": 8.06,
+            "attacking": 7.2,
+            "defending": 4.69
+        },
+        {
+            "rank": 2,
+            "name": "Elijah JUST",
+            "country": "New Zealand",
+            "overall": 7.72,
+            "attacking": 6.67,
+            "defending": 5.21
+        },
+        {
+            "rank": 3,
+            "name": "Kylian MBAPPE",
+            "country": "France",
+            "overall": 7.33,
+            "attacking": 6.08,
+            "defending": 4.25
+        },
+        {
+            "rank": 4,
+            "name": "Yasin AYARI",
+            "country": "Sweden",
+            "overall": 7.33,
+            "attacking": 5.51,
+            "defending": 5.77
+        },
+        {
+            "rank": 5,
+            "name": "Amad DIALLO",
+            "country": "Côte d'Ivoire",
+            "overall": 7.32,
+            "attacking": 7.47,
+            "defending": 5.04
+        },
+        {
+            "rank": 6,
+            "name": "Cyle LARIN",
+            "country": "Canada",
+            "overall": 7.23,
+            "attacking": 5.02,
+            "defending": 5.44
+        },
+        {
+            "rank": 7,
+            "name": "Deniz UNDAV",
+            "country": "Germany",
+            "overall": 7.11,
+            "attacking": 7.09,
+            "defending": 4.59
+        },
+        {
+            "rank": 8,
+            "name": "Harry KANE",
+            "country": "England",
+            "overall": 7.02,
+            "attacking": 5.53,
+            "defending": 4.49
+        },
+        {
+            "rank": 9,
+            "name": "Jonathan DAVID",
+            "country": "Canada",
+            "overall": 6.9,
+            "attacking": 5.37,
+            "defending": 5.12
+        },
+        {
+            "rank": 10,
+            "name": "VINICIUS JUNIOR",
+            "country": "Brazil",
+            "overall": 6.87,
+            "attacking": 6.21,
+            "defending": 4.31
+        },
+        {
+            "rank": 11,
+            "name": "Erling HAALAND",
+            "country": "Norway",
+            "overall": 6.8,
+            "attacking": 5.12,
+            "defending": 4.99
+        },
+        {
+            "rank": 12,
+            "name": "Luis DIAZ",
+            "country": "Colombia",
+            "overall": 6.75,
+            "attacking": 6.98,
+            "defending": 5.34
+        },
+        {
+            "rank": 13,
+            "name": "Crysencio SUMMERVILLE",
+            "country": "Netherlands",
+            "overall": 6.64,
+            "attacking": 5.76,
+            "defending": 4.93
+        },
+        {
+            "rank": 14,
+            "name": "Alexander Isak",
+            "country": "Sweden",
+            "overall": 6.64,
+            "attacking": 6.67,
+            "defending": 4.73
+        },
+        {
+            "rank": 15,
+            "name": "EMAM ASHOUR",
+            "country": "Egypt",
+            "overall": 6.63,
+            "attacking": 6.22,
+            "defending": 5.33
+        },
+        {
+            "rank": 16,
+            "name": "Ramin REZAEIAN",
+            "country": "IR Iran",
+            "overall": 6.61,
+            "attacking": 8.06,
+            "defending": 5.02
+        },
+        {
+            "rank": 17,
+            "name": "ALI OLWAN",
+            "country": "Jordan",
+            "overall": 6.53,
+            "attacking": 5.71,
+            "defending": 4.14
+        },
+        {
+            "rank": 18,
+            "name": "Ibrahim MBAYE",
+            "country": "Senegal",
+            "overall": 6.49,
+            "attacking": 5.67,
+            "defending": 4.37
+        },
+        {
+            "rank": 19,
+            "name": "Petar Musa",
+            "country": "Croatia",
+            "overall": 6.48,
+            "attacking": 5.23,
+            "defending": 4.46
+        },
+        {
+            "rank": 20,
+            "name": "Marcus RASHFORD",
+            "country": "England",
+            "overall": 6.46,
+            "attacking": 5.67,
+            "defending": 4.35
+        },
+        {
+            "rank": 21,
+            "name": "Bradley BARCOLA",
+            "country": "France",
+            "overall": 6.45,
+            "attacking": 6.34,
+            "defending": 5.29
+        },
+        {
+            "rank": 22,
+            "name": "Abbosbek FAYZULLAEV",
+            "country": "Uzbekistan",
+            "overall": 6.41,
+            "attacking": 5.74,
+            "defending": 4.68
+        },
+        {
+            "rank": 23,
+            "name": "Ruben VARGAS",
+            "country": "Switzerland",
+            "overall": 6.4,
+            "attacking": 6.99,
+            "defending": 5.02
+        },
+        {
+            "rank": 24,
+            "name": "Martin BATURINA",
+            "country": "Croatia",
+            "overall": 6.4,
+            "attacking": 6.25,
+            "defending": 4.47
+        },
+        {
+            "rank": 25,
+            "name": "Jaminton CAMPAZ",
+            "country": "Colombia",
+            "overall": 6.4,
+            "attacking": 5.77,
+            "defending": 5.51
+        },
+        {
+            "rank": 26,
+            "name": "Romano SCHMID",
+            "country": "Austria",
+            "overall": 6.38,
+            "attacking": 5.63,
+            "defending": 4.93
+        },
+        {
+            "rank": 27,
+            "name": "Maxi ARAUJO",
+            "country": "Uruguay",
+            "overall": 6.37,
+            "attacking": 6.37,
+            "defending": 4.52
+        },
+        {
+            "rank": 28,
+            "name": "Felix NMECHA",
+            "country": "Germany",
+            "overall": 6.37,
+            "attacking": 6.4,
+            "defending": 6.45
+        },
+        {
+            "rank": 29,
+            "name": "Luis ROMO",
+            "country": "Mexico",
+            "overall": 6.36,
+            "attacking": 5.23,
+            "defending": 5.45
+        },
+        {
+            "rank": 30,
+            "name": "Yoane WISSA",
+            "country": "Congo DR",
+            "overall": 6.34,
+            "attacking": 6.24,
+            "defending": 4.2
+        },
+        {
+            "rank": 31,
+            "name": "Nestory IRANKUNDA",
+            "country": "Australia",
+            "overall": 6.32,
+            "attacking": 5.54,
+            "defending": 4.32
+        },
+        {
+            "rank": 32,
+            "name": "Jude BELLINGHAM",
+            "country": "England",
+            "overall": 6.31,
+            "attacking": 5.47,
+            "defending": 5.19
+        },
+        {
+            "rank": 33,
+            "name": "John McGinn",
+            "country": "Scotland",
+            "overall": 6.28,
+            "attacking": 6.11,
+            "defending": 4.42
+        },
+        {
+            "rank": 34,
+            "name": "Livano COMENENCIA",
+            "country": "Curaçao",
+            "overall": 6.27,
+            "attacking": 5.86,
+            "defending": 5.71
+        },
+        {
+            "rank": 35,
+            "name": "Daniel MUNOZ",
+            "country": "Colombia",
+            "overall": 6.24,
+            "attacking": 5.17,
+            "defending": 5.95
+        },
+        {
+            "rank": 36,
+            "name": "JOAO NEVES",
+            "country": "Portugal",
+            "overall": 6.22,
+            "attacking": 5.86,
+            "defending": 5.51
+        },
+        {
+            "rank": 37,
+            "name": "Michal SADILEK",
+            "country": "Czechia",
+            "overall": 6.2,
+            "attacking": 6.04,
+            "defending": 4.22
+        },
+        {
+            "rank": 38,
+            "name": "MAURICIO",
+            "country": "Paraguay",
+            "overall": 6.19,
+            "attacking": 5.37,
+            "defending": 4.55
+        },
+        {
+            "rank": 39,
+            "name": "Keito Nakamura",
+            "country": "Japan",
+            "overall": 6.18,
+            "attacking": 6.59,
+            "defending": 4.53
+        },
+        {
+            "rank": 40,
+            "name": "Virgil VAN DIJK",
+            "country": "Netherlands",
+            "overall": 6.17,
+            "attacking": 5.4,
+            "defending": 5.4
+        },
+        {
+            "rank": 41,
+            "name": "Jamal MUSIALA",
+            "country": "Germany",
+            "overall": 6.16,
+            "attacking": 6.15,
+            "defending": 5.26
+        },
+        {
+            "rank": 42,
+            "name": "Nathaniel BROWN",
+            "country": "Germany",
+            "overall": 6.14,
+            "attacking": 6.85,
+            "defending": 4.93
+        },
+        {
+            "rank": 43,
+            "name": "Ismael SAIBARI",
+            "country": "Morocco",
+            "overall": 6.13,
+            "attacking": 6.29,
+            "defending": 4.49
+        },
+        {
+            "rank": 44,
+            "name": "Viktor GYOKERES",
+            "country": "Sweden",
+            "overall": 6.13,
+            "attacking": 6.81,
+            "defending": 4.53
+        },
+        {
+            "rank": 45,
+            "name": "AYMEN HUSSEIN",
+            "country": "Iraq",
+            "overall": 6.12,
+            "attacking": 6.59,
+            "defending": 3.2
+        },
+        {
+            "rank": 46,
+            "name": "Folarin BALOGUN",
+            "country": "USA",
+            "overall": 6.11,
+            "attacking": 5.25,
+            "defending": 4.69
+        },
+        {
+            "rank": 47,
+            "name": "Mohammad MOHEBBI",
+            "country": "IR Iran",
+            "overall": 6.1,
+            "attacking": 5.47,
+            "defending": 4.98
+        },
+        {
+            "rank": 48,
+            "name": "Nico SCHLOTTERBECK",
+            "country": "Germany",
+            "overall": 6.09,
+            "attacking": 6.13,
+            "defending": 6.57
+        },
+        {
+            "rank": 49,
+            "name": "Kai HAVERTZ",
+            "country": "Germany",
+            "overall": 6.04,
+            "attacking": 5.85,
+            "defending": 4.77
+        },
+        {
+            "rank": 50,
+            "name": "Caleb YIRENKYI",
+            "country": "Ghana",
+            "overall": 6.03,
+            "attacking": 5.38,
+            "defending": 5.04
+        },
+        {
+            "rank": 51,
+            "name": "Abdulelah ALAMRI",
+            "country": "Saudi Arabia",
+            "overall": 5.99,
+            "attacking": 5.23,
+            "defending": 5.0
+        },
+        {
+            "rank": 52,
+            "name": "Leo OSTIGARD",
+            "country": "Norway",
+            "overall": 5.98,
+            "attacking": 5.27,
+            "defending": 5.4
+        },
+        {
+            "rank": 53,
+            "name": "Alex FREEMAN",
+            "country": "USA",
+            "overall": 5.97,
+            "attacking": 6.33,
+            "defending": 6.65
+        },
+        {
+            "rank": 54,
+            "name": "Omar Rekik",
+            "country": "Tunisia",
+            "overall": 5.9,
+            "attacking": 5.52,
+            "defending": 4.33
+        },
+        {
+            "rank": 55,
+            "name": "Julian QUINONES",
+            "country": "Mexico",
+            "overall": 5.89,
+            "attacking": 6.75,
+            "defending": 4.74
+        },
+        {
+            "rank": 56,
+            "name": "Brahim DIAZ",
+            "country": "Morocco",
+            "overall": 5.84,
+            "attacking": 7.39,
+            "defending": 4.51
+        },
+        {
+            "rank": 57,
+            "name": "HWANG Inbeom",
+            "country": "Korea Republic",
+            "overall": 5.81,
+            "attacking": 5.29,
+            "defending": 5.6
+        },
+        {
+            "rank": 58,
+            "name": "Connor METCALFE",
+            "country": "Australia",
+            "overall": 5.69,
+            "attacking": 5.64,
+            "defending": 5.16
+        },
+        {
+            "rank": 59,
+            "name": "Ladislav KREJCI",
+            "country": "Czechia",
+            "overall": 5.57,
+            "attacking": 5.53,
+            "defending": 5.16
+        },
+        {
+            "rank": 60,
+            "name": "Julio ENCISO",
+            "country": "Paraguay",
+            "overall": 5.48,
+            "attacking": 7.07,
+            "defending": 4.36
+        },
+        {
+            "rank": 61,
+            "name": "Marko ARNAUTOVIC",
+            "country": "Austria",
+            "overall": 5.41,
+            "attacking": 5.14,
+            "defending": 4.69
+        },
+        {
+            "rank": 62,
+            "name": "Chris WOOD",
+            "country": "New Zealand",
+            "overall": 5.41,
+            "attacking": 6.21,
+            "defending": 4.58
+        },
+        {
+            "rank": 63,
+            "name": "Kenan YILDIZ",
+            "country": "Türkiye",
+            "overall": 5.39,
+            "attacking": 6.89,
+            "defending": 5.1
+        },
+        {
+            "rank": 64,
+            "name": "Abdul FATAWU",
+            "country": "Ghana",
+            "overall": 5.33,
+            "attacking": 7.0,
+            "defending": 4.84
+        },
+        {
+            "rank": 65,
+            "name": "Arda GULER",
+            "country": "Türkiye",
+            "overall": 5.3,
+            "attacking": 6.96,
+            "defending": 4.18
+        },
+        {
+            "rank": 66,
+            "name": "Bukayo SAKA",
+            "country": "England",
+            "overall": 5.29,
+            "attacking": 7.62,
+            "defending": 4.7
+        },
+        {
+            "rank": 67,
+            "name": "Dan NDOYE",
+            "country": "Switzerland",
+            "overall": 5.27,
+            "attacking": 5.31,
+            "defending": 5.75
+        },
+        {
+            "rank": 68,
+            "name": "Raul JIMENEZ",
+            "country": "Mexico",
+            "overall": 5.24,
+            "attacking": 5.03,
+            "defending": 5.27
+        },
+        {
+            "rank": 69,
+            "name": "Daichi KAMADA",
+            "country": "Japan",
+            "overall": 5.24,
+            "attacking": 5.96,
+            "defending": 4.78
+        },
+        {
+            "rank": 70,
+            "name": "Juninho BACUNA",
+            "country": "Curaçao",
+            "overall": 5.22,
+            "attacking": 6.58,
+            "defending": 4.36
+        },
+        {
+            "rank": 71,
+            "name": "MOHAMED SALAH",
+            "country": "Egypt",
+            "overall": 5.21,
+            "attacking": 7.27,
+            "defending": 5.22
+        },
+        {
+            "rank": 72,
+            "name": "Lamine YAMAL",
+            "country": "Spain",
+            "overall": 5.2,
+            "attacking": 7.23,
+            "defending": 5.24
+        },
+        {
+            "rank": 73,
+            "name": "Mohamed TOURE",
+            "country": "Australia",
+            "overall": 5.2,
+            "attacking": 6.11,
+            "defending": 4.66
+        },
+        {
+            "rank": 74,
+            "name": "Teboho MOKOENA",
+            "country": "South Africa",
+            "overall": 5.19,
+            "attacking": 5.67,
+            "defending": 5.48
+        },
+        {
+            "rank": 75,
+            "name": "LEE Kangin",
+            "country": "Korea Republic",
+            "overall": 5.19,
+            "attacking": 6.54,
+            "defending": 5.09
+        },
+        {
+            "rank": 76,
+            "name": "Jeremy DOKU",
+            "country": "Belgium",
+            "overall": 5.19,
+            "attacking": 6.64,
+            "defending": 4.59
+        },
+        {
+            "rank": 77,
+            "name": "Tajon BUCHANAN",
+            "country": "Canada",
+            "overall": 5.18,
+            "attacking": 6.74,
+            "defending": 5.06
+        },
+        {
+            "rank": 78,
+            "name": "Lucas BERGVALL",
+            "country": "Sweden",
+            "overall": 5.17,
+            "attacking": 6.93,
+            "defending": 4.91
+        },
+        {
+            "rank": 79,
+            "name": "Yan DIOMANDE",
+            "country": "Côte d'Ivoire",
+            "overall": 5.16,
+            "attacking": 7.06,
+            "defending": 4.89
+        },
+        {
+            "rank": 80,
+            "name": "Koki OGAWA",
+            "country": "Japan",
+            "overall": 5.16,
+            "attacking": 5.63,
+            "defending": 4.5
+        },
+        {
+            "rank": 81,
+            "name": "Breel EMBOLO",
+            "country": "Switzerland",
+            "overall": 5.15,
+            "attacking": 5.53,
+            "defending": 4.64
+        },
+        {
+            "rank": 82,
+            "name": "Wilfried SINGO",
+            "country": "Côte d'Ivoire",
+            "overall": 5.13,
+            "attacking": 6.5,
+            "defending": 6.34
+        },
+        {
+            "rank": 83,
+            "name": "Ben GANNON-DOAK",
+            "country": "Scotland",
+            "overall": 5.12,
+            "attacking": 6.02,
+            "defending": 5.11
+        },
+        {
+            "rank": 84,
+            "name": "Michael OLISE",
+            "country": "France",
+            "overall": 5.11,
+            "attacking": 7.34,
+            "defending": 4.23
+        },
+        {
+            "rank": 85,
+            "name": "Tahith CHONG",
+            "country": "Curaçao",
+            "overall": 5.11,
+            "attacking": 5.88,
+            "defending": 3.36
+        },
+        {
+            "rank": 86,
+            "name": "Edo Kayembe",
+            "country": "Congo DR",
+            "overall": 5.1,
+            "attacking": 5.55,
+            "defending": 5.43
+        },
+        {
+            "rank": 87,
+            "name": "Florian WIRTZ",
+            "country": "Germany",
+            "overall": 5.09,
+            "attacking": 7.27,
+            "defending": 5.0
+        },
+        {
+            "rank": 88,
+            "name": "Amar DEDIC",
+            "country": "Bosnia and Herzegovina",
+            "overall": 5.09,
+            "attacking": 5.65,
+            "defending": 5.32
+        },
+        {
+            "rank": 89,
+            "name": "Ismael DIAZ",
+            "country": "Panama",
+            "overall": 5.08,
+            "attacking": 6.04,
+            "defending": 4.71
+        },
+        {
+            "rank": 90,
+            "name": "Carney CHUKWUEMEKA",
+            "country": "Austria",
+            "overall": 5.08,
+            "attacking": 5.63,
+            "defending": 5.62
+        },
+        {
+            "rank": 91,
+            "name": "Sergino DEST",
+            "country": "USA",
+            "overall": 5.07,
+            "attacking": 6.77,
+            "defending": 5.37
+        },
+        {
+            "rank": 92,
+            "name": "MOUSA ALTAMARI",
+            "country": "Jordan",
+            "overall": 5.06,
+            "attacking": 6.24,
+            "defending": 4.24
+        },
+        {
+            "rank": 93,
+            "name": "Malik TILLMAN",
+            "country": "USA",
+            "overall": 5.06,
+            "attacking": 6.67,
+            "defending": 6.13
+        },
+        {
+            "rank": 94,
+            "name": "Takefusa KUBO",
+            "country": "Japan",
+            "overall": 5.05,
+            "attacking": 6.32,
+            "defending": 4.65
+        },
+        {
+            "rank": 95,
+            "name": "Petar SUCIC",
+            "country": "Croatia",
+            "overall": 5.03,
+            "attacking": 6.06,
+            "defending": 3.8
+        },
+        {
+            "rank": 96,
+            "name": "Declan RICE",
+            "country": "England",
+            "overall": 5.03,
+            "attacking": 6.49,
+            "defending": 4.48
+        },
+        {
+            "rank": 97,
+            "name": "Antonio NUSA",
+            "country": "Norway",
+            "overall": 5.02,
+            "attacking": 6.57,
+            "defending": 4.71
+        },
+        {
+            "rank": 98,
+            "name": "Louicius DEEDSON",
+            "country": "Haiti",
+            "overall": 5.02,
+            "attacking": 6.14,
+            "defending": 4.85
+        },
+        {
+            "rank": 99,
+            "name": "Marco PASALIC",
+            "country": "Croatia",
+            "overall": 5.01,
+            "attacking": 5.85,
+            "defending": 4.61
+        },
+        {
+            "rank": 100,
+            "name": "Adam HLOZEK",
+            "country": "Czechia",
+            "overall": 5.01,
+            "attacking": 5.92,
+            "defending": 4.58
+        }
+    ]
+}
