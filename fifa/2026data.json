@@ -1,27 +1,830 @@
 {
   "groups": {
-    "A": [{"t": "🇲🇽 Mexico", "sc": 2, "elo": 2000, "host": true, "ped": 0, "star": 4, "comm": 5}, {"t": "🇿🇦 South Africa", "sc": 0, "elo": 1500, "host": false, "ped": 0, "star": 1, "comm": 1}, {"t": "🇰🇷 South Korea", "sc": 2, "elo": 1750, "host": false, "ped": 0, "star": 3, "comm": 3}, {"t": "🇨🇿 Czechia", "sc": 1, "elo": 1700, "host": false, "ped": 0, "star": 2, "comm": 2}],
-    "B": [{"t": "🇨🇦 Canada", "sc": 1, "elo": 1700, "host": true, "ped": 0, "star": 3, "comm": 3}, {"t": "🇧🇦 Bosnia", "sc": 1, "elo": 1600, "host": false, "ped": 0, "star": 2, "comm": 1}, {"t": "🇶🇦 Qatar", "sc": 1, "elo": 1650, "host": false, "ped": 0, "star": 1, "comm": 2}, {"t": "🇨🇭 Switzerland", "sc": 1, "elo": 1850, "host": false, "ped": 0, "star": 3, "comm": 2}],
-    "C": [{"t": "🇧🇷 Brazil", "sc": 1, "elo": 2050, "host": false, "ped": 5, "star": 5, "comm": 5}, {"t": "🇲🇦 Morocco", "sc": 1, "elo": 1800, "host": false, "ped": 0, "star": 3, "comm": 3}, {"t": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland", "sc": 1, "elo": 1700, "host": false, "ped": 0, "star": 2, "comm": 2}, {"t": "🇭🇹 Haiti", "sc": 0, "elo": 1400, "host": false, "ped": 0, "star": 1, "comm": 1}],
-    "D": [{"t": "🇺🇸 USA", "sc": 4, "elo": 1950, "host": true, "ped": 0, "star": 4, "comm": 5}, {"t": "🇵🇾 Paraguay", "sc": 1, "elo": 1650, "host": false, "ped": 0, "star": 2, "comm": 2}, {"t": "🇦🇺 Australia", "sc": 2, "elo": 1700, "host": false, "ped": 0, "star": 2, "comm": 2}, {"t": "🇹🇷 Türkiye", "sc": 0, "elo": 1750, "host": false, "ped": 0, "star": 3, "comm": 3}],
-    "E": [{"t": "🇩🇪 Germany", "sc": 7, "elo": 2000, "host": false, "ped": 4, "star": 4, "comm": 4}, {"t": "🇨🇼 Curaçao", "sc": 1, "elo": 1300, "host": false, "ped": 0, "star": 1, "comm": 1}, {"t": "🇨🇮 Ivory Coast", "sc": 1, "elo": 1700, "host": false, "ped": 0, "star": 2, "comm": 2}, {"t": "🇪🇨 Ecuador", "sc": 0, "elo": 1750, "host": false, "ped": 0, "star": 3, "comm": 2}],
-    "F": [{"t": "🇸🇪 Sweden", "sc": 5, "elo": 1800, "host": false, "ped": 0, "star": 3, "comm": 2}, {"t": "🇹🇳 Tunisia", "sc": 1, "elo": 1650, "host": false, "ped": 0, "star": 2, "comm": 2}, {"t": "🇳🇱 Netherlands", "sc": 2, "elo": 1950, "host": false, "ped": 0, "star": 4, "comm": 4}, {"t": "🇯🇵 Japan", "sc": 2, "elo": 1850, "host": false, "ped": 0, "star": 3, "comm": 3}],
-    "G": [{"t": "🇧🇪 Belgium", "sc": 1, "elo": 1900, "host": false, "ped": 0, "star": 5, "comm": 3}, {"t": "🇪🇬 Egypt", "sc": 1, "elo": 1650, "host": false, "ped": 0, "star": 3, "comm": 2}, {"t": "🇮🇷 Iran", "sc": 1, "elo": 1750, "host": false, "ped": 0, "star": 2, "comm": 1}, {"t": "🇳🇿 New Zealand", "sc": 1, "elo": 1500, "host": false, "ped": 0, "star": 1, "comm": 1}],
-    "H": [{"t": "🇪🇸 Spain", "sc": 3, "elo": 2000, "host": false, "ped": 1, "star": 4, "comm": 4}, {"t": "🇨🇻 Cabo Verde", "sc": 0, "elo": 1550, "host": false, "ped": 0, "star": 1, "comm": 1}, {"t": "🇸🇦 Saudi Arabia", "sc": 1, "elo": 1600, "host": false, "ped": 0, "star": 2, "comm": 3}, {"t": "🇺🇾 Uruguay", "sc": 1, "elo": 1900, "host": false, "ped": 2, "star": 4, "comm": 3}],
-    "I": [{"t": "🇫🇷 France", "sc": 3, "elo": 2050, "host": false, "ped": 2, "star": 5, "comm": 5}, {"t": "🇸🇳 Senegal", "sc": 1, "elo": 1750, "host": false, "ped": 0, "star": 4, "comm": 2}, {"t": "🇳🇴 Norway", "sc": 4, "elo": 1800, "host": false, "ped": 0, "star": 5, "comm": 3}, {"t": "🇮🇶 Iraq", "sc": 1, "elo": 1550, "host": false, "ped": 0, "star": 1, "comm": 1}],
-    "J": [{"t": "🇦🇷 Argentina", "sc": 3, "elo": 2050, "host": false, "ped": 3, "star": 5, "comm": 5}, {"t": "🇩🇿 Algeria", "sc": 0, "elo": 1700, "host": false, "ped": 0, "star": 3, "comm": 2}, {"t": "🇦🇹 Austria", "sc": 3, "elo": 1850, "host": false, "ped": 0, "star": 3, "comm": 2}, {"t": "🇯🇴 Jordan", "sc": 1, "elo": 1500, "host": false, "ped": 0, "star": 1, "comm": 1}],
-    "K": [{"t": "🇨🇴 Colombia", "sc": 3, "elo": 1900, "host": false, "ped": 0, "star": 4, "comm": 3}, {"t": "🇺🇿 Uzbekistan", "sc": 1, "elo": 1600, "host": false, "ped": 0, "star": 1, "comm": 1}, {"t": "🇵🇹 Portugal", "sc": 1, "elo": 2150, "host": false, "ped": 0, "star": 5, "comm": 5}, {"t": "🇨🇩 DR Congo", "sc": 1, "elo": 1550, "host": false, "ped": 0, "star": 1, "comm": 1}],
-    "L": [{"t": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England", "sc": 4, "elo": 2000, "host": false, "ped": 1, "star": 5, "comm": 5}, {"t": "🇭🇷 Croatia", "sc": 2, "elo": 1900, "host": false, "ped": 0, "star": 4, "comm": 3}, {"t": "🇬🇭 Ghana", "sc": 1, "elo": 1650, "host": false, "ped": 0, "star": 3, "comm": 2}, {"t": "🇵🇦 Panama", "sc": 0, "elo": 1550, "host": false, "ped": 0, "star": 1, "comm": 1}]
+    "A": [
+      {
+        "t": "🇲🇽 Mexico",
+        "sc": 2,
+        "elo": 2000,
+        "host": true,
+        "ped": 0,
+        "star": 4,
+        "comm": 5
+      },
+      {
+        "t": "🇿🇦 South Africa",
+        "sc": 0,
+        "elo": 1500,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      },
+      {
+        "t": "🇰🇷 South Korea",
+        "sc": 2,
+        "elo": 1750,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 3
+      },
+      {
+        "t": "🇨🇿 Czechia",
+        "sc": 1,
+        "elo": 1700,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      }
+    ],
+    "B": [
+      {
+        "t": "🇨🇦 Canada",
+        "sc": 1,
+        "elo": 1700,
+        "host": true,
+        "ped": 0,
+        "star": 3,
+        "comm": 3
+      },
+      {
+        "t": "🇧🇦 Bosnia",
+        "sc": 1,
+        "elo": 1600,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 1
+      },
+      {
+        "t": "🇶🇦 Qatar",
+        "sc": 1,
+        "elo": 1650,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 2
+      },
+      {
+        "t": "🇨🇭 Switzerland",
+        "sc": 1,
+        "elo": 1850,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      }
+    ],
+    "C": [
+      {
+        "t": "🇧🇷 Brazil",
+        "sc": 1,
+        "elo": 2050,
+        "host": false,
+        "ped": 5,
+        "star": 5,
+        "comm": 5
+      },
+      {
+        "t": "🇲🇦 Morocco",
+        "sc": 1,
+        "elo": 1800,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 3
+      },
+      {
+        "t": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
+        "sc": 1,
+        "elo": 1700,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      },
+      {
+        "t": "🇭🇹 Haiti",
+        "sc": 0,
+        "elo": 1400,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ],
+    "D": [
+      {
+        "t": "🇺🇸 USA",
+        "sc": 4,
+        "elo": 1950,
+        "host": true,
+        "ped": 0,
+        "star": 4,
+        "comm": 5
+      },
+      {
+        "t": "🇵🇾 Paraguay",
+        "sc": 1,
+        "elo": 1650,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      },
+      {
+        "t": "🇦🇺 Australia",
+        "sc": 2,
+        "elo": 1700,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      },
+      {
+        "t": "🇹🇷 Türkiye",
+        "sc": 0,
+        "elo": 1750,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 3
+      }
+    ],
+    "E": [
+      {
+        "t": "🇩🇪 Germany",
+        "sc": 7,
+        "elo": 2000,
+        "host": false,
+        "ped": 4,
+        "star": 4,
+        "comm": 4
+      },
+      {
+        "t": "🇨🇼 Curaçao",
+        "sc": 1,
+        "elo": 1300,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      },
+      {
+        "t": "🇨🇮 Ivory Coast",
+        "sc": 1,
+        "elo": 1700,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      },
+      {
+        "t": "🇪🇨 Ecuador",
+        "sc": 0,
+        "elo": 1750,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      }
+    ],
+    "F": [
+      {
+        "t": "🇸🇪 Sweden",
+        "sc": 5,
+        "elo": 1800,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      },
+      {
+        "t": "🇹🇳 Tunisia",
+        "sc": 1,
+        "elo": 1650,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 2
+      },
+      {
+        "t": "🇳🇱 Netherlands",
+        "sc": 2,
+        "elo": 1950,
+        "host": false,
+        "ped": 0,
+        "star": 4,
+        "comm": 4
+      },
+      {
+        "t": "🇯🇵 Japan",
+        "sc": 2,
+        "elo": 1850,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 3
+      }
+    ],
+    "G": [
+      {
+        "t": "🇧🇪 Belgium",
+        "sc": 1,
+        "elo": 1900,
+        "host": false,
+        "ped": 0,
+        "star": 5,
+        "comm": 3
+      },
+      {
+        "t": "🇪🇬 Egypt",
+        "sc": 1,
+        "elo": 1650,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      },
+      {
+        "t": "🇮🇷 Iran",
+        "sc": 1,
+        "elo": 1750,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 1
+      },
+      {
+        "t": "🇳🇿 New Zealand",
+        "sc": 1,
+        "elo": 1500,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ],
+    "H": [
+      {
+        "t": "🇪🇸 Spain",
+        "sc": 3,
+        "elo": 2000,
+        "host": false,
+        "ped": 1,
+        "star": 4,
+        "comm": 4
+      },
+      {
+        "t": "🇨🇻 Cabo Verde",
+        "sc": 0,
+        "elo": 1550,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      },
+      {
+        "t": "🇸🇦 Saudi Arabia",
+        "sc": 1,
+        "elo": 1600,
+        "host": false,
+        "ped": 0,
+        "star": 2,
+        "comm": 3
+      },
+      {
+        "t": "🇺🇾 Uruguay",
+        "sc": 1,
+        "elo": 1900,
+        "host": false,
+        "ped": 2,
+        "star": 4,
+        "comm": 3
+      }
+    ],
+    "I": [
+      {
+        "t": "🇫🇷 France",
+        "sc": 3,
+        "elo": 2050,
+        "host": false,
+        "ped": 2,
+        "star": 5,
+        "comm": 5
+      },
+      {
+        "t": "🇸🇳 Senegal",
+        "sc": 1,
+        "elo": 1750,
+        "host": false,
+        "ped": 0,
+        "star": 4,
+        "comm": 2
+      },
+      {
+        "t": "🇳🇴 Norway",
+        "sc": 4,
+        "elo": 1800,
+        "host": false,
+        "ped": 0,
+        "star": 5,
+        "comm": 3
+      },
+      {
+        "t": "🇮🇶 Iraq",
+        "sc": 1,
+        "elo": 1550,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ],
+    "J": [
+      {
+        "t": "🇦🇷 Argentina",
+        "sc": 3,
+        "elo": 2050,
+        "host": false,
+        "ped": 3,
+        "star": 5,
+        "comm": 5
+      },
+      {
+        "t": "🇩🇿 Algeria",
+        "sc": 0,
+        "elo": 1700,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      },
+      {
+        "t": "🇦🇹 Austria",
+        "sc": 3,
+        "elo": 1850,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      },
+      {
+        "t": "🇯🇴 Jordan",
+        "sc": 1,
+        "elo": 1500,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ],
+    "K": [
+      {
+        "t": "🇨🇴 Colombia",
+        "sc": 3,
+        "elo": 1900,
+        "host": false,
+        "ped": 0,
+        "star": 4,
+        "comm": 3
+      },
+      {
+        "t": "🇺🇿 Uzbekistan",
+        "sc": 1,
+        "elo": 1600,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      },
+      {
+        "t": "🇵🇹 Portugal",
+        "sc": 1,
+        "elo": 2150,
+        "host": false,
+        "ped": 0,
+        "star": 5,
+        "comm": 5
+      },
+      {
+        "t": "🇨🇩 DR Congo",
+        "sc": 1,
+        "elo": 1550,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ],
+    "L": [
+      {
+        "t": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
+        "sc": 4,
+        "elo": 2000,
+        "host": false,
+        "ped": 1,
+        "star": 5,
+        "comm": 5
+      },
+      {
+        "t": "🇭🇷 Croatia",
+        "sc": 2,
+        "elo": 1900,
+        "host": false,
+        "ped": 0,
+        "star": 4,
+        "comm": 3
+      },
+      {
+        "t": "🇬🇭 Ghana",
+        "sc": 1,
+        "elo": 1650,
+        "host": false,
+        "ped": 0,
+        "star": 3,
+        "comm": 2
+      },
+      {
+        "t": "🇵🇦 Panama",
+        "sc": 0,
+        "elo": 1550,
+        "host": false,
+        "ped": 0,
+        "star": 1,
+        "comm": 1
+      }
+    ]
   },
   "trigrams": {
-    "Mexico":"MEX", "South Africa":"RSA", "South Korea":"KOR", "Czechia":"CZE", "Canada":"CAN", "Bosnia":"BIH", "Qatar":"QAT", "Switzerland":"SUI",
-    "Brazil":"BRA", "Morocco":"MAR", "Scotland":"SCO", "Haiti":"HAI", "USA":"USA", "Paraguay":"PAR", "Australia":"AUS", "Türkiye":"TUR",
-    "Germany":"GER", "Curaçao":"CUW", "Ivory Coast":"CIV", "Ecuador":"ECU", "Sweden":"SWE", "Tunisia":"TUN", "Netherlands":"NED", "Japan":"JPN",
-    "Belgium":"BEL", "Egypt":"EGY", "Iran":"IRN", "New Zealand":"NZL", "Spain":"ESP", "Cabo Verde":"CPV", "Saudi Arabia":"KSA", "Uruguay":"URU",
-    "France":"FRA", "Senegal":"SEN", "Norway":"NOR", "Iraq":"IRQ", "Argentina":"ARG", "Algeria":"ALG", "Austria":"AUT", "Jordan":"JOR",
-    "Colombia":"COL", "Uzbekistan":"UZB", "Portugal":"POR", "DR Congo":"COD", "England":"ENG", "Croatia":"CRO", "Ghana":"GHA", "Panama":"PAN"
+    "Mexico": "MEX",
+    "South Africa": "RSA",
+    "South Korea": "KOR",
+    "Czechia": "CZE",
+    "Canada": "CAN",
+    "Bosnia": "BIH",
+    "Qatar": "QAT",
+    "Switzerland": "SUI",
+    "Brazil": "BRA",
+    "Morocco": "MAR",
+    "Scotland": "SCO",
+    "Haiti": "HAI",
+    "USA": "USA",
+    "Paraguay": "PAR",
+    "Australia": "AUS",
+    "Türkiye": "TUR",
+    "Germany": "GER",
+    "Curaçao": "CUW",
+    "Ivory Coast": "CIV",
+    "Ecuador": "ECU",
+    "Sweden": "SWE",
+    "Tunisia": "TUN",
+    "Netherlands": "NED",
+    "Japan": "JPN",
+    "Belgium": "BEL",
+    "Egypt": "EGY",
+    "Iran": "IRN",
+    "New Zealand": "NZL",
+    "Spain": "ESP",
+    "Cabo Verde": "CPV",
+    "Saudi Arabia": "KSA",
+    "Uruguay": "URU",
+    "France": "FRA",
+    "Senegal": "SEN",
+    "Norway": "NOR",
+    "Iraq": "IRQ",
+    "Argentina": "ARG",
+    "Algeria": "ALG",
+    "Austria": "AUT",
+    "Jordan": "JOR",
+    "Colombia": "COL",
+    "Uzbekistan": "UZB",
+    "Portugal": "POR",
+    "DR Congo": "COD",
+    "England": "ENG",
+    "Croatia": "CRO",
+    "Ghana": "GHA",
+    "Panama": "PAN"
   },
   "forecastOverrides": {
-    "": {"win": 0, "lose": 0}
-  }
+    "": {
+      "win": 0,
+      "lose": 0
+    }
+  },
+  "completedMatches": [
+    {
+      "t1": "🇲🇽 Mexico",
+      "t2": "🇿🇦 South Africa",
+      "s1": 2,
+      "s2": 0
+    },
+    {
+      "t1": "🇰🇷 South Korea",
+      "t2": "Czech Republic",
+      "s1": 2,
+      "s2": 1
+    },
+    {
+      "t1": "Czech Republic",
+      "t2": "🇿🇦 South Africa",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇲🇽 Mexico",
+      "t2": "🇰🇷 South Korea",
+      "s1": 1,
+      "s2": 0
+    },
+    {
+      "t1": "🇨🇦 Canada",
+      "t2": "Bosnia & Herzegovina",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇶🇦 Qatar",
+      "t2": "🇨🇭 Switzerland",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇨🇭 Switzerland",
+      "t2": "Bosnia & Herzegovina",
+      "s1": 4,
+      "s2": 1
+    },
+    {
+      "t1": "🇨🇦 Canada",
+      "t2": "🇶🇦 Qatar",
+      "s1": 6,
+      "s2": 0
+    },
+    {
+      "t1": "🇨🇭 Switzerland",
+      "t2": "🇨🇦 Canada",
+      "s1": 2,
+      "s2": 1
+    },
+    {
+      "t1": "Bosnia & Herzegovina",
+      "t2": "🇶🇦 Qatar",
+      "s1": 3,
+      "s2": 1
+    },
+    {
+      "t1": "🇧🇷 Brazil",
+      "t2": "🇲🇦 Morocco",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇭🇹 Haiti",
+      "t2": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
+      "s1": 0,
+      "s2": 1
+    },
+    {
+      "t1": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
+      "t2": "🇲🇦 Morocco",
+      "s1": 0,
+      "s2": 1
+    },
+    {
+      "t1": "🇧🇷 Brazil",
+      "t2": "🇭🇹 Haiti",
+      "s1": 3,
+      "s2": 0
+    },
+    {
+      "t1": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
+      "t2": "🇧🇷 Brazil",
+      "s1": 0,
+      "s2": 3
+    },
+    {
+      "t1": "🇲🇦 Morocco",
+      "t2": "🇭🇹 Haiti",
+      "s1": 4,
+      "s2": 2
+    },
+    {
+      "t1": "🇺🇸 USA",
+      "t2": "🇵🇾 Paraguay",
+      "s1": 4,
+      "s2": 1
+    },
+    {
+      "t1": "🇦🇺 Australia",
+      "t2": "Turkey",
+      "s1": 2,
+      "s2": 0
+    },
+    {
+      "t1": "🇺🇸 USA",
+      "t2": "🇦🇺 Australia",
+      "s1": 2,
+      "s2": 0
+    },
+    {
+      "t1": "Turkey",
+      "t2": "🇵🇾 Paraguay",
+      "s1": 0,
+      "s2": 1
+    },
+    {
+      "t1": "🇩🇪 Germany",
+      "t2": "🇨🇼 Curaçao",
+      "s1": 7,
+      "s2": 1
+    },
+    {
+      "t1": "🇨🇮 Ivory Coast",
+      "t2": "🇪🇨 Ecuador",
+      "s1": 1,
+      "s2": 0
+    },
+    {
+      "t1": "🇩🇪 Germany",
+      "t2": "🇨🇮 Ivory Coast",
+      "s1": 2,
+      "s2": 1
+    },
+    {
+      "t1": "🇪🇨 Ecuador",
+      "t2": "🇨🇼 Curaçao",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇳🇱 Netherlands",
+      "t2": "🇯🇵 Japan",
+      "s1": 2,
+      "s2": 2
+    },
+    {
+      "t1": "🇸🇪 Sweden",
+      "t2": "🇹🇳 Tunisia",
+      "s1": 5,
+      "s2": 1
+    },
+    {
+      "t1": "🇳🇱 Netherlands",
+      "t2": "🇸🇪 Sweden",
+      "s1": 5,
+      "s2": 1
+    },
+    {
+      "t1": "🇹🇳 Tunisia",
+      "t2": "🇯🇵 Japan",
+      "s1": 0,
+      "s2": 4
+    },
+    {
+      "t1": "🇧🇪 Belgium",
+      "t2": "🇪🇬 Egypt",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇮🇷 Iran",
+      "t2": "🇳🇿 New Zealand",
+      "s1": 2,
+      "s2": 2
+    },
+    {
+      "t1": "🇧🇪 Belgium",
+      "t2": "🇮🇷 Iran",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇳🇿 New Zealand",
+      "t2": "🇪🇬 Egypt",
+      "s1": 1,
+      "s2": 3
+    },
+    {
+      "t1": "🇪🇸 Spain",
+      "t2": "Cape Verde",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇸🇦 Saudi Arabia",
+      "t2": "🇺🇾 Uruguay",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇪🇸 Spain",
+      "t2": "🇸🇦 Saudi Arabia",
+      "s1": 4,
+      "s2": 0
+    },
+    {
+      "t1": "🇺🇾 Uruguay",
+      "t2": "Cape Verde",
+      "s1": 2,
+      "s2": 2
+    },
+    {
+      "t1": "🇫🇷 France",
+      "t2": "🇸🇳 Senegal",
+      "s1": 3,
+      "s2": 1
+    },
+    {
+      "t1": "🇮🇶 Iraq",
+      "t2": "🇳🇴 Norway",
+      "s1": 1,
+      "s2": 4
+    },
+    {
+      "t1": "🇫🇷 France",
+      "t2": "🇮🇶 Iraq",
+      "s1": 3,
+      "s2": 0
+    },
+    {
+      "t1": "🇳🇴 Norway",
+      "t2": "🇸🇳 Senegal",
+      "s1": 3,
+      "s2": 2
+    },
+    {
+      "t1": "🇦🇷 Argentina",
+      "t2": "🇩🇿 Algeria",
+      "s1": 3,
+      "s2": 0
+    },
+    {
+      "t1": "🇦🇹 Austria",
+      "t2": "🇯🇴 Jordan",
+      "s1": 3,
+      "s2": 1
+    },
+    {
+      "t1": "🇦🇷 Argentina",
+      "t2": "🇦🇹 Austria",
+      "s1": 2,
+      "s2": 0
+    },
+    {
+      "t1": "🇯🇴 Jordan",
+      "t2": "🇩🇿 Algeria",
+      "s1": 1,
+      "s2": 2
+    },
+    {
+      "t1": "🇵🇹 Portugal",
+      "t2": "🇨🇩 DR Congo",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇺🇿 Uzbekistan",
+      "t2": "🇨🇴 Colombia",
+      "s1": 1,
+      "s2": 3
+    },
+    {
+      "t1": "🇵🇹 Portugal",
+      "t2": "🇺🇿 Uzbekistan",
+      "s1": 5,
+      "s2": 0
+    },
+    {
+      "t1": "🇨🇴 Colombia",
+      "t2": "🇨🇩 DR Congo",
+      "s1": 1,
+      "s2": 0
+    },
+    {
+      "t1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
+      "t2": "🇭🇷 Croatia",
+      "s1": 4,
+      "s2": 2
+    },
+    {
+      "t1": "🇬🇭 Ghana",
+      "t2": "🇵🇦 Panama",
+      "s1": 1,
+      "s2": 0
+    },
+    {
+      "t1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
+      "t2": "🇬🇭 Ghana",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇵🇦 Panama",
+      "t2": "🇭🇷 Croatia",
+      "s1": 0,
+      "s2": 1
+    }
+  ]
 }
