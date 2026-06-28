@@ -4,9 +4,9 @@
       {
         "t": "🇲🇽 Mexico",
         "sc": 2,
-        "elo": 2000,
+        "elo": 2050,
         "host": true,
-        "ped": 0,
+        "ped": 2,
         "star": 4,
         "comm": 5
       },
@@ -861,6 +861,18 @@
       "t2": "🇩🇿 Algeria",
       "s1": 1,
       "s2": 2
+    },
+    {
+      "t1": "🇩🇿 Algeria",
+      "t2": "🇦🇹 Austria",
+      "s1": 3,
+      "s2": 3
+    },
+    {
+      "t1": "🇯🇴 Jordan",
+      "t2": "🇦🇷 Argentina",
+      "s1": 1,
+      "s2": 3
     },
     {
       "t1": "🇵🇹 Portugal",
