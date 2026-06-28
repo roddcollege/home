@@ -539,6 +539,18 @@
       "s2": 0
     },
     {
+      "t1": "Czech Republic",
+      "t2": "🇲🇽 Mexico",
+      "s1": 0,
+      "s2": 3
+    },
+    {
+      "t1": "🇿🇦 South Africa",
+      "t2": "🇰🇷 South Korea",
+      "s1": 1,
+      "s2": 0
+    },
+    {
       "t1": "🇨🇦 Canada",
       "t2": "Bosnia & Herzegovina",
       "s1": 1,
@@ -635,6 +647,18 @@
       "s2": 1
     },
     {
+      "t1": "Turkey",
+      "t2": "🇺🇸 USA",
+      "s1": 3,
+      "s2": 2
+    },
+    {
+      "t1": "🇵🇾 Paraguay",
+      "t2": "🇦🇺 Australia",
+      "s1": 0,
+      "s2": 0
+    },
+    {
       "t1": "🇩🇪 Germany",
       "t2": "🇨🇼 Curaçao",
       "s1": 7,
@@ -657,6 +681,18 @@
       "t2": "🇨🇼 Curaçao",
       "s1": 0,
       "s2": 0
+    },
+    {
+      "t1": "🇨🇼 Curaçao",
+      "t2": "🇨🇮 Ivory Coast",
+      "s1": 0,
+      "s2": 2
+    },
+    {
+      "t1": "🇪🇨 Ecuador",
+      "t2": "🇩🇪 Germany",
+      "s1": 2,
+      "s2": 1
     },
     {
       "t1": "🇳🇱 Netherlands",
@@ -683,6 +719,18 @@
       "s2": 4
     },
     {
+      "t1": "🇯🇵 Japan",
+      "t2": "🇸🇪 Sweden",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇹🇳 Tunisia",
+      "t2": "🇳🇱 Netherlands",
+      "s1": 1,
+      "s2": 3
+    },
+    {
       "t1": "🇧🇪 Belgium",
       "t2": "🇪🇬 Egypt",
       "s1": 1,
@@ -705,6 +753,18 @@
       "t2": "🇪🇬 Egypt",
       "s1": 1,
       "s2": 3
+    },
+    {
+      "t1": "🇪🇬 Egypt",
+      "t2": "🇮🇷 Iran",
+      "s1": 1,
+      "s2": 1
+    },
+    {
+      "t1": "🇳🇿 New Zealand",
+      "t2": "🇧🇪 Belgium",
+      "s1": 1,
+      "s2": 5
     },
     {
       "t1": "🇪🇸 Spain",
@@ -731,6 +791,18 @@
       "s2": 2
     },
     {
+      "t1": "Cape Verde",
+      "t2": "🇸🇦 Saudi Arabia",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇺🇾 Uruguay",
+      "t2": "🇪🇸 Spain",
+      "s1": 0,
+      "s2": 1
+    },
+    {
       "t1": "🇫🇷 France",
       "t2": "🇸🇳 Senegal",
       "s1": 3,
@@ -753,6 +825,18 @@
       "t2": "🇸🇳 Senegal",
       "s1": 3,
       "s2": 2
+    },
+    {
+      "t1": "🇳🇴 Norway",
+      "t2": "🇫🇷 France",
+      "s1": 1,
+      "s2": 4
+    },
+    {
+      "t1": "🇸🇳 Senegal",
+      "t2": "🇮🇶 Iraq",
+      "s1": 5,
+      "s2": 0
     },
     {
       "t1": "🇦🇷 Argentina",
@@ -803,6 +887,18 @@
       "s2": 0
     },
     {
+      "t1": "🇨🇴 Colombia",
+      "t2": "🇵🇹 Portugal",
+      "s1": 0,
+      "s2": 0
+    },
+    {
+      "t1": "🇨🇩 DR Congo",
+      "t2": "🇺🇿 Uzbekistan",
+      "s1": 3,
+      "s2": 1
+    },
+    {
       "t1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
       "t2": "🇭🇷 Croatia",
       "s1": 4,
@@ -824,6 +920,18 @@
       "t1": "🇵🇦 Panama",
       "t2": "🇭🇷 Croatia",
       "s1": 0,
+      "s2": 1
+    },
+    {
+      "t1": "🇵🇦 Panama",
+      "t2": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
+      "s1": 0,
+      "s2": 2
+    },
+    {
+      "t1": "🇭🇷 Croatia",
+      "t2": "🇬🇭 Ghana",
+      "s1": 2,
       "s2": 1
     }
   ]
