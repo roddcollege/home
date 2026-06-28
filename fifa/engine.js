@@ -6,6 +6,37 @@ let trigrams = {};
 let forecastOverrides = {};
 let activeModalGroup = null;
 
+// UNIVERSAL TEAM TRANSLATOR 
+function getEngineTeam(extName) {
+    if (!extName) return null;
+    
+    const aliases = {
+        "Czech Republic": "🇨🇿 Czechia",
+        "Bosnia & Herzegovina": "🇧🇦 Bosnia",
+        "Turkey": "🇹🇷 Türkiye",
+        "Cape Verde": "🇨🇻 Cabo Verde",
+        "Congo DR": "🇨🇩 DR Congo",
+        "IR Iran": "🇮🇷 Iran",
+        "Korea Republic": "🇰🇷 South Korea"
+    };
+    
+    if (aliases[extName]) return aliases[extName];
+
+    for (let engineTeam of Object.keys(teamData)) {
+        let cleanEngineTeam = engineTeam.substring(engineTeam.indexOf(' ') + 1).trim();
+        let cleanExtName = extName;
+        
+        if (cleanExtName.includes(' ') && cleanExtName.charCodeAt(0) > 1000) {
+            cleanExtName = cleanExtName.substring(cleanExtName.indexOf(' ') + 1).trim();
+        }
+        
+        if (cleanEngineTeam === cleanExtName || cleanEngineTeam.includes(cleanExtName) || cleanExtName.includes(cleanEngineTeam)) {
+            return engineTeam;
+        }
+    }
+    return null;
+}
+
 async function initEngine() {
     try {
         // 1. FETCH YOUR BACKUP/SOURCE OF TRUTH (Always works)
@@ -34,16 +65,20 @@ async function initEngine() {
         });
 
         // 2. APPLY YOUR LOCAL BACKUPS FIRST
-        if (myData.completedMatches) {
+		if (myData.completedMatches) {
             myData.completedMatches.forEach(cm => {
-                let m = matches.find(match => 
-                    (match.t1 === cm.t1 && match.t2 === cm.t2) || 
-                    (match.t1 === cm.t2 && match.t2 === cm.t1)
-                );
-                if (m) {
-                    if (m.t1 === cm.t1) { m.s1 = cm.s1; m.s2 = cm.s2; }
-                    else { m.s1 = cm.s2; m.s2 = cm.s1; }
-                    m.played = true; m.locked = true; m.forecasted = false;
+                let eT1 = getEngineTeam(cm.t1);
+                let eT2 = getEngineTeam(cm.t2);
+                if (eT1 && eT2) {
+                    let m = matches.find(match => 
+                        (match.t1 === eT1 && match.t2 === eT2) || 
+                        (match.t1 === eT2 && match.t2 === eT1)
+                    );
+                    if (m) {
+                        if (m.t1 === eT1) { m.s1 = cm.s1; m.s2 = cm.s2; }
+                        else { m.s1 = cm.s2; m.s2 = cm.s1; }
+                        m.played = true; m.locked = true; m.forecasted = false;
+                    }
                 }
             });
         }
@@ -57,17 +92,21 @@ async function initEngine() {
             
             const liveData = await liveResponse.json();
             
-            if (liveData && liveData.matches) {
+			if (liveData && liveData.matches) {
                 liveData.matches.forEach(lm => {
                     if (lm.score && lm.score.ft && lm.score.ft.length === 2) {
-                        let m = matches.find(match => 
-                            (match.t1.includes(lm.team1) && match.t2.includes(lm.team2)) || 
-                            (match.t1.includes(lm.team2) && match.t2.includes(lm.team1))
-                        );
-                        if (m) {
-                            if (m.t1.includes(lm.team1)) { m.s1 = lm.score.ft[0]; m.s2 = lm.score.ft[1]; }
-                            else { m.s1 = lm.score.ft[1]; m.s2 = lm.score.ft[0]; }
-                            m.played = true; m.locked = true; m.forecasted = false;
+                        let eT1 = getEngineTeam(lm.team1);
+                        let eT2 = getEngineTeam(lm.team2);
+                        if (eT1 && eT2) {
+                            let m = matches.find(match => 
+                                (match.t1 === eT1 && match.t2 === eT2) || 
+                                (match.t1 === eT2 && match.t2 === eT1)
+                            );
+                            if (m) {
+                                if (m.t1 === eT1) { m.s1 = lm.score.ft[0]; m.s2 = lm.score.ft[1]; }
+                                else { m.s1 = lm.score.ft[1]; m.s2 = lm.score.ft[0]; }
+                                m.played = true; m.locked = true; m.forecasted = false;
+                            }
                         }
                     }
                 });
@@ -106,16 +145,25 @@ async function syncLiveData() {
             let updatedCount = 0;
             data.matches.forEach(liveMatch => {
                 if (liveMatch.score && liveMatch.score.ft && liveMatch.score.ft.length === 2) {
-                    let engineMatch = matches.find(m => (m.t1.includes(liveMatch.team1) && m.t2.includes(liveMatch.team2)) || (m.t1.includes(liveMatch.team2) && m.t2.includes(liveMatch.team1)));
-                    if (engineMatch) {
-                        if (engineMatch.t1.includes(liveMatch.team1)) {
-                            engineMatch.s1 = liveMatch.score.ft[0]; engineMatch.s2 = liveMatch.score.ft[1];
-                        } else {
-                            engineMatch.s1 = liveMatch.score.ft[1]; engineMatch.s2 = liveMatch.score.ft[0];
-                        }
-                        engineMatch.played = true; engineMatch.locked = true; engineMatch.forecasted = false;
-                        updatedCount++;
-                    }
+					// PASTE THIS NEW LOGIC:
+					let eT1 = getEngineTeam(liveMatch.team1);
+					let eT2 = getEngineTeam(liveMatch.team2);
+
+					if (eT1 && eT2) {
+						let engineMatch = matches.find(m => 
+							(m.t1 === eT1 && m.t2 === eT2) || 
+							(m.t1 === eT2 && m.t2 === eT1)
+						);
+						if (engineMatch) {
+							if (engineMatch.t1 === eT1) {
+								engineMatch.s1 = liveMatch.score.ft[0]; engineMatch.s2 = liveMatch.score.ft[1];
+							} else {
+								engineMatch.s1 = liveMatch.score.ft[1]; engineMatch.s2 = liveMatch.score.ft[0];
+							}
+							engineMatch.played = true; engineMatch.locked = true; engineMatch.forecasted = false;
+							updatedCount++;
+						}
+					}
                 }
             });
             if(updatedCount > 0) { calculateStandings(); }
