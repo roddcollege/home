@@ -80,6 +80,16 @@
         .match-num { position: absolute; top: 33px; background: var(--bg-color); padding: 0px; font-size: 0.6rem; color: #64748b; font-weight: bold; }
         .match.left-side .match-num { left: 4px; }
         .match.right-side .match-num { right: 4px; }
+		.match-date {
+			position: absolute; 
+			top: -15px;
+			width: 100%; 
+			text-align: center; 
+			font-size: 0.65rem; 
+			color: var(--text-muted); 
+			font-weight: bold;
+			letter-spacing: 0.5px;
+		}
 
         .team-row { display: flex; justify-content: center; align-items: center; padding: 8px 4px; cursor: pointer; color: var(--text-main); border-bottom: 1px solid var(--border-color); transition: 0.2s;}
         .team-row:last-child { border-bottom: none; }

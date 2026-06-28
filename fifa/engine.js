@@ -1,10 +1,13 @@
-let initialSetup = {}; // <-- 1. We declare it here so the whole file can see it
+let initialSetup = {}; 
 let matches = [];
 let standings = {};
 let teamData = {}; 
 let trigrams = {};
 let forecastOverrides = {};
 let activeModalGroup = null;
+
+// Track knockout matches specifically
+let completedKnockouts = {};
 
 // UNIVERSAL TEAM TRANSLATOR 
 function getEngineTeam(extName) {
@@ -39,7 +42,6 @@ function getEngineTeam(extName) {
 
 async function initEngine() {
     try {
-        // 1. FETCH YOUR BACKUP/SOURCE OF TRUTH (Always works)
         const myUrl = 'https://raw.githubusercontent.com/roddcollege/home/main/fifa/2026data.json?t=' + new Date().getTime();
         const myResponse = await fetch(myUrl);
         const myData = await myResponse.json();
@@ -48,7 +50,6 @@ async function initEngine() {
         trigrams = myData.trigrams || {};
         forecastOverrides = myData.forecastOverrides || {};
         
-        // Build the base matrix
         Object.keys(initialSetup).forEach(g => { 
             let teams = initialSetup[g];
             matches.push({ id: `${g}1`, group: g, t1: teams[0].t, t2: teams[1].t, s1: teams[0].sc, s2: teams[1].sc, played: true, locked: true, forecasted: false });
@@ -64,8 +65,8 @@ async function initEngine() {
             });
         });
 
-        // 2. APPLY YOUR LOCAL BACKUPS FIRST
-		if (myData.completedMatches) {
+        // APPLY LOCAL BACKUPS
+        if (myData.completedMatches) {
             myData.completedMatches.forEach(cm => {
                 let eT1 = getEngineTeam(cm.t1);
                 let eT2 = getEngineTeam(cm.t2);
@@ -83,49 +84,48 @@ async function initEngine() {
             });
         }
 
-        // 3. TRY TO FETCH LIVE REALITY (The external API)
+        // EXTERNAL API SYNC
         try {
             const liveResponse = await fetch('https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json');
-            
-            // If the external site is deleted or returns a 404 error, this throws an error immediately
             if (!liveResponse.ok) throw new Error("External API is down or missing."); 
             
             const liveData = await liveResponse.json();
-            
-			if (liveData && liveData.matches) {
+            if (liveData && liveData.matches) {
                 liveData.matches.forEach(lm => {
                     if (lm.score && lm.score.ft && lm.score.ft.length === 2) {
-                        let eT1 = getEngineTeam(lm.team1);
-                        let eT2 = getEngineTeam(lm.team2);
-                        if (eT1 && eT2) {
-                            let m = matches.find(match => 
-                                (match.t1 === eT1 && match.t2 === eT2) || 
-                                (match.t1 === eT2 && match.t2 === eT1)
-                            );
-                            if (m) {
-                                if (m.t1 === eT1) { m.s1 = lm.score.ft[0]; m.s2 = lm.score.ft[1]; }
-                                else { m.s1 = lm.score.ft[1]; m.s2 = lm.score.ft[0]; }
-                                m.played = true; m.locked = true; m.forecasted = false;
+                        
+                        // IF IT IS A KNOCKOUT MATCH, SAVE IT FOR LATER
+                        if (lm.num && lm.num >= 73) {
+                            completedKnockouts[lm.num] = lm;
+                        } else {
+                            // OTHERWISE, IT'S A GROUP MATCH
+                            let eT1 = getEngineTeam(lm.team1);
+                            let eT2 = getEngineTeam(lm.team2);
+                            if (eT1 && eT2) {
+                                let m = matches.find(match => 
+                                    (match.t1 === eT1 && match.t2 === eT2) || 
+                                    (match.t1 === eT2 && match.t2 === eT1)
+                                );
+                                if (m) {
+                                    if (m.t1 === eT1) { m.s1 = lm.score.ft[0]; m.s2 = lm.score.ft[1]; }
+                                    else { m.s1 = lm.score.ft[1]; m.s2 = lm.score.ft[0]; }
+                                    m.played = true; m.locked = true; m.forecasted = false;
+                                }
                             }
                         }
                     }
                 });
             }
         } catch (syncError) {
-            // THE FALLBACK: If the above try{} block fails, it lands here. 
-            // It warns you in the console, but the app keeps running perfectly using your backup data!
             console.warn("Live external sync failed. Relying entirely on your GitHub backup JSON.", syncError);
         }
 
-        // 4. Draw the UI
         generateBracketHTML(); 
-		renderSuperstars();
         calculateStandings();
     } catch (error) {
         console.error("Critical Error: Could not load your primary GitHub JSON.", error);
     }
 }
-
 
 function getTrigramBadge(fullTeamString) {
     if (fullTeamString === 'TBD' || fullTeamString.includes('3rd') || fullTeamString.match(/^[12][A-L]$/)) return fullTeamString;
@@ -143,27 +143,31 @@ async function syncLiveData() {
         const data = await response.json();
         if (data && data.matches) {
             let updatedCount = 0;
-            data.matches.forEach(liveMatch => {
-                if (liveMatch.score && liveMatch.score.ft && liveMatch.score.ft.length === 2) {
-					// PASTE THIS NEW LOGIC:
-					let eT1 = getEngineTeam(liveMatch.team1);
-					let eT2 = getEngineTeam(liveMatch.team2);
-
-					if (eT1 && eT2) {
-						let engineMatch = matches.find(m => 
-							(m.t1 === eT1 && m.t2 === eT2) || 
-							(m.t1 === eT2 && m.t2 === eT1)
-						);
-						if (engineMatch) {
-							if (engineMatch.t1 === eT1) {
-								engineMatch.s1 = liveMatch.score.ft[0]; engineMatch.s2 = liveMatch.score.ft[1];
-							} else {
-								engineMatch.s1 = liveMatch.score.ft[1]; engineMatch.s2 = liveMatch.score.ft[0];
-							}
-							engineMatch.played = true; engineMatch.locked = true; engineMatch.forecasted = false;
-							updatedCount++;
-						}
-					}
+            data.matches.forEach(lm => {
+                if (lm.score && lm.score.ft && lm.score.ft.length === 2) {
+                    
+                    if (lm.num && lm.num >= 73) {
+                        completedKnockouts[lm.num] = lm;
+                        updatedCount++;
+                    } else {
+                        let eT1 = getEngineTeam(lm.team1);
+                        let eT2 = getEngineTeam(lm.team2);
+                        if (eT1 && eT2) {
+                            let engineMatch = matches.find(m => 
+                                (m.t1 === eT1 && m.t2 === eT2) || 
+                                (m.t1 === eT2 && m.t2 === eT1)
+                            );
+                            if (engineMatch) {
+                                if (engineMatch.t1 === eT1) {
+                                    engineMatch.s1 = lm.score.ft[0]; engineMatch.s2 = lm.score.ft[1];
+                                } else {
+                                    engineMatch.s1 = lm.score.ft[1]; engineMatch.s2 = lm.score.ft[0];
+                                }
+                                engineMatch.played = true; engineMatch.locked = true; engineMatch.forecasted = false;
+                                updatedCount++;
+                            }
+                        }
+                    }
                 }
             });
             if(updatedCount > 0) { calculateStandings(); }
@@ -174,7 +178,7 @@ async function syncLiveData() {
 function getAdjustedPower(teamName, isKnockout = false) {
     let data = teamData[teamName]; if (!data) return 1500;
     let power = data.elo;
-    if (data.host) power += 50; power += (data.ped * 10) + (data.comm * 10);
+    if (data.host) power += 50; power += (data.ped * 10) + (data.comm * 10); 
     let groupLetter = standings[teamName] ? standings[teamName].group : 'A';
     power += (groupLetter.charCodeAt(0) - 65) * 2; 
     if (isKnockout) power += (data.star * 15); else power += (data.star * 5);
@@ -194,7 +198,9 @@ function calculateStandings() {
         }
     });
     Object.keys(standings).forEach(t => { standings[t].gd = standings[t].gf - standings[t].ga; });
-    renderGroupTables(); syncKnockoutBracket();
+    renderGroupTables(); 
+    syncKnockoutBracket();
+    applyCompletedKnockouts(); // Processes advancing teams after R32 populates
 }
 
 function forecastMatches() {
@@ -202,9 +208,9 @@ function forecastMatches() {
         if (!m.locked && (m.s1 === null || m.s2 === null || m.forecasted)) {
             let p1 = m.t1; let p2 = m.t2;
             
-            if (forecastOverrides[p1]) {
+            if (forecastOverrides[p1] && forecastOverrides[p1].win > 0) {
                 m.s1 = forecastOverrides[p1].win; m.s2 = forecastOverrides[p1].lose;
-            } else if (forecastOverrides[p2]) {
+            } else if (forecastOverrides[p2] && forecastOverrides[p2].win > 0) {
                 m.s1 = forecastOverrides[p2].lose; m.s2 = forecastOverrides[p2].win;
             } else {
                 let diff = getAdjustedPower(m.t1, false) - getAdjustedPower(m.t2, false);
@@ -213,7 +219,7 @@ function forecastMatches() {
             m.played = true; m.forecasted = true; 
         }
     });
-    resetBracketPredictions(); calculateStandings(); showTab('bracket'); autoPrefillBracketRounds();
+    resetBracketPredictions(); calculateStandings(); showTab('bracket');
 }
 
 function renderGroupTables() {
@@ -232,20 +238,18 @@ function renderGroupTables() {
         groupTeams.sort((a, b) => allTeamsRanked.indexOf(a) - allTeamsRanked.indexOf(b));
 
         let html = `<div class="group-card" onclick="openModal('${g}')">
-            <div class="group-header"><span>GROUP ${g}</span></div>
+            <div class="group-header"><span>GROUP ${g}</span> <span style="cursor:pointer; color:var(--text-muted);">⚙️</span></div>
             <table class="standings-table">
                 <tr><th>Team</th><th class="center">MP</th><th class="center">GD</th><th class="center">Pts</th></tr>`;
         
         groupTeams.forEach(t => {
             let st = standings[t];
             let pwr = getAdjustedPower(t, true); 
-            html += `<tr><td class="team-name" style="position: relative; padding-right: 30px;">
-                <div style="font-weight: bold;">${t}</div>
-                <span class="elo-badge" style="color:var(--accent); display:inline-block; margin-top:4px;">Knockout Power: ${pwr}</span>
-                <span title="Adjust Knock out power" onclick="openTunerModal('${t}', event)" style="position: absolute; top: 12px; right: 10px; cursor: pointer; font-size: 1.1rem; opacity: 0.6; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">⚙️</span>
+            html += `<tr><td class="team-name-col">
+                <div>${t}</div>
+                <span class="elo-badge">Knockout Power: ${pwr}</span>
                 </td><td class="center">${st.mp}</td><td class="center">${st.gd > 0 ? '+'+st.gd : st.gd}</td><td class="center" style="font-weight:bold;">${st.pts}</td></tr>`;
         });
-		
         html += `</table></div>`;
         container.innerHTML += html;
     });
@@ -256,13 +260,11 @@ function openModal(group) {
     document.getElementById('modalGroupTitle').innerText = `Update Group ${group} Matches`;
     const container = document.getElementById('modalMatchesContainer');
     container.innerHTML = '';
-
     let groupMatches = matches.filter(m => m.group === group);
     groupMatches.forEach(m => {
         let s1Val = m.s1 !== null ? m.s1 : ''; let s2Val = m.s2 !== null ? m.s2 : '';
         let readOnlyAttr = m.locked ? 'readonly' : ''; let lockedClass = m.locked ? 'locked-input' : '';
         let matchRowClass = m.locked ? 'locked-match' : ''; let forecastClass = m.forecasted ? 'forecasted-input' : '';
-
         container.innerHTML += `
             <div class="match-edit-row ${matchRowClass}">
                 <div class="team-label" style="text-align:right;">${m.t1}</div>
@@ -294,16 +296,28 @@ function saveScores() {
 }
 
 window.onclick = function(event) {
-    let scoreModal = document.getElementById('scoreModal');
+    let modal = document.getElementById('scoreModal');
     let tunerModal = document.getElementById('tunerModal');
-    if (event.target == scoreModal) { closeModal(); }
-    if (event.target == tunerModal) { closeTunerModal(); }
+    if (event.target == modal) { closeModal(); }
+    if (tunerModal && event.target == tunerModal) { closeTunerModal(); }
 }
 
 // --- SYMMETRIC GEOMETRIC BRACKET GENERATION ---
 function generateBracketHTML() {
     const target = document.getElementById('bracket-render-target');
     
+    // The exact dates compiled from the JSON
+    const schedule = {
+        73:"Jun 28 - 12:00", 74:"Jun 29 - 16:30", 75:"Jun 29 - 19:00", 76:"Jun 29 - 12:00",
+        77:"Jun 30 - 17:00", 78:"Jun 30 - 12:00", 79:"Jun 30 - 19:00", 80:"Jul 01 - 12:00",
+        81:"Jul 01 - 17:00", 82:"Jul 01 - 13:00", 83:"Jul 02 - 19:00", 84:"Jul 02 - 12:00",
+        85:"Jul 02 - 20:00", 86:"Jul 03 - 18:00", 87:"Jul 03 - 20:30", 88:"Jul 03 - 13:00",
+        89:"Jul 04 - 17:00", 90:"Jul 04 - 12:00", 91:"Jul 05 - 16:00", 92:"Jul 05 - 18:00",
+        93:"Jul 06 - 14:00", 94:"Jul 06 - 17:00", 95:"Jul 07 - 12:00", 96:"Jul 07 - 13:00",
+        97:"Jul 09 - 16:00", 98:"Jul 10 - 12:00", 99:"Jul 11 - 17:00", 100:"Jul 11 - 20:00",
+        101:"Jul 14 - 14:00", 102:"Jul 15 - 15:00", 104:"Jul 19 - 15:00"
+    };
+
     const leftR32 = [
         {m: 75, t1: '1E', t2: '3rd'}, {m: 78, t1: '1I', t2: '3rd'},
         {m: 73, t1: '2A', t2: '2B'}, {m: 76, t1: '1F', t2: '2C'},
@@ -342,9 +356,11 @@ function generateBracketHTML() {
             let t2HTML = isLeft ? `<span class="seed" style="left:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span><span class="team-name">TBD</span>` : `<span class="team-name">TBD</span><span class="seed" style="right:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span>`;
 
             let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r32ConnH}px;"></div>` : '';
+            let dateHTML = `<div class="match-date">${schedule[p.m]||""}</div>`;
 
             html += `
             <div class="match r32 ${isLeft ? 'left-side' : 'right-side'}" style="top: ${r32Tops[idx]}px;" id="m-${p.m}" data-next="m-${nextM}" data-slot="${slot}">
+                ${dateHTML}
                 <div class="match-num">#${p.m}</div>
                 <div class="match-card">
                     <div class="team-row seed-target empty slot-top" data-seed="${p.t1}" data-fullname="TBD" onclick="advance(this)">
@@ -366,9 +382,11 @@ function generateBracketHTML() {
             let nextM = isLeft ? (idx < 2 ? 97 : 99) : (idx < 2 ? 98 : 100);
             let slot = idx % 2 === 0 ? 'top' : 'bottom';
             let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r16ConnH}px;"></div>` : '';
+            let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
 
             html += `
             <div class="match r16 ${isLeft ? 'left-side' : 'right-side'}" style="top: ${r16Tops[idx]}px;" id="m-${m}" data-next="m-${nextM}" data-slot="${slot}">
+                ${dateHTML}
                 <div class="match-num">#${m}</div>
                 <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
@@ -390,9 +408,11 @@ function generateBracketHTML() {
             let nextM = isLeft ? 101 : 102;
             let slot = idx === 0 ? 'top' : 'bottom';
             let connectorLine = idx === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${qfConnH}px;"></div>` : '';
+            let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
 
             html += `
             <div class="match qf ${isLeft ? 'left-side' : 'right-side'}" style="top: ${qfTops[idx]}px;" id="m-${m}" data-next="m-${nextM}" data-slot="${slot}">
+                ${dateHTML}
                 <div class="match-num">#${m}</div>
                 <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
@@ -412,9 +432,11 @@ function generateBracketHTML() {
         let sfMatch = isLeft ? 101 : 102;
         let sfSlot = isLeft ? 'top' : 'bottom';
         let sfConnector = `<div class="line-straight ${isLeft ? 'left' : 'right'}"></div>`;
+        let dateHTML = `<div class="match-date">${schedule[sfMatch]||""}</div>`;
 
         html += `
             <div class="match sf ${isLeft ? 'left-side' : 'right-side'}" style="top: ${sfTops[0]}px;" id="m-${sfMatch}" data-next="final-1" data-slot="${sfSlot}">
+                ${dateHTML}
                 <div class="match-num">#${sfMatch}</div>
                 <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
@@ -434,7 +456,7 @@ function generateBracketHTML() {
 
     let fullHTML = generateSide('L', leftR32);
     
-// CENTER COLUMN
+    // CENTER COLUMN
     fullHTML += `
         <div class="center-col">
             <div style="font-size: 3.5rem; position: absolute; top: 100px; z-index: 10;">🏆</div>
@@ -448,6 +470,7 @@ function generateBracketHTML() {
             
             <div class="final-match-wrapper">
                 <div class="match" id="final-1" data-next="champion-slot" data-slot="top" style="margin:0; border:none; width: 100%;">
+                    <div class="match-date">${schedule[104]||""}</div>
                     <div class="match-card" style="border:1px solid var(--accent); box-shadow: 0 0 10px rgba(251,191,36,0.3);">
                         <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)" style="justify-content:center;"><span class="team-name" style="text-align:center;">TBD</span></div>
                         <div class="team-row slot-bottom empty" data-fullname="TBD" onclick="advance(this)" style="justify-content:center;"><span class="team-name" style="text-align:center;">TBD</span></div>
@@ -479,19 +502,16 @@ function syncKnockoutBracket() {
     allThirdPlaces.sort((a, b) => allTeamsRanked.indexOf(a) - allTeamsRanked.indexOf(b));
     const top8ThirdPlaces = allThirdPlaces.slice(0, 8);
 
-    // --- NEW: EXPLICIT WILDCARD ROUTING ---
-    // Forces the exact 3rd-place pairings based on your live scenario
     const wildcardMatchups = {
-        '1E': allThirdPlaces.find(t => standings[t] && standings[t].group === 'D'), // Germany vs Paraguay
-        '1A': allThirdPlaces.find(t => standings[t] && standings[t].group === 'E'), // Mexico vs Ecuador
-        '1L': allThirdPlaces.find(t => standings[t] && standings[t].group === 'K'), // England vs DR Congo
-        '1G': allThirdPlaces.find(t => standings[t] && standings[t].group === 'I'), // Belgium vs Senegal
-        '1K': allThirdPlaces.find(t => standings[t] && standings[t].group === 'L'), // Colombia vs Ghana
-        '1D': allThirdPlaces.find(t => standings[t] && standings[t].group === 'B'), // USA vs Bosnia
-        '1B': allThirdPlaces.find(t => standings[t] && standings[t].group === 'J')  // Switzerland vs Algeria
+        '1E': allThirdPlaces.find(t => standings[t] && standings[t].group === 'D'), 
+        '1A': allThirdPlaces.find(t => standings[t] && standings[t].group === 'E'), 
+        '1L': allThirdPlaces.find(t => standings[t] && standings[t].group === 'K'), 
+        '1G': allThirdPlaces.find(t => standings[t] && standings[t].group === 'I'), 
+        '1K': allThirdPlaces.find(t => standings[t] && standings[t].group === 'L'), 
+        '1D': allThirdPlaces.find(t => standings[t] && standings[t].group === 'B'), 
+        '1B': allThirdPlaces.find(t => standings[t] && standings[t].group === 'J')  
     };
     
-    // Assign the remaining 8th wildcard team to France (1I)
     let assigned = Object.values(wildcardMatchups).filter(Boolean);
     let remaining = top8ThirdPlaces.filter(t => !assigned.includes(t));
     wildcardMatchups['1I'] = remaining[0]; 
@@ -501,7 +521,6 @@ function syncKnockoutBracket() {
         const requiredSeed = slot.getAttribute('data-seed'); let teamToInsert = "TBD";
         
         if (requiredSeed.includes('3')) { 
-            // Look at the opposing team in the match card to grab the correct wildcard
             let matchDiv = slot.closest('.match');
             let groupWinnerSlot = matchDiv.querySelector('.seed-target:not([data-seed="3rd"])');
             let groupWinnerSeed = groupWinnerSlot ? groupWinnerSlot.getAttribute('data-seed') : null;
@@ -509,7 +528,6 @@ function syncKnockoutBracket() {
             if (groupWinnerSeed && wildcardMatchups[groupWinnerSeed]) {
                 teamToInsert = wildcardMatchups[groupWinnerSeed];
             } else if (thirdPlaceIndex < remaining.length) {
-                // Fallback just in case a group is missing
                 teamToInsert = remaining[thirdPlaceIndex]; 
                 thirdPlaceIndex++;
             }
@@ -527,32 +545,38 @@ function syncKnockoutBracket() {
         if(teamToInsert === "TBD") slot.classList.add('empty'); else slot.classList.remove('empty');
     });
 }
-function autoPrefillBracketRounds() {
-    const triggerWeightedWin = (matchId) => {
-        let matchDiv = document.getElementById(matchId);
-        if(!matchDiv) return null;
-        let teams = matchDiv.querySelectorAll('.team-row');
-        if(teams.length === 2) {
-            let t1 = teams[0].getAttribute('data-fullname');
-            let t2 = teams[1].getAttribute('data-fullname');
-            if(t1 && t2 && t1 !== 'TBD' && t2 !== 'TBD') {
-                let p1 = getAdjustedPower(t1, true);
-                let p2 = getAdjustedPower(t2, true);
-                let winnerElem = p1 >= p2 ? teams[0] : teams[1];
-                advance(winnerElem, true); 
-            }
-        }
-    };
 
-    const runList = [
-        75,78,73,76,84,83,82,81,74,77,79,80,87,86,85,88, // R32
-        90,89,94,93,91,92,95,96, // R16
-        97,99,98,100, // QF
-        101,102 // SF
-    ];
-    
-    runList.forEach(m => triggerWeightedWin(`m-${m}`));
-    triggerWeightedWin(`final-1`);
+// CASCADES COMPLETED MATCHES UP THE BRACKET
+function applyCompletedKnockouts() {
+    // Sort numerically so R32 processes before R16, etc.
+    Object.keys(completedKnockouts).sort((a,b) => parseInt(a) - parseInt(b)).forEach(num => {
+        let lm = completedKnockouts[num];
+        
+        let s1 = lm.score.ft[0];
+        let s2 = lm.score.ft[1];
+        if (lm.score.p) { // Account for penalty shootouts if JSON adds them
+            s1 += lm.score.p[0]; s2 += lm.score.p[1];
+        } else if (lm.score.et) { // Extra time
+            s1 = lm.score.et[0]; s2 = lm.score.et[1];
+        }
+        
+        let winnerName = null;
+        if (s1 > s2) winnerName = getEngineTeam(lm.team1);
+        else if (s2 > s1) winnerName = getEngineTeam(lm.team2);
+
+        if (!winnerName) return; // Tied, match unresolved
+
+        let targetId = num == 104 ? 'final-1' : 'm-' + num;
+        let mDiv = document.getElementById(targetId);
+        if (mDiv) {
+            let rows = mDiv.querySelectorAll('.team-row');
+            rows.forEach(r => {
+                if (r.getAttribute('data-fullname') === winnerName) {
+                    advance(r, true); // Artificially clicks the winning row
+                }
+            });
+        }
+    });
 }
 
 function advance(clickedElement, isAuto = false) {
@@ -641,7 +665,7 @@ function showTab(tabId) {
 
 // --- INTANGIBLES TUNER MODAL LOGIC ---
 function openTunerModal(team, event) {
-    event.stopPropagation(); // Stops the group click event from firing
+    event.stopPropagation();
 
     if(!teamData[team]) return;
     const data = teamData[team];
@@ -711,77 +735,14 @@ function applyTunerChanges() {
     teamData[team].star = parseInt(document.getElementById('tune-star').value) || 0;
     teamData[team].comm = parseInt(document.getElementById('tune-comm').value) || 0;
     
-    // Force UI refresh
     calculateStandings(); 
     
     const btn = document.getElementById('tuner-save-btn');
     btn.innerText = "Applied to Engine!";
     setTimeout(() => { 
         btn.innerText = "Inject into Engine"; 
-        closeTunerModal(); // Auto-close after saving
+        closeTunerModal(); 
     }, 1000);
-}
-
-// --- SUPERSTAR GALLERY LOGIC ---
-
-// Dictionary mapping the top teams to their marquee players
-const superstarDictionary = {
-    'France': 'Kylian Mbappé',
-    'Argentina': 'Lionel Messi',
-    'Portugal': 'Cristiano Ronaldo',
-    'Brazil': 'Vinícius Júnior',
-    'England': 'Jude Bellingham',
-    'Norway': 'Erling Haaland',
-    'Belgium': 'Kevin De Bruyne',
-    'Mexico': 'Santiago Giménez',
-    'USA': 'Christian Pulisic',
-    'Germany': 'Jamal Musiala',
-    'Netherlands': 'Xavi Simons',
-    'Spain': 'Lamine Yamal',
-    'Uruguay': 'Federico Valverde',
-    'Senegal': 'Sadio Mané',
-    'Colombia': 'Luis Díaz',
-    'Croatia': 'Luka Modrić'
-};
-
-function renderSuperstars() {
-    const target = document.getElementById('superstar-render-target');
-    if (!target) return;
-    target.innerHTML = '';
-
-    // Filter teamData for Tier 4 and 5, sort by Star rating, then Elo
-    let superstarTeams = Object.keys(teamData)
-        .filter(t => teamData[t].star >= 4)
-        .sort((a, b) => {
-            if (teamData[b].star !== teamData[a].star) return teamData[b].star - teamData[a].star;
-            return teamData[b].elo - teamData[a].elo;
-        });
-
-    let html = '';
-    superstarTeams.forEach(t => {
-        let cleanName = t.replace(/[^a-zA-Z\s-]/g, '').trim();
-        let flag = t.replace(/[a-zA-Z\s-]/g, '').trim();
-        
-        let playerName = superstarDictionary[cleanName] || 'Marquee Player';
-        let starCount = teamData[t].star;
-        let starIcons = '★'.repeat(starCount);
-        let clutchMultiplier = starCount * 15; // Matches your Engine Math
-        
-        // Apply special class if it's a Tier 5 player
-        let tierClass = starCount === 5 ? 'sc-tier-5' : 'sc-tier-4';
-
-        html += `
-            <div class="superstar-card ${tierClass}">
-                <div class="sc-flag">${flag}</div>
-                <div class="sc-player">${playerName}</div>
-                <div class="sc-country">${cleanName}</div>
-                <div class="sc-stars">${starIcons}</div>
-                <div class="sc-power">Clutch Power: +${clutchMultiplier}</div>
-            </div>
-        `;
-    });
-    
-    target.innerHTML = html;
 }
 
 window.onload = () => { initEngine(); };

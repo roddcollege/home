@@ -21,21 +21,21 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('groups')">Group Stages</button>
-        <button class="tab-btn" onclick="showTab('bracket')">Knockouts</button>
+        <button class="tab-btn active" onclick="showTab('bracket')">Knockouts</button>
+        <button class="tab-btn" onclick="showTab('groups')">Group Stages</button>
 		<button class="tab-btn" onclick="showTab('superstars')">Superstars</button>
     </div>
 
-    <div id="groups" class="tab-content active">
-        <div class="group-grid" id="group-grid-container"></div>
-    </div>
-
-    <div id="bracket" class="tab-content">
+    <div id="bracket" class="tab-content active">
         <div class="bracket-wrapper">
             <div class="bracket-title">KNOCKOUT STAGES</div>
             <div class="symmetric-bracket" id="bracket-render-target">
                 </div>
         </div>
+    </div>
+
+    <div id="groups" class="tab-content">
+        <div class="group-grid" id="group-grid-container"></div>
     </div>
 	
 	<div id="superstars" class="tab-content">
