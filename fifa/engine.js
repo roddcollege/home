@@ -479,25 +479,54 @@ function syncKnockoutBracket() {
     allThirdPlaces.sort((a, b) => allTeamsRanked.indexOf(a) - allTeamsRanked.indexOf(b));
     const top8ThirdPlaces = allThirdPlaces.slice(0, 8);
 
+    // --- NEW: EXPLICIT WILDCARD ROUTING ---
+    // Forces the exact 3rd-place pairings based on your live scenario
+    const wildcardMatchups = {
+        '1E': allThirdPlaces.find(t => standings[t] && standings[t].group === 'D'), // Germany vs Paraguay
+        '1A': allThirdPlaces.find(t => standings[t] && standings[t].group === 'E'), // Mexico vs Ecuador
+        '1L': allThirdPlaces.find(t => standings[t] && standings[t].group === 'K'), // England vs DR Congo
+        '1G': allThirdPlaces.find(t => standings[t] && standings[t].group === 'I'), // Belgium vs Senegal
+        '1K': allThirdPlaces.find(t => standings[t] && standings[t].group === 'L'), // Colombia vs Ghana
+        '1D': allThirdPlaces.find(t => standings[t] && standings[t].group === 'B'), // USA vs Bosnia
+        '1B': allThirdPlaces.find(t => standings[t] && standings[t].group === 'J')  // Switzerland vs Algeria
+    };
+    
+    // Assign the remaining 8th wildcard team to France (1I)
+    let assigned = Object.values(wildcardMatchups).filter(Boolean);
+    let remaining = top8ThirdPlaces.filter(t => !assigned.includes(t));
+    wildcardMatchups['1I'] = remaining[0]; 
+
     let thirdPlaceIndex = 0;
     document.querySelectorAll('.seed-target').forEach(slot => {
         const requiredSeed = slot.getAttribute('data-seed'); let teamToInsert = "TBD";
-        if (requiredSeed.includes('3')) { if (thirdPlaceIndex < top8ThirdPlaces.length) { teamToInsert = top8ThirdPlaces[thirdPlaceIndex]; thirdPlaceIndex++; } } 
+        
+        if (requiredSeed.includes('3')) { 
+            // Look at the opposing team in the match card to grab the correct wildcard
+            let matchDiv = slot.closest('.match');
+            let groupWinnerSlot = matchDiv.querySelector('.seed-target:not([data-seed="3rd"])');
+            let groupWinnerSeed = groupWinnerSlot ? groupWinnerSlot.getAttribute('data-seed') : null;
+
+            if (groupWinnerSeed && wildcardMatchups[groupWinnerSeed]) {
+                teamToInsert = wildcardMatchups[groupWinnerSeed];
+            } else if (thirdPlaceIndex < remaining.length) {
+                // Fallback just in case a group is missing
+                teamToInsert = remaining[thirdPlaceIndex]; 
+                thirdPlaceIndex++;
+            }
+        } 
         else { if (seeds[requiredSeed]) teamToInsert = seeds[requiredSeed]; }
 
         let nameSpan = slot.querySelector('.team-name');
         if (nameSpan) {
-            nameSpan.innerHTML = getTrigramBadge(teamToInsert);
+            let tcode = teamToInsert === "TBD" ? "TBD" : getTrigramBadge(teamToInsert);
+            nameSpan.innerText = tcode;
             slot.setAttribute('data-fullname', teamToInsert);
         }
         
         slot.classList.remove('selected');
         if(teamToInsert === "TBD") slot.classList.add('empty'); else slot.classList.remove('empty');
     });
-
-    
 }
-
 function autoPrefillBracketRounds() {
     const triggerWeightedWin = (matchId) => {
         let matchDiv = document.getElementById(matchId);
