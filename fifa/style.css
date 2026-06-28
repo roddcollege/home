@@ -77,9 +77,9 @@
         .match { position: absolute; width: 110px; z-index: 5;}
         
         .match-card { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .match-num { position: absolute; top: -8px; background: var(--bg-color); padding: 0 4px; font-size: 0.6rem; color: #64748b; font-weight: bold; }
-        .match.left-side .match-num { left: 5px; }
-        .match.right-side .match-num { right: 5px; }
+        .match-num { position: absolute; top: 33px; background: var(--bg-color); padding: 0px; font-size: 0.6rem; color: #64748b; font-weight: bold; }
+        .match.left-side .match-num { left: 4px; }
+        .match.right-side .match-num { right: 4px; }
 
         .team-row { display: flex; justify-content: center; align-items: center; padding: 8px 4px; cursor: pointer; color: var(--text-main); border-bottom: 1px solid var(--border-color); transition: 0.2s;}
         .team-row:last-child { border-bottom: none; }
