@@ -307,15 +307,49 @@ function generateBracketHTML() {
     const target = document.getElementById('bracket-render-target');
     
     // The exact dates compiled from the JSON
-    const schedule = {
-        73:"Jun 28 - 12:00", 74:"Jun 29 - 16:30", 75:"Jun 29 - 19:00", 76:"Jun 29 - 12:00",
-        77:"Jun 30 - 17:00", 78:"Jun 30 - 12:00", 79:"Jun 30 - 19:00", 80:"Jul 01 - 12:00",
-        81:"Jul 01 - 17:00", 82:"Jul 01 - 13:00", 83:"Jul 02 - 19:00", 84:"Jul 02 - 12:00",
-        85:"Jul 02 - 20:00", 86:"Jul 03 - 18:00", 87:"Jul 03 - 20:30", 88:"Jul 03 - 13:00",
-        89:"Jul 04 - 17:00", 90:"Jul 04 - 12:00", 91:"Jul 05 - 16:00", 92:"Jul 05 - 18:00",
-        93:"Jul 06 - 14:00", 94:"Jul 06 - 17:00", 95:"Jul 07 - 12:00", 96:"Jul 07 - 13:00",
-        97:"Jul 09 - 16:00", 98:"Jul 10 - 12:00", 99:"Jul 11 - 17:00", 100:"Jul 11 - 20:00",
-        101:"Jul 14 - 14:00", 102:"Jul 15 - 15:00", 104:"Jul 19 - 15:00"
+const schedule = {
+        // ROUND OF 32 - Left Side (Top to Bottom)
+        75:"Jun 29 - 15:30", 
+        78:"Jun 30 - 16:00", 
+        73:"Jun 28 - 14:00", 
+        76:"Jun 29 - 20:00",
+        84:"Jul 02 - 18:00", 
+        83:"Jul 02 - 14:00", 
+        82:"Jul 01 - 19:00", 
+        81:"Jul 01 - 15:00",
+
+        // ROUND OF 32 - Right Side (Top to Bottom)
+        74:"Jun 29 - 12:00", 
+        77:"Jun 30 - 12:00", 
+        79:"Jun 30 - 20:00", 
+        80:"Jul 01 - 11:00",
+        87:"Jul 03 - 17:00", 
+        86:"Jul 03 - 13:00", 
+        85:"Jul 02 - 22:00", 
+        88:"Jul 03 - 20:30",
+
+        // ROUND OF 16 - Left Side
+        90:"Jul 04 - 16:00", 
+        89:"Jul 04 - 12:00", 
+        94:"Jul 06 - 14:00", 
+        93:"Jul 06 - 19:00", 
+        
+        // ROUND OF 16 - Right Side
+        91:"Jul 05 - 15:00", 
+        92:"Jul 05 - 19:00", 
+        95:"Jul 07 - 11:00", 
+        96:"Jul 07 - 15:00", 
+
+        // QUARTERFINALS
+        97:"Jul 09 - 15:00", // Left Top
+        99:"Jul 10 - 14:00", // Left Bottom
+        98:"Jul 11 - 16:00", // Right Top
+        100:"Jul 11 - 20:00", // Right Bottom
+
+        // SEMIFINALS & FINAL
+        101:"Jul 14 - 14:00", 
+        102:"Jul 15 - 14:00", 
+        104:"Jul 19 - 14:00"
     };
 
     const leftR32 = [
