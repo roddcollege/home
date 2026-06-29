@@ -122,6 +122,7 @@ async function initEngine() {
 
         generateBracketHTML(); 
         calculateStandings();
+		renderSuperstars();
 		setTimeout(() => syncKnockoutBracket(), 500);
     } catch (error) {
         console.error("Critical Error: Could not load your primary GitHub JSON.", error);
@@ -821,5 +822,63 @@ function autoPrefillBracketRounds() {
     runList.forEach(m => triggerWeightedWin(`m-${m}`));
     triggerWeightedWin(`final-1`);
 }
+
+const superstarDictionary = {
+    'France': 'Kylian Mbappé',
+    'Argentina': 'Lionel Messi',
+    'Portugal': 'Cristiano Ronaldo',
+    'Brazil': 'Vinícius Júnior',
+    'England': 'Jude Bellingham',
+    'Norway': 'Erling Haaland',
+    'Belgium': 'Kevin De Bruyne',
+    'Mexico': 'Santiago Giménez',
+    'USA': 'Christian Pulisic',
+    'Germany': 'Jamal Musiala',
+    'Netherlands': 'Xavi Simons',
+    'Spain': 'Lamine Yamal',
+    'Uruguay': 'Federico Valverde',
+    'Senegal': 'Sadio Mané',
+    'Colombia': 'Luis Díaz',
+    'Croatia': 'Luka Modrić'
+};
+
+function renderSuperstars() {
+    const target = document.getElementById('superstar-render-target');
+    if (!target) return;
+    target.innerHTML = '';
+
+    let superstarTeams = Object.keys(teamData)
+        .filter(t => teamData[t].star >= 4)
+        .sort((a, b) => {
+            if (teamData[b].star !== teamData[a].star) return teamData[b].star - teamData[a].star;
+            return teamData[b].elo - teamData[a].elo;
+        });
+
+    let html = '';
+    superstarTeams.forEach(t => {
+        let cleanName = t.replace(/[^a-zA-Z\s-]/g, '').trim();
+        let flag = t.replace(/[a-zA-Z\s-]/g, '').trim();
+        
+        let playerName = superstarDictionary[cleanName] || 'Marquee Player';
+        let starCount = teamData[t].star;
+        let starIcons = '★'.repeat(starCount);
+        let clutchMultiplier = starCount * 15; 
+        
+        let tierClass = starCount === 5 ? 'sc-tier-5' : 'sc-tier-4';
+
+        html += `
+            <div class="superstar-card ${tierClass}">
+                <div class="sc-flag">${flag}</div>
+                <div class="sc-player">${playerName}</div>
+                <div class="sc-country">${cleanName}</div>
+                <div class="sc-stars">${starIcons}</div>
+                <div class="sc-power">Clutch Power: +${clutchMultiplier}</div>
+            </div>
+        `;
+    });
+    
+    target.innerHTML = html;
+}
+
 
 window.onload = () => { initEngine(); };
