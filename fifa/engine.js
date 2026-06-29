@@ -238,16 +238,17 @@ function renderGroupTables() {
         groupTeams.sort((a, b) => allTeamsRanked.indexOf(a) - allTeamsRanked.indexOf(b));
 
         let html = `<div class="group-card" onclick="openModal('${g}')">
-            <div class="group-header"><span>GROUP ${g}</span> <span style="cursor:pointer; color:var(--text-muted);">⚙️</span></div>
+            <div class="group-header"><span>GROUP ${g}</span></div>
             <table class="standings-table">
                 <tr><th>Team</th><th class="center">MP</th><th class="center">GD</th><th class="center">Pts</th></tr>`;
         
-        groupTeams.forEach(t => {
+		groupTeams.forEach(t => {
             let st = standings[t];
             let pwr = getAdjustedPower(t, true); 
-            html += `<tr><td class="team-name-col">
-                <div>${t}</div>
-                <span class="elo-badge">Knockout Power: ${pwr}</span>
+            html += `<tr><td class="team-name" style="position: relative; padding-right: 30px;">
+                <div style="font-weight: bold;">${t}</div>
+                <span class="elo-badge" style="color:var(--accent); display:inline-block; margin-top:4px;">Knockout Power: ${pwr}</span>
+                <span title="Adjust Knock out power" onclick="openTunerModal('${t}', event)" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.1rem; opacity: 0.6; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">⚙️</span>
                 </td><td class="center">${st.mp}</td><td class="center">${st.gd > 0 ? '+'+st.gd : st.gd}</td><td class="center" style="font-weight:bold;">${st.pts}</td></tr>`;
         });
         html += `</table></div>`;
@@ -366,14 +367,14 @@ const schedule = {
         {m: 85, t1: '1B', t2: '3rd'}, {m: 88, t1: '1K', t2: '3rd'}
     ];
 
-    const r32Tops = [0, 90, 180, 270, 450, 540, 630, 720];
-    const r16Tops = [45, 225, 495, 675];
-    const qfTops  = [135, 585];
-    const sfTops  = [360];
+	const r32Tops = [0, 105, 210, 315, 420, 525, 630, 735];
+    const r16Tops = [53, 263, 473, 683];
+    const qfTops  = [158, 578];
+    const sfTops  = [368];
 
-    const r32ConnH = 90;
-    const r16ConnH = 180;
-    const qfConnH  = 450;
+    const r32ConnH = 105;
+    const r16ConnH = 210;
+    const qfConnH  = 420;
 
     const generateSide = (side, r32Pairs) => {
         let isLeft = side === 'L';
@@ -389,7 +390,7 @@ const schedule = {
             let t1HTML = isLeft ? `<span class="seed" style="left:-25px;">${p.t1}</span><span class="team-name">TBD</span>` : `<span class="team-name">TBD</span><span class="seed" style="right:-25px;">${p.t1}</span>`;
             let t2HTML = isLeft ? `<span class="seed" style="left:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span><span class="team-name">TBD</span>` : `<span class="team-name">TBD</span><span class="seed" style="right:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span>`;
 
-            let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r32ConnH}px;"></div>` : '';
+            let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r32ConnH - 1}px; top: 49%"></div>` : '';
             let dateHTML = `<div class="match-date">${schedule[p.m]||""}</div>`;
 
             html += `
@@ -415,14 +416,16 @@ const schedule = {
         r16Matches.forEach((m, idx) => {
             let nextM = isLeft ? (idx < 2 ? 97 : 99) : (idx < 2 ? 98 : 100);
             let slot = idx % 2 === 0 ? 'top' : 'bottom';
-            let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r16ConnH}px;"></div>` : '';
-            let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
+            let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r16ConnH - 1}px; top:49%"></div>` : '';
+            let r16Connector = `<div class="line-straight ${isLeft ? 'right' : 'left'}" style="top: 50%;"></div>`;
+			let connectorArrow = `<div class="match-arrow ${isLeft ? 'arrow-right' : 'arrow-left'}">${isLeft ? '▶' : '◀'}</div>`;
+			let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
 
             html += `
             <div class="match r16 ${isLeft ? 'left-side' : 'right-side'}" style="top: ${r16Tops[idx]}px;" id="m-${m}" data-next="m-${nextM}" data-slot="${slot}">
                 ${dateHTML}
                 <div class="match-num">#${m}</div>
-                <div class="match-card">
+                ${r16Connector} ${connectorArrow} <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
                         <span class="team-name">TBD</span>
                     </div>
@@ -441,14 +444,16 @@ const schedule = {
         qfMatches.forEach((m, idx) => {
             let nextM = isLeft ? 101 : 102;
             let slot = idx === 0 ? 'top' : 'bottom';
-            let connectorLine = idx === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${qfConnH}px;"></div>` : '';
-            let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
+            let connectorLine = idx === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${qfConnH - 1}px; top: 50%;"></div>` : '';
+			let qfConnector = `<div class="line-straight ${isLeft ? 'right' : 'left'}" style="top: 50%;"></div>`;
+            let connectorArrow = `<div class="match-arrow ${isLeft ? 'arrow-right' : 'arrow-left'}">${isLeft ? '▶' : '◀'}</div>`;
+			let dateHTML = `<div class="match-date">${schedule[m]||""}</div>`;
 
             html += `
             <div class="match qf ${isLeft ? 'left-side' : 'right-side'}" style="top: ${qfTops[idx]}px;" id="m-${m}" data-next="m-${nextM}" data-slot="${slot}">
                 ${dateHTML}
                 <div class="match-num">#${m}</div>
-                <div class="match-card">
+                ${qfConnector} ${connectorArrow} <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
                         <span class="team-name">TBD</span>
                     </div>
@@ -465,14 +470,16 @@ const schedule = {
         html += `<div class="bracket-col"><div class="col-title">SEMIFINALS</div>`;
         let sfMatch = isLeft ? 101 : 102;
         let sfSlot = isLeft ? 'top' : 'bottom';
-        let sfConnector = `<div class="line-straight ${isLeft ? 'left' : 'right'}"></div>`;
-        let dateHTML = `<div class="match-date">${schedule[sfMatch]||""}</div>`;
+        let sfConnector = `<div class="line-straight ${isLeft ? 'right' : 'left'}" style="top: 50%;"></div>`;
+        let connectorArrow = `<div class="match-arrow ${isLeft ? 'arrow-right' : 'arrow-left'}">${isLeft ? '▶' : '◀'}</div>`;
+		let finalConnector = `<div class="line-straight ${isLeft ? 'final-left' : 'final-right'}" style="top: 50%;"></div> <div class="match-arrow ${isLeft ? 'final-left' : 'final-right'}" style: "">${isLeft ? '▶' : '◀'}</div>`;
+		let dateHTML = `<div class="match-date">${schedule[sfMatch]||""}</div>`;
 
         html += `
             <div class="match sf ${isLeft ? 'left-side' : 'right-side'}" style="top: ${sfTops[0]}px;" id="m-${sfMatch}" data-next="final-1" data-slot="${sfSlot}">
                 ${dateHTML}
                 <div class="match-num">#${sfMatch}</div>
-                <div class="match-card">
+                ${sfConnector} ${connectorArrow} <div class="match-card">
                     <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)">
                         <span class="team-name">TBD</span>
                     </div>
@@ -480,7 +487,7 @@ const schedule = {
                         <span class="team-name">TBD</span>
                     </div>
                 </div>
-                ${sfConnector}
+                ${finalConnector}
             </div>`;
         html += `</div>`;
 
@@ -582,33 +589,40 @@ function syncKnockoutBracket() {
 
 // CASCADES COMPLETED MATCHES UP THE BRACKET
 function applyCompletedKnockouts() {
-    // Sort numerically so R32 processes before R16, etc.
+    // 1. Wait to ensure DOM elements exist
+    let allMatches = document.querySelectorAll('.match');
+    if (allMatches.length === 0) return; 
+
+    // 2. Process matches directly from the completedKnockouts object
     Object.keys(completedKnockouts).sort((a,b) => parseInt(a) - parseInt(b)).forEach(num => {
         let lm = completedKnockouts[num];
         
         let s1 = lm.score.ft[0];
         let s2 = lm.score.ft[1];
-        if (lm.score.p) { // Account for penalty shootouts if JSON adds them
-            s1 += lm.score.p[0]; s2 += lm.score.p[1];
-        } else if (lm.score.et) { // Extra time
-            s1 = lm.score.et[0]; s2 = lm.score.et[1];
-        }
+        if (lm.score.p) { s1 += lm.score.p[0]; s2 += lm.score.p[1]; } 
+        else if (lm.score.et) { s1 = lm.score.et[0]; s2 = lm.score.et[1]; }
         
-        let winnerName = null;
-        if (s1 > s2) winnerName = getEngineTeam(lm.team1);
-        else if (s2 > s1) winnerName = getEngineTeam(lm.team2);
+        let winnerName = (s1 > s2) ? getEngineTeam(lm.team1) : (s2 > s1 ? getEngineTeam(lm.team2) : null);
+        let loserName = (s1 > s2) ? getEngineTeam(lm.team2) : (s2 > s1 ? getEngineTeam(lm.team1) : null);
 
-        if (!winnerName) return; // Tied, match unresolved
+        if (!winnerName) return; 
 
-        let targetId = num == 104 ? 'final-1' : 'm-' + num;
-        let mDiv = document.getElementById(targetId);
-        if (mDiv) {
+        // 3. Find the visual box where this match happens
+        for (let mDiv of allMatches) {
             let rows = mDiv.querySelectorAll('.team-row');
-            rows.forEach(r => {
-                if (r.getAttribute('data-fullname') === winnerName) {
-                    advance(r, true); // Artificially clicks the winning row
+            if (rows.length === 2) {
+                let r1 = rows[0].getAttribute('data-fullname');
+                let r2 = rows[1].getAttribute('data-fullname');
+                
+                // If the box contains the two teams that played, click the winner
+                if ((r1 === winnerName && r2 === loserName) || (r1 === loserName && r2 === winnerName)) {
+                    rows.forEach(r => {
+                        if (r.getAttribute('data-fullname') === winnerName) {
+                            advance(r, true); 
+                        }
+                    });
                 }
-            });
+            }
         }
     });
 }
