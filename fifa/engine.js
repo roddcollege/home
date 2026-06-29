@@ -122,6 +122,7 @@ async function initEngine() {
 
         generateBracketHTML(); 
         calculateStandings();
+		setTimeout(() => syncKnockoutBracket(), 500);
     } catch (error) {
         console.error("Critical Error: Could not load your primary GitHub JSON.", error);
     }
@@ -219,7 +220,7 @@ function forecastMatches() {
             m.played = true; m.forecasted = true; 
         }
     });
-    resetBracketPredictions(); calculateStandings(); showTab('bracket');
+    resetBracketPredictions(); calculateStandings(); showTab('bracket'); autoPrefillBracketRounds();
 }
 
 function renderGroupTables() {
@@ -472,7 +473,7 @@ const schedule = {
         let sfSlot = isLeft ? 'top' : 'bottom';
         let sfConnector = `<div class="line-straight ${isLeft ? 'right' : 'left'}" style="top: 50%;"></div>`;
         let connectorArrow = `<div class="match-arrow ${isLeft ? 'arrow-right' : 'arrow-left'}">${isLeft ? '▶' : '◀'}</div>`;
-		let finalConnector = `<div class="line-straight ${isLeft ? 'final-left' : 'final-right'}" style="top: 50%;"></div> <div class="match-arrow ${isLeft ? 'final-left' : 'final-right'}" style: "">${isLeft ? '▶' : '◀'}</div>`;
+		let finalConnector = `<div class="line-straight ${isLeft ? 'final-left' : 'final-right'}" style="top: 50%;"></div> <div class="match-arrow ${isLeft ? 'final-left' : 'final-right'}">${isLeft ? '▶' : '◀'}</div>`;
 		let dateHTML = `<div class="match-date">${schedule[sfMatch]||""}</div>`;
 
         html += `
@@ -791,6 +792,34 @@ function applyTunerChanges() {
         btn.innerText = "Inject into Engine"; 
         closeTunerModal(); 
     }, 1000);
+}
+
+function autoPrefillBracketRounds() {
+    const triggerWeightedWin = (matchId) => {
+        let matchDiv = document.getElementById(matchId);
+        if(!matchDiv) return null;
+        let teams = matchDiv.querySelectorAll('.team-row');
+        if(teams.length === 2) {
+            let t1 = teams[0].getAttribute('data-fullname');
+            let t2 = teams[1].getAttribute('data-fullname');
+            if(t1 && t2 && t1 !== 'TBD' && t2 !== 'TBD') {
+                let p1 = getAdjustedPower(t1, true);
+                let p2 = getAdjustedPower(t2, true);
+                let winnerElem = p1 >= p2 ? teams[0] : teams[1];
+                advance(winnerElem, true); 
+            }
+        }
+    };
+
+    const runList = [
+        75,78,73,76,84,83,82,81,74,77,79,80,87,86,85,88, // R32
+        90,89,94,93,91,92,95,96, // R16
+        97,99,98,100, // QF
+        101,102 // SF
+    ];
+    
+    runList.forEach(m => triggerWeightedWin(`m-${m}`));
+    triggerWeightedWin(`final-1`);
 }
 
 window.onload = () => { initEngine(); };
