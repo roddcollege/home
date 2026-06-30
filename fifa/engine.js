@@ -864,6 +864,12 @@ function applyTunerChanges() {
 
 function autoPrefillBracketRounds() {
     const triggerWeightedWin = (matchId) => {
+		// --- NEW: THE REALITY CHECK ---
+        // Extract the match number (handling the 'final-1' edge case)
+        let matchNum = matchId === 'final-1' ? 104 : parseInt(matchId.replace('m-', ''));
+        // If this match exists in our real-world completed data, STOP. Leave the real winner alone!
+        if (completedKnockouts[matchNum]) return; 
+        // ------------------------------
         let matchDiv = document.getElementById(matchId);
         if(!matchDiv) return null;
         let teams = matchDiv.querySelectorAll('.team-row');
