@@ -515,444 +515,548 @@
   },
   "completedMatches": [
     {
+      "num": null,
       "t1": "🇲🇽 Mexico",
       "t2": "🇿🇦 South Africa",
       "s1": 2,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇰🇷 South Korea",
       "t2": "Czech Republic",
       "s1": 2,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "Czech Republic",
       "t2": "🇿🇦 South Africa",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇲🇽 Mexico",
       "t2": "🇰🇷 South Korea",
       "s1": 1,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "Czech Republic",
       "t2": "🇲🇽 Mexico",
       "s1": 0,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇿🇦 South Africa",
       "t2": "🇰🇷 South Korea",
       "s1": 1,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇦 Canada",
       "t2": "Bosnia & Herzegovina",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇶🇦 Qatar",
       "t2": "🇨🇭 Switzerland",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇨🇭 Switzerland",
       "t2": "Bosnia & Herzegovina",
       "s1": 4,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇨🇦 Canada",
       "t2": "🇶🇦 Qatar",
       "s1": 6,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇭 Switzerland",
       "t2": "🇨🇦 Canada",
       "s1": 2,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "Bosnia & Herzegovina",
       "t2": "🇶🇦 Qatar",
       "s1": 3,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇧🇷 Brazil",
       "t2": "🇲🇦 Morocco",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇭🇹 Haiti",
       "t2": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
       "t2": "🇲🇦 Morocco",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇧🇷 Brazil",
       "t2": "🇭🇹 Haiti",
       "s1": 3,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland",
       "t2": "🇧🇷 Brazil",
       "s1": 0,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇲🇦 Morocco",
       "t2": "🇭🇹 Haiti",
       "s1": 4,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇺🇸 USA",
       "t2": "🇵🇾 Paraguay",
       "s1": 4,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇦🇺 Australia",
       "t2": "Turkey",
       "s1": 2,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇺🇸 USA",
       "t2": "🇦🇺 Australia",
       "s1": 2,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "Turkey",
       "t2": "🇵🇾 Paraguay",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "Turkey",
       "t2": "🇺🇸 USA",
       "s1": 3,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇵🇾 Paraguay",
       "t2": "🇦🇺 Australia",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇩🇪 Germany",
       "t2": "🇨🇼 Curaçao",
       "s1": 7,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇨🇮 Ivory Coast",
       "t2": "🇪🇨 Ecuador",
       "s1": 1,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇩🇪 Germany",
       "t2": "🇨🇮 Ivory Coast",
       "s1": 2,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇪🇨 Ecuador",
       "t2": "🇨🇼 Curaçao",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇼 Curaçao",
       "t2": "🇨🇮 Ivory Coast",
       "s1": 0,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇪🇨 Ecuador",
       "t2": "🇩🇪 Germany",
       "s1": 2,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇳🇱 Netherlands",
       "t2": "🇯🇵 Japan",
       "s1": 2,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇸🇪 Sweden",
       "t2": "🇹🇳 Tunisia",
       "s1": 5,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇳🇱 Netherlands",
       "t2": "🇸🇪 Sweden",
       "s1": 5,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇹🇳 Tunisia",
       "t2": "🇯🇵 Japan",
       "s1": 0,
       "s2": 4
     },
     {
+      "num": null,
       "t1": "🇯🇵 Japan",
       "t2": "🇸🇪 Sweden",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇹🇳 Tunisia",
       "t2": "🇳🇱 Netherlands",
       "s1": 1,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇧🇪 Belgium",
       "t2": "🇪🇬 Egypt",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇮🇷 Iran",
       "t2": "🇳🇿 New Zealand",
       "s1": 2,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇧🇪 Belgium",
       "t2": "🇮🇷 Iran",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇳🇿 New Zealand",
       "t2": "🇪🇬 Egypt",
       "s1": 1,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇪🇬 Egypt",
       "t2": "🇮🇷 Iran",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇳🇿 New Zealand",
       "t2": "🇧🇪 Belgium",
       "s1": 1,
       "s2": 5
     },
     {
+      "num": null,
       "t1": "🇪🇸 Spain",
       "t2": "Cape Verde",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇸🇦 Saudi Arabia",
       "t2": "🇺🇾 Uruguay",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇪🇸 Spain",
       "t2": "🇸🇦 Saudi Arabia",
       "s1": 4,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇺🇾 Uruguay",
       "t2": "Cape Verde",
       "s1": 2,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "Cape Verde",
       "t2": "🇸🇦 Saudi Arabia",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇺🇾 Uruguay",
       "t2": "🇪🇸 Spain",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇫🇷 France",
       "t2": "🇸🇳 Senegal",
       "s1": 3,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇮🇶 Iraq",
       "t2": "🇳🇴 Norway",
       "s1": 1,
       "s2": 4
     },
     {
+      "num": null,
       "t1": "🇫🇷 France",
       "t2": "🇮🇶 Iraq",
       "s1": 3,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇳🇴 Norway",
       "t2": "🇸🇳 Senegal",
       "s1": 3,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇳🇴 Norway",
       "t2": "🇫🇷 France",
       "s1": 1,
       "s2": 4
     },
     {
+      "num": null,
       "t1": "🇸🇳 Senegal",
       "t2": "🇮🇶 Iraq",
       "s1": 5,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇦🇷 Argentina",
       "t2": "🇩🇿 Algeria",
       "s1": 3,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇦🇹 Austria",
       "t2": "🇯🇴 Jordan",
       "s1": 3,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇦🇷 Argentina",
       "t2": "🇦🇹 Austria",
       "s1": 2,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇯🇴 Jordan",
       "t2": "🇩🇿 Algeria",
       "s1": 1,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇩🇿 Algeria",
       "t2": "🇦🇹 Austria",
       "s1": 3,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇯🇴 Jordan",
       "t2": "🇦🇷 Argentina",
       "s1": 1,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇵🇹 Portugal",
       "t2": "🇨🇩 DR Congo",
       "s1": 1,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇺🇿 Uzbekistan",
       "t2": "🇨🇴 Colombia",
       "s1": 1,
       "s2": 3
     },
     {
+      "num": null,
       "t1": "🇵🇹 Portugal",
       "t2": "🇺🇿 Uzbekistan",
       "s1": 5,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇴 Colombia",
       "t2": "🇨🇩 DR Congo",
       "s1": 1,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇴 Colombia",
       "t2": "🇵🇹 Portugal",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇨🇩 DR Congo",
       "t2": "🇺🇿 Uzbekistan",
       "s1": 3,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
       "t2": "🇭🇷 Croatia",
       "s1": 4,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇬🇭 Ghana",
       "t2": "🇵🇦 Panama",
       "s1": 1,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
       "t2": "🇬🇭 Ghana",
       "s1": 0,
       "s2": 0
     },
     {
+      "num": null,
       "t1": "🇵🇦 Panama",
       "t2": "🇭🇷 Croatia",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": null,
       "t1": "🇵🇦 Panama",
       "t2": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England",
       "s1": 0,
       "s2": 2
     },
     {
+      "num": null,
       "t1": "🇭🇷 Croatia",
       "t2": "🇬🇭 Ghana",
       "s1": 2,
       "s2": 1
     },
     {
+      "num": 73,
       "t1": "🇿🇦 South Africa",
       "t2": "🇨🇦 Canada",
       "s1": 0,
       "s2": 1
     },
     {
+      "num": 74,
+      "t1": "🇩🇪 Germany",
+      "t2": "🇵🇾 Paraguay",
+      "s1": 1,
+      "s2": 1,
+      "et": [
+        1,
+        1
+      ],
+      "p": [
+        3,
+        4
+      ]
+    },
+    {
+      "num": 75,
+      "t1": "🇳🇱 Netherlands",
+      "t2": "🇲🇦 Morocco",
+      "s1": 1,
+      "s2": 1,
+      "et": [
+        1,
+        1
+      ],
+      "p": [
+        2,
+        3
+      ]
+    },
+    {
+      "num": 76,
       "t1": "🇧🇷 Brazil",
       "t2": "🇯🇵 Japan",
       "s1": 2,

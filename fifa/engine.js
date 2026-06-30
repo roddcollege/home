@@ -65,20 +65,30 @@ async function initEngine() {
             });
         });
 
-        // APPLY LOCAL BACKUPS
+		// APPLY LOCAL BACKUPS
         if (myData.completedMatches) {
             myData.completedMatches.forEach(cm => {
-                let eT1 = getEngineTeam(cm.t1);
-                let eT2 = getEngineTeam(cm.t2);
-                if (eT1 && eT2) {
-                    let m = matches.find(match => 
-                        (match.t1 === eT1 && match.t2 === eT2) || 
-                        (match.t1 === eT2 && match.t2 === eT1)
-                    );
-                    if (m) {
-                        if (m.t1 === eT1) { m.s1 = cm.s1; m.s2 = cm.s2; }
-                        else { m.s1 = cm.s2; m.s2 = cm.s1; }
-                        m.played = true; m.locked = true; m.forecasted = false;
+                // If it's a knockout match, route it to the knockout dictionary
+                if (cm.num && cm.num >= 73) {
+                    completedKnockouts[cm.num] = {
+                        team1: cm.t1,
+                        team2: cm.t2,
+                        score: { ft: [cm.s1, cm.s2], et: cm.et, p: cm.p }
+                    };
+                } else {
+                    // Otherwise, process it as a group match
+                    let eT1 = getEngineTeam(cm.t1);
+                    let eT2 = getEngineTeam(cm.t2);
+                    if (eT1 && eT2) {
+                        let m = matches.find(match => 
+                            (match.t1 === eT1 && match.t2 === eT2) || 
+                            (match.t1 === eT2 && match.t2 === eT1)
+                        );
+                        if (m) {
+                            if (m.t1 === eT1) { m.s1 = cm.s1; m.s2 = cm.s2; }
+                            else { m.s1 = cm.s2; m.s2 = cm.s1; }
+                            m.played = true; m.locked = true; m.forecasted = false;
+                        }
                     }
                 }
             });
@@ -312,30 +322,30 @@ function generateBracketHTML() {
     // The exact dates compiled from the JSON
 const schedule = {
         // ROUND OF 32 - Left Side (Top to Bottom)
-        75:"Jun 29 - 15:30", 
-        78:"Jun 30 - 16:00", 
+        74:"Jun 29 - 15:30", 
+        77:"Jun 30 - 16:00", 
         73:"Jun 28 - 14:00", 
-        76:"Jun 29 - 20:00",
-        84:"Jul 02 - 18:00", 
-        83:"Jul 02 - 14:00", 
-        82:"Jul 01 - 19:00", 
-        81:"Jul 01 - 15:00",
+        75:"Jun 29 - 20:00",
+        83:"Jul 02 - 18:00", 
+        84:"Jul 02 - 14:00", 
+        81:"Jul 01 - 19:00", 
+        82:"Jul 01 - 15:00",
 
         // ROUND OF 32 - Right Side (Top to Bottom)
-        74:"Jun 29 - 12:00", 
-        77:"Jun 30 - 12:00", 
+        76:"Jun 29 - 12:00", 
+        78:"Jun 30 - 12:00", 
         79:"Jun 30 - 20:00", 
         80:"Jul 01 - 11:00",
-        87:"Jul 03 - 17:00", 
-        86:"Jul 03 - 13:00", 
+        86:"Jul 03 - 17:00", 
+        88:"Jul 03 - 13:00", 
         85:"Jul 02 - 22:00", 
-        88:"Jul 03 - 20:30",
+        87:"Jul 03 - 20:30",
 
         // ROUND OF 16 - Left Side
-        90:"Jul 04 - 16:00", 
-        89:"Jul 04 - 12:00", 
-        94:"Jul 06 - 14:00", 
-        93:"Jul 06 - 19:00", 
+        89:"Jul 04 - 16:00", 
+        90:"Jul 04 - 12:00", 
+        93:"Jul 06 - 14:00", 
+        94:"Jul 06 - 19:00", 
         
         // ROUND OF 16 - Right Side
         91:"Jul 05 - 15:00", 
@@ -345,28 +355,29 @@ const schedule = {
 
         // QUARTERFINALS
         97:"Jul 09 - 15:00", // Left Top
-        99:"Jul 10 - 14:00", // Left Bottom
-        98:"Jul 11 - 16:00", // Right Top
+        98:"Jul 10 - 14:00", // Left Bottom
+        99:"Jul 11 - 16:00", // Right Top
         100:"Jul 11 - 20:00", // Right Bottom
 
         // SEMIFINALS & FINAL
         101:"Jul 14 - 14:00", 
         102:"Jul 15 - 14:00", 
+		103:"Jul 18 - 16:00", 
         104:"Jul 19 - 14:00"
     };
 
     const leftR32 = [
-        {m: 75, t1: '1E', t2: '3rd'}, {m: 78, t1: '1I', t2: '3rd'},
-        {m: 73, t1: '2A', t2: '2B'}, {m: 76, t1: '1F', t2: '2C'},
-        {m: 84, t1: '2K', t2: '2L'}, {m: 83, t1: '1H', t2: '2J'},
-        {m: 82, t1: '1D', t2: '3rd'}, {m: 81, t1: '1G', t2: '3rd'}
+        {m: 74, t1: '1E', t2: '3rd'}, {m: 77, t1: '1I', t2: '3rd'},
+        {m: 73, t1: '2A', t2: '2B'}, {m: 75, t1: '1F', t2: '2C'},
+        {m: 83, t1: '2K', t2: '2L'}, {m: 84, t1: '1H', t2: '2J'},
+        {m: 81, t1: '1D', t2: '3rd'}, {m: 82, t1: '1G', t2: '3rd'}
     ];
     
     const rightR32 = [
-        {m: 74, t1: '1C', t2: '2F'}, {m: 77, t1: '2E', t2: '2I'},
+        {m: 76, t1: '1C', t2: '2F'}, {m: 78, t1: '2E', t2: '2I'},
         {m: 79, t1: '1A', t2: '3rd'}, {m: 80, t1: '1L', t2: '3rd'},
-        {m: 87, t1: '1J', t2: '2H'}, {m: 86, t1: '2D', t2: '2G'},
-        {m: 85, t1: '1B', t2: '3rd'}, {m: 88, t1: '1K', t2: '3rd'}
+        {m: 86, t1: '1J', t2: '2H'}, {m: 88, t1: '2D', t2: '2G'},
+        {m: 85, t1: '1B', t2: '3rd'}, {m: 87, t1: '1K', t2: '3rd'}
     ];
 
 	const r32Tops = [0, 105, 210, 315, 420, 525, 630, 735];
@@ -385,9 +396,9 @@ const schedule = {
         // Col 1: R32
         html += `<div class="bracket-col" id="${side}-r32-col"><div class="col-title">ROUND OF 32</div>`;
         r32Pairs.forEach((p, idx) => {
-            let nextM = isLeft ? (p.m === 75||p.m === 78 ? 90 : p.m === 73||p.m === 76 ? 89 : p.m === 84||p.m === 83 ? 94 : 93) 
-                               : (p.m === 74||p.m === 77 ? 91 : p.m === 79||p.m === 80 ? 92 : p.m === 87||p.m === 86 ? 95 : 96);
-            let slot = (p.m === 75 || p.m === 73 || p.m === 84 || p.m === 82 || p.m === 74 || p.m === 79 || p.m === 87 || p.m === 85) ? 'top' : 'bottom';
+            let nextM = isLeft ? (p.m === 74||p.m === 77 ? 89 : p.m === 73||p.m === 75 ? 90 : p.m === 83||p.m === 84 ? 93 : 94) 
+                               : (p.m === 76||p.m === 78 ? 91 : p.m === 79||p.m === 80 ? 92 : p.m === 86||p.m === 88 ? 95 : 96);
+            let slot = (p.m === 74 || p.m === 73 || p.m === 83 || p.m === 81 || p.m === 76 || p.m === 79 || p.m === 86 || p.m === 85) ? 'top' : 'bottom';
             
             let t1HTML = isLeft ? `<span class="seed" style="left:-25px;">${p.t1}</span><span class="team-name">TBD</span>` : `<span class="team-name">TBD</span><span class="seed" style="right:-25px;">${p.t1}</span>`;
             let t2HTML = isLeft ? `<span class="seed" style="left:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span><span class="team-name">TBD</span>` : `<span class="team-name">TBD</span><span class="seed" style="right:-25px;">${p.t2.startsWith('3')?'3rd':p.t2}</span>`;
@@ -414,9 +425,9 @@ const schedule = {
 
         // Col 2: R16
         html += `<div class="bracket-col"><div class="col-title">ROUND OF 16</div>`;
-        const r16Matches = isLeft ? [90, 89, 94, 93] : [91, 92, 95, 96];
+        const r16Matches = isLeft ? [89, 90, 93, 94] : [91, 92, 95, 96];
         r16Matches.forEach((m, idx) => {
-            let nextM = isLeft ? (idx < 2 ? 97 : 99) : (idx < 2 ? 98 : 100);
+            let nextM = isLeft ? (idx < 2 ? 97 : 98) : (idx < 2 ? 99 : 100);
             let slot = idx % 2 === 0 ? 'top' : 'bottom';
             let connectorLine = idx % 2 === 0 ? `<div class="line-tree-${isLeft ? 'left' : 'right'}" style="height: ${r16ConnH - 1}px; top:49%"></div>` : '';
             let r16Connector = `<div class="line-straight ${isLeft ? 'right' : 'left'}" style="top: 50%;"></div>`;
@@ -442,7 +453,7 @@ const schedule = {
 
         // Col 3: QF
         html += `<div class="bracket-col"><div class="col-title">QUARTERFINALS</div>`;
-        const qfMatches = isLeft ? [97, 99] : [98, 100];
+        const qfMatches = isLeft ? [97, 98] : [99, 100];
         qfMatches.forEach((m, idx) => {
             let nextM = isLeft ? 101 : 102;
             let slot = idx === 0 ? 'top' : 'bottom';
@@ -499,7 +510,7 @@ const schedule = {
 
     let fullHTML = generateSide('L', leftR32);
     
-    // CENTER COLUMN
+// CENTER COLUMN
     fullHTML += `
         <div class="center-col">
             <div style="font-size: 3.5rem; position: absolute; top: 100px; z-index: 10;">🏆</div>
@@ -517,6 +528,19 @@ const schedule = {
                     <div class="match-card" style="border:1px solid var(--accent); box-shadow: 0 0 10px rgba(251,191,36,0.3);">
                         <div class="team-row slot-top empty" data-fullname="TBD" onclick="advance(this)" style="justify-content:center;"><span class="team-name" style="text-align:center;">TBD</span></div>
                         <div class="team-row slot-bottom empty" data-fullname="TBD" onclick="advance(this)" style="justify-content:center;"><span class="team-name" style="text-align:center;">TBD</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-title" style="position: absolute; top: 480px; font-size: 0.90rem; color: var(--text-muted); margin: 0;">THIRD PLACE</div>
+            <div class="final-sub" style="position: absolute; top: 505px; margin: 0;">Match #103</div>
+            
+            <div class="final-match-wrapper" style="top: 540px;">
+                <div class="match" id="m-103" style="margin:0; border:none; width: 100%;">
+                    <div class="match-date">${schedule[103]||""}</div>
+                    <div class="match-card" style="border:1px solid var(--border-color);">
+                        <div class="team-row slot-top empty" data-fullname="TBD" style="justify-content:center; cursor:default;"><span class="team-name" style="text-align:center;">TBD</span></div>
+                        <div class="team-row slot-bottom empty" data-fullname="TBD" style="justify-content:center; cursor:default;"><span class="team-name" style="text-align:center;">TBD</span></div>
                     </div>
                 </div>
             </div>
@@ -663,6 +687,35 @@ function advance(clickedElement, isAuto = false) {
             clearDownstream(nextMatchId, targetSlot);
         }
     }
+	// --- NEW: AUTO-ROUTE LOSER TO 3RD PLACE MATCH ---
+    if (matchDiv.id === 'm-101' || matchDiv.id === 'm-102') {
+        // Find the team row in this match that was NOT the one clicked
+        let loserRow = Array.from(matchDiv.querySelectorAll('.team-row')).find(r => r !== clickedElement);
+        if (loserRow) {
+            let loserName = loserRow.getAttribute('data-fullname');
+            let loserBadge = loserRow.querySelector('.team-name').innerHTML;
+
+            let thirdPlaceDiv = document.getElementById('m-103');
+            if (thirdPlaceDiv) {
+                // M-101 sends loser to the top slot, M-102 sends loser to the bottom slot
+                let thirdSlot = matchDiv.id === 'm-101' ? 'top' : 'bottom';
+                let targetThirdElement = thirdPlaceDiv.querySelector(`.slot-${thirdSlot}`);
+                
+                if (targetThirdElement) {
+                    if (loserName !== 'TBD' && !loserRow.classList.contains('empty')) {
+                        targetThirdElement.classList.remove('empty');
+                        targetThirdElement.querySelector('.team-name').innerHTML = loserBadge;
+                        targetThirdElement.setAttribute('data-fullname', loserName);
+                    } else {
+                        targetThirdElement.classList.add('empty');
+                        targetThirdElement.querySelector('.team-name').innerText = "TBD";
+                        targetThirdElement.setAttribute('data-fullname', "TBD");
+                    }
+                    targetThirdElement.classList.remove('selected');
+                }
+            }
+        }
+    }
 }
 
 function clearDownstream(matchId, slotChanged) {
@@ -686,6 +739,20 @@ function clearDownstream(matchId, slotChanged) {
             targetElement.setAttribute('data-fullname', "TBD");
             targetElement.classList.remove('selected'); 
             clearDownstream(nextMatchId, targetSlot);
+        }
+    }
+	// --- NEW: CLEAR 3RD PLACE MATCH IF SEMIFINAL IS CLEARED/CHANGED ---
+    if (matchId === 'm-101' || matchId === 'm-102') {
+        let thirdPlaceDiv = document.getElementById('m-103');
+        if (thirdPlaceDiv) {
+            let thirdSlot = matchId === 'm-101' ? 'top' : 'bottom';
+            let targetThirdElement = thirdPlaceDiv.querySelector(`.slot-${thirdSlot}`);
+            if (targetThirdElement) {
+                targetThirdElement.classList.add('empty');
+                targetThirdElement.querySelector('.team-name').innerText = "TBD";
+                targetThirdElement.setAttribute('data-fullname', "TBD");
+                targetThirdElement.classList.remove('selected');
+            }
         }
     }
 }
@@ -813,9 +880,9 @@ function autoPrefillBracketRounds() {
     };
 
     const runList = [
-        75,78,73,76,84,83,82,81,74,77,79,80,87,86,85,88, // R32
-        90,89,94,93,91,92,95,96, // R16
-        97,99,98,100, // QF
+        74,77,73,75,83,84,81,82,76,78,79,80,86,88,85,87, // R32
+        89,90,93,94,91,92,95,96, // R16
+        97,98,99,100, // QF
         101,102 // SF
     ];
     
